@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <POU Name="PRG_1_PlcTask" Id="{974f2793-1abb-41d3-ab47-a860d1c380f6}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_1_PlcTask
+VAR
+
+bDebug : Bool := TRUE;
+bMotionTest : Bool := TRUE;
+fbLogHandler: FB_LogHandler;
+	
+END_VAR
+
+    ]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*Ethercat Diagnostics*)
+DIAGNOSTICS();
+// Vacuum and differential pumping
+PRG_GATT();
+// Injector
+PRG_INJ();
+
+if (NOT bDebug)Then
+	// Motorised valve
+	PRG_VGP();
+END_IF
+if (NOT bMotionTest)Then
+	// Functionblock for PTP motion between different appertures
+	PRG_Motion();
+ELSE
+	PRG_Motors_Test();
+END_IF
+
+
+
+//Logger
+fbLogHandler();
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="PRG_1_PlcTask">
+      <LineId Id="3" Count="7" />
+      <LineId Id="13" Count="1" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="34" Count="2" />
+      <LineId Id="15" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

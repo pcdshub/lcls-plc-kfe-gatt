@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <POU Name="FB_MAA" Id="{8c4640db-3bb7-4671-b4ea-e9d46c4b8221}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_MAA
+VAR_IN_OUT
+	stYStage: DUT_MotionStage;
+	stXStage: DUT_MotionStage;
+END_VAR
+VAR_INPUT
+	fAprt1: LREAL;
+	fAprt2: LREAL;
+	fAprt3: LREAL;
+	fAprt4: LREAL;
+END_VAR
+VAR
+
+	fbYStage: FB_MotionStage;
+	fbXStage: FB_MotionStage;
+	
+	 {attribute 'pytmc' := '
+        pv: STATE
+        io: io
+    '}
+    fbStates: FB_MAA_States;
+	
+	fReticle: LREAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbYStage(stMotionStage:=stYStage);
+fbXStage(stMotionStage:=stXStage);
+
+// All stages have no STO
+stYStage.bHardwareEnable := TRUE;
+stXStage.bHardwareEnable := TRUE;
+// No PMPS yet
+stYStage.bPowerSelf := TRUE;
+stXStage.bPowerSelf := TRUE;
+
+
+fbStates(
+    stMotionStage:=stYStage,
+    fAprt1:=fAprt1,
+    fAprt2:=fAprt2,
+    fAprt3:=fAprt3,
+    fAprt4:=fAprt4);
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_MAA">
+      <LineId Id="3" Count="19" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

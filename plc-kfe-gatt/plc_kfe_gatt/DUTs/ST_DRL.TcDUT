@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <DUT Name="ST_DRL" Id="{ea1c37a5-3218-45cd-b52c-e55d00229cb4}">
+    <Declaration><![CDATA[TYPE ST_DRL :
+STRUCT
+	{attribute 'pytmc' := ' pv: TEMP '}
+	TEMP AT%I*: UINT;
+	{attribute 'pytmc' := ' pv: SV '}
+	SV  AT%I*: UINT;
+	{attribute 'pytmc' := ' pv: SV '}
+	SC  AT%I*: UINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

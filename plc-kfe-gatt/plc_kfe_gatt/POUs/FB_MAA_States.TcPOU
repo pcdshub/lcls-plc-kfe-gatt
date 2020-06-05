@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <POU Name="FB_MAA_States" Id="{1d2c1fdc-c4a6-489b-bb2f-4fd69cc8242c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_MAA_States
+VAR_IN_OUT
+	   stMotionStage: DUT_MotionStage;
+END_VAR
+VAR_INPUT
+	  bEnable: BOOL;
+    {attribute 'pytmc' := '
+        pv: SET
+        io: io
+    '}
+    enumSet: E_MAA_states;
+    bStatesLock: BOOL;
+	fAprt1: LREAL;
+	fAprt2: LREAL;
+	fAprt3: LREAL;
+	fAprt4: LREAL;
+END_VAR
+VAR_OUTPUT
+    bError: BOOL;
+    sErrorMessage: STRING;
+    bBusy: BOOL;
+    bDone: BOOL;
+    {attribute 'pytmc' := '
+        pv: GET
+        io: i
+    '}
+    enumGet: E_MAA_States;
+END_VAR
+VAR
+    bInit: BOOL;
+    arrStates: ARRAY[1..15] OF DUT_PositionState;
+    nIter: INT;
+
+    {attribute 'pytmc' := '
+        pv:
+        io: io
+    '}
+    fbStateManager: FB_PositionStateManager;
+
+    fbLockAprt1: FB_PositionStateLock;
+    fbLockAprt2: FB_PositionStateLock;
+    fbLockAprt3: FB_PositionStateLock;
+    fbLockAprt4: FB_PositionStateLock;
+END_VAR
+VAR CONSTANT
+	
+	fSmallDelta: LREAL := 0.01;
+	fBigDelta: LREAL := 10;
+	fMaxVelocity: LREAL := 20;
+	fHighAccel: LREAL := 200;
+	fLowAccel: LREAL := 25;
+	
+	
+    fInDelta: LREAL := 0.1;
+    fOutDelta: LREAL := 0.1;
+    fInVelocity: LREAL := 5;
+    fOutVelocity: LREAL := 5;
+    fAccel: LREAL := 200;
+    fOutDecel: LREAL := 25;
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT bInit THEN
+    bInit := FALSE;
+    FOR nIter := 1 TO 4 DO
+        arrStates[nIter].fDelta := fInDelta;
+        arrStates[nIter].fVelocity := fInVelocity;
+        arrStates[nIter].fAccel := fAccel;
+        arrStates[nIter].fDecel := fAccel;
+        arrStates[nIter].bLocked := bStatesLock;
+        arrStates[nIter].bValid := TRUE;
+        // TODO implement PMPS instead of doing this
+        arrStates[nIter].bMoveOk := TRUE;
+    END_FOR
+    arrStates[1].sName := '5.5mm';
+    arrStates[1].fPosition := fAprt1;
+    arrStates[1].fDelta := fOutDelta;
+    arrStates[1].fVelocity := fOutVelocity;
+    arrStates[1].fDecel := fOutDecel;
+    arrStates[2].sName := '8mm';
+    arrStates[2].fPosition := fAprt2;
+    arrStates[3].sName := '10mm';
+    arrStates[3].fPosition := fAprt3;
+    arrStates[4].sName := '12mm';
+    arrStates[4].fPosition := fAprt4;
+END_IF
+
+fbLockAprt1(stPositionState := arrStates[1]);
+fbLockAprt2(stPositionState := arrStates[2]);
+fbLockAprt3(stPositionState := arrStates[3]);
+fbLockAprt4(stPositionState := arrStates[4]);
+
+fbStateManager(
+    stMotionStage := stMotionStage,
+    arrStates := arrStates,
+    setState := enumSet,
+    bEnable := bEnable,
+    bError => bError,
+    sErrorMessage => sErrorMessage,
+    bBusy => bBusy,
+    bDone => bDone,
+    getState => enumGet);]]></ST>
+    </Implementation>
+    <LineIds Name="FB_MAA_States">
+      <LineId Id="3" Count="38" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
