@@ -3701,6 +3701,9 @@ IO]]>
 	</Project>
 	<Mappings>
 		<OwnerA Name="plc_kfe_gatt Instance">
+			<OwnerB Name="TIID^=+-CX2020/EtherCAT1">
+				<Link VarA="PlcTask Inputs^DIAGNOSTICS.i_sAMSNetID" VarB="InfoData^AmsNetId"/>
+			</OwnerB>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_01_00^=+-EL2798_01_03">
 				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_GCC_10.q_xHV_DIS" VarB="Channel 1^fb_AT1K0_GAS_GCC_10.q_xHV_DIS"/>
 				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_GCC_20.q_xHV_DIS" VarB="Channel 2^fb_AT1K0_GAS_GCC_20.q_xHV_DIS"/>
