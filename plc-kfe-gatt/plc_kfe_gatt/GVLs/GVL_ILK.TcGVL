@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <GVL Name="GVL_ILK" Id="{21709cf7-f577-4665-94fd-fe0531e0ad62}">
     <Declaration><![CDATA[VAR_GLOBAL
 	
 //MPS
-{attribute 'pytmc' := '
+	{attribute 'pytmc' := '
     pv: plc:lfe:gatt:FF1
     '}
     {attribute 'TcLinkTo' := '.q_xFastFaultOut:=TIIB[=+-ES2202_00_07]^Channel 1^Output'}
@@ -16,8 +16,8 @@
     {attribute 'TcLinkTo' := '.q_xFastFaultOut:=TIIB[=+-ES2202_00_07]^Channel 2^Output'}
     g_FastFaultOutput2  :   FB_HardwareFFOutput;
 	
-	{attribute 'pytmc' := 
-    pv: plc:kfe:FF_RESET;
+	{attribute 'pytmc' := ' 
+     pv: plc:kfe:FF_RESET;
 	 field: ZNAM FALSE; 
 	 field: ONAM TRUE; 
 	 io: io;
