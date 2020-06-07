@@ -31,7 +31,7 @@ VAR_OUTPUT
 END_VAR
 VAR
     bInit: BOOL;
-    arrStates: ARRAY[1..15] OF DUT_PositionState;
+    arrStates: ARRAY[1..5] OF DUT_PositionState;
     nIter: INT;
 
     {attribute 'pytmc' := '
@@ -47,19 +47,12 @@ VAR
 END_VAR
 VAR CONSTANT
 	
-	fSmallDelta: LREAL := 0.01;
-	fBigDelta: LREAL := 10;
-	fMaxVelocity: LREAL := 20;
-	fHighAccel: LREAL := 200;
-	fLowAccel: LREAL := 25;
+
 	
-	
-    fInDelta: LREAL := 0.1;
-    fOutDelta: LREAL := 0.1;
-    fInVelocity: LREAL := 5;
-    fOutVelocity: LREAL := 5;
+    fDelta: LREAL := 0.1;
+    fVelocity: LREAL := 5;
     fAccel: LREAL := 200;
-    fOutDecel: LREAL := 25;
+    fDecel: LREAL := 25;
 END_VAR
 
 ]]></Declaration>
@@ -67,10 +60,10 @@ END_VAR
       <ST><![CDATA[IF NOT bInit THEN
     bInit := FALSE;
     FOR nIter := 1 TO 4 DO
-        arrStates[nIter].fDelta := fInDelta;
-        arrStates[nIter].fVelocity := fInVelocity;
+        arrStates[nIter].fDelta := fDelta;
+        arrStates[nIter].fVelocity := fVelocity;
         arrStates[nIter].fAccel := fAccel;
-        arrStates[nIter].fDecel := fAccel;
+        arrStates[nIter].fDecel := fDecel;
         arrStates[nIter].bLocked := bStatesLock;
         arrStates[nIter].bValid := TRUE;
         // TODO implement PMPS instead of doing this
@@ -78,9 +71,6 @@ END_VAR
     END_FOR
     arrStates[1].sName := '5.5mm';
     arrStates[1].fPosition := fAprt1;
-    arrStates[1].fDelta := fOutDelta;
-    arrStates[1].fVelocity := fOutVelocity;
-    arrStates[1].fDecel := fOutDecel;
     arrStates[2].sName := '8mm';
     arrStates[2].fPosition := fAprt2;
     arrStates[3].sName := '10mm';
@@ -106,7 +96,8 @@ fbStateManager(
     getState => enumGet);]]></ST>
     </Implementation>
     <LineIds Name="FB_MAA_States">
-      <LineId Id="3" Count="38" />
+      <LineId Id="3" Count="13" />
+      <LineId Id="20" Count="21" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

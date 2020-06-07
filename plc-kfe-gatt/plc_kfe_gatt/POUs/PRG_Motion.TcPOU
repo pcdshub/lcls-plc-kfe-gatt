@@ -50,6 +50,34 @@ END_VAR
 //LIMIT the array index
 iReqApperture := LIMIT(1,pv_iReqApperture,4);
 
+fbMAA_1_States(
+    stYStage := Main.M2,
+    stXStage := Main.M1,
+    fAprt1 := -0.05, //smallest
+    fAprt2 := -14.5534,
+	fAprt2 := -30.0728,
+    fAprt4 := -47.17);
+fbMAA_2_States(
+    stYStage := Main.M4,
+    stXStage := Main.M3,
+    fAprt1 :=0, //smallest
+    fAprt2 := -14.5034,
+	fAprt2 := -30.0228,
+    fAprt4 := -47.1);
+fbMAA_3_States(
+    stYStage := Main.M6,
+    stXStage := Main.M5,
+    fAprt1 := -0.0555, //smallest
+    fAprt2 := -14.5589,
+	fAprt2 := -30.0783,
+    fAprt4 := -47.0512);
+fbMAA_4_States(
+    stYStage := Main.M8,
+    stXStage := Main.M7,
+    fAprt1 := -0.0453, //smallest
+    fAprt2 := -14.5487,
+	fAprt2 := -30.0681,
+    fAprt4 := -47.04);
 
 (*
 IF(bInit) THEN
@@ -164,7 +192,17 @@ END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_Motion">
-      <LineId Id="3" Count="114" />
+      <LineId Id="3" Count="2" />
+      <LineId Id="161" Count="3" />
+      <LineId Id="169" Count="2" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="174" Count="5" />
+      <LineId Id="172" Count="0" />
+      <LineId Id="181" Count="5" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="188" Count="5" />
+      <LineId Id="187" Count="0" />
+      <LineId Id="7" Count="110" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>
