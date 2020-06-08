@@ -31,7 +31,7 @@ VAR_OUTPUT
 END_VAR
 VAR
     bInit: BOOL;
-    arrStates: ARRAY[1..5] OF DUT_PositionState;
+    arrStates: ARRAY[1..15] OF DUT_PositionState;
     nIter: INT;
 
     {attribute 'pytmc' := '

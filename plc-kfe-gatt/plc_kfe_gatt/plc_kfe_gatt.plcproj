@@ -220,11 +220,6 @@
       <Resolution>UML Statechart Types, * (3S - Smart Software Solutions GmbH)</Resolution>
     </PlaceholderResolution>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="plc_kfe_gatt.tmc">
-      <SubType>Content</SubType>
-    </None>
-  </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
