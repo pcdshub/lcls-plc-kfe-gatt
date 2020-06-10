@@ -18,7 +18,7 @@ VAR
 	fbXStage: FB_MotionStage;
 	
 	 {attribute 'pytmc' := '
-        pv: STATE
+        pv: 
         io: io
     '}
     fbStates: FB_MAA_States;
@@ -36,6 +36,8 @@ stXStage.bHardwareEnable := TRUE;
 // No PMPS yet
 stYStage.bPowerSelf := TRUE;
 stXStage.bPowerSelf := TRUE;
+stYStage.nBrakeMode := ENUM_StageBrakeMode.IF_ENABLED;
+stXStage.nBrakeMode := ENUM_StageBrakeMode.NO_BRAKE;
 
 
 fbStates(
@@ -50,7 +52,9 @@ fbStates(
 ]]></ST>
     </Implementation>
     <LineIds Name="FB_MAA">
-      <LineId Id="3" Count="19" />
+      <LineId Id="3" Count="8" />
+      <LineId Id="47" Count="1" />
+      <LineId Id="12" Count="10" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

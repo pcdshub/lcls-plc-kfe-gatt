@@ -4,8 +4,8 @@
     <Declaration><![CDATA[PROGRAM PRG_1_PlcTask
 VAR
 
-bDebug : Bool := TRUE;
-bMotionTest : Bool := TRUE;
+bDebug : Bool := FALSE;
+bMotionTest : Bool := FALSE;
 fbLogHandler: FB_LogHandler;
 	
 END_VAR
@@ -30,7 +30,7 @@ ELSE
 	PRG_Motors_Test();
 END_IF
 
-
+PRG_ILK();
 
 //Logger
 fbLogHandler();

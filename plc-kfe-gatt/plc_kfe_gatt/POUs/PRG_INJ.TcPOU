@@ -24,14 +24,14 @@ VAR
 	 '}
 	bError : BOOL; 
 	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:Kp1 '}
-	fKp1 : REAL:= 0.04; 
+	fKp1 : REAL:= 1; 
 	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:Tn1 '}
-	fTn1 : REAL:= 1;//0.5; 
+	fTn1 : REAL:= 0.5; 
 	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:Kp2 '}
 	fKp2 : REAL:= 0.01; 
 	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:Tn2 '}
 	fTn2 : REAL:= 0.5; 
-	arrTable	: ARRAY[1..31,1..2] OF FLOAT;
+	arrTable	: ARRAY[1..9,1..2] OF FLOAT;
 	fManValue											: FLOAT;
 	bExtrapolate										: BOOL;
 	eMode							: E_CTRL_MODE;
@@ -60,15 +60,15 @@ END_VAR
     <Implementation>
       <ST><![CDATA[
 // Valves
-VCN_70(i_xExtIlkOK := TRUE,//((US_MAA_OK AND US_Roughing_Valves_Open AND US_Turbo_Valves_Open AND US_Turbo_Running) 
-					//	AND (DS_MAA_OK AND DS_Roughing_Valves_Open AND DS_Turbo_Valves_Open AND DS_Turbo_Running)), 
+VCN_70(i_xExtIlkOK := (US_MAA_OK AND US_Turbo_Valves_Open AND US_Turbo_Running)
+						AND (DS_MAA_OK AND DS_Turbo_Valves_Open AND DS_Turbo_Running), 
 						i_ReqPos:= LREAL_TO_REAL(fbCTRL_LIN_INTERPOLATION.fOut + fbCTRL_PID.fOut));
 
 //VGP_80
-VVC_71(i_xExtILK_OK:= VVC_72.M_IsClosed() AND ((US_MAA_OK AND US_Roughing_Valves_Open AND US_Turbo_Valves_Open AND US_Turbo_Running) 
-						AND (DS_MAA_OK AND DS_Roughing_Valves_Open AND DS_Turbo_Valves_Open AND DS_Turbo_Running)), i_xOverrideMode:= , iq_stValve=> );
-VVC_72(i_xExtILK_OK:= VVC_71.M_IsClosed() AND ((US_MAA_OK AND US_Roughing_Valves_Open AND US_Turbo_Valves_Open AND US_Turbo_Running) 
-						AND (DS_MAA_OK AND DS_Roughing_Valves_Open AND DS_Turbo_Valves_Open AND DS_Turbo_Running)), i_xOverrideMode:= , iq_stValve=> );
+VVC_71(i_xExtILK_OK:= VVC_72.M_IsClosed() AND ((US_MAA_OK AND (*US_Roughing_Valves_Open AND*) US_Turbo_Valves_Open AND US_Turbo_Running) 
+						AND (DS_MAA_OK AND (*DS_Roughing_Valves_Open AND*) DS_Turbo_Valves_Open AND DS_Turbo_Running)), i_xOverrideMode:= , iq_stValve=> );
+VVC_72(i_xExtILK_OK:= VVC_71.M_IsClosed() AND ((US_MAA_OK AND (*US_Roughing_Valves_Open AND US_Turbo_Valves_Open AND *)US_Turbo_Running) 
+						AND (DS_MAA_OK AND (*DS_Roughing_Valves_Open AND DS_Turbo_Valves_Open AND*) DS_Turbo_Running)), i_xOverrideMode:= , iq_stValve=> );
 
 //Gauges
 GCM_70(PG=> , i_rFULL_SCALE:= 2000);
@@ -92,36 +92,15 @@ THEN
 	(* init array with the interpolation points  *)
 	(* 	fIn					 |		fOut		*)
 	arrTable[1,1] := 0;		arrTable[1,2] := 0;
-	arrTable[2,1] := 0.0000412;		arrTable[2,2] := 34;
-	arrTable[3,1] := 0.001282;		arrTable[3,2] := 36;
-	arrTable[4,1] :=  0.002136;	    arrTable[4,2] := 38;
-	arrTable[5,1] :=  0.005884;	    arrTable[5,2] := 40;
-	arrTable[6,1] := 0.00907;		arrTable[6,2] := 42;
-	arrTable[7,1] := 0.01183;		arrTable[7,2] := 44;
-	arrTable[8,1] := 0.01799;	    arrTable[8,2] := 46;
-	arrTable[9,1] := 0.0302;	    arrTable[9,2] := 47;
-	arrTable[10,1] := 0.0417;		arrTable[10,2] := 50;
-	arrTable[11,1] := 0.06635;		arrTable[11,2] := 51;
-	arrTable[12,1] := 0.08118;		arrTable[12,2] := 53;
-	arrTable[13,1] := 0.0998;		arrTable[13,2] := 56;
-	arrTable[14,1] := 0.10644;		arrTable[14,2] := 56.5;
-	arrTable[15,1] := 0.1359;		arrTable[15,2] := 58;
-	arrTable[16,1] := 0.1929;		arrTable[16,2] := 60;
-	arrTable[17,1] := 0.2922;		arrTable[17,2] := 62;
-	arrTable[18,1] := 0.3428;	    arrTable[18,2] := 64;
-	arrTable[19,1] :=  0.405;;	    arrTable[19,2] :=66;
-	arrTable[20,1] := 0.481;		arrTable[20,2] := 68;
-	arrTable[21,1] := 0.5542;		arrTable[21,2] := 69;
-	arrTable[22,1] := 0.6333;	    arrTable[22,2] := 70;
-	arrTable[23,1] := 0.7901;	    arrTable[23,2] := 72;
-	arrTable[24,1] := 0.9307;		arrTable[24,2] := 73.04;
-	arrTable[25,1] := 1.0448;		arrTable[25,2] := 73.64;
-	arrTable[26,1] := 1.31919;;		arrTable[26,2] := 74.45;
-	arrTable[27,1] :=  1.324;		arrTable[27,2] :=74.46;
-	arrTable[28,1] := 1.71941;	arrTable[28,2] := 75;
-	arrTable[29,1] :=  1.963194;		arrTable[29,2] :=75.5;
-	arrTable[30,1] := 1.99999;	arrTable[30,2] := 75.505;
-	arrTable[31,1] := 2;	arrTable[31,2] := 75.55;
+	arrTable[2,1] := 0.001;		arrTable[2,2] := 20;
+	arrTable[3,1] := 0.01024;		arrTable[3,2] := 30;
+	arrTable[4,1] :=  0.089;	    arrTable[4,2] := 40;
+	arrTable[5,1] :=  0.276;	    arrTable[5,2] := 50;
+	arrTable[6,1] := 2.299;		arrTable[6,2] := 60;
+	arrTable[7,1] := 9.522;		arrTable[7,2] := 70;
+	arrTable[8,1] := 13.815;	    arrTable[8,2] := 75;
+	arrTable[9,1] := 24.019;	    arrTable[9,2] := 80;
+
 	(* init parameter struct *)
 	stCTRL_LIN_INTERPOLATION_PARAMS_GEM.tCtrlCycleTime					:= T#10ms;
 	stCTRL_LIN_INTERPOLATION_PARAMS_GEM.tTaskCycleTime					:= T#10ms;
@@ -135,7 +114,7 @@ THEN
 	stCTRL_PID_PARAMS.tTn					:= T#500ms;		(*  Tn									*)
 	stCTRL_PID_PARAMS.tTv					:= T#200ms;	(*  Tv									*)
 	stCTRL_PID_PARAMS.tTd					:= T#100ms;	(*  Td									*)
-	stCTRL_PID_PARAMS.fOutMaxLimit			:=  78;			(* maximum output limit				*)
+	stCTRL_PID_PARAMS.fOutMaxLimit			:=  20;			(* maximum output limit				*)
 	stCTRL_PID_PARAMS.fOutMinLimit			:=  -100;			(* minimum output limit				*)
 
 	(* set the mode to ACTIVE --> normal operation *)
@@ -237,7 +216,8 @@ FTRIG(CLK := bGo);
       <LineId Id="228" Count="0" />
       <LineId Id="11" Count="0" />
       <LineId Id="229" Count="0" />
-      <LineId Id="12" Count="160" />
+      <LineId Id="12" Count="30" />
+      <LineId Id="64" Count="108" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>
