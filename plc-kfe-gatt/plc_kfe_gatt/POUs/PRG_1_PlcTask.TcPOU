@@ -7,12 +7,15 @@ VAR
 bDebug : Bool := FALSE;
 bMotionTest : Bool := FALSE;
 fbLogHandler: FB_LogHandler;
-	
+fb_ADS_WATCHDOG:FB_ADS_WATCHDOG;	
+sVarName : STRING:='GVL_VAC_INTF.n_AT1K0_VAC_counter';
 END_VAR
 
     ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[(*Ethercat Diagnostics*)
+      <ST><![CDATA[//GVL_VAC_INTF.n_AT1K0_VAC_counter
+fb_ADS_WATCHDOG(sNetId:='172.21.92.61.1.1' , nPort:=851 , sVarName:=sVarName,bError=> );
+(*Ethercat Diagnostics*)
 DIAGNOSTICS();
 // Vacuum and differential pumping
 PRG_GATT();
@@ -38,6 +41,7 @@ fbLogHandler();
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_1_PlcTask">
+      <LineId Id="49" Count="1" />
       <LineId Id="3" Count="7" />
       <LineId Id="13" Count="1" />
       <LineId Id="39" Count="0" />
