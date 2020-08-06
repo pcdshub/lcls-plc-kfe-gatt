@@ -4,22 +4,11 @@
     <Declaration><![CDATA[PROGRAM PRG_Motion
 VAR
 	bInit: BOOL := TRUE;
-	iReqApperture: INT :=1;
-	
+	nTransitionAssertionRootID: UDINT :=1000;
+	nUnknownAssertionRootID: UDINT :=9000;
 	bAllGo : Bool := false;
 	
-	/////
- (* fbMAX_1: FB_MotionStage;
-  fbMAY_1: FB_MotionStage;
-  
-  fbMAX_2: FB_MotionStage;
-  fbMAY_2: FB_MotionStage;
-  
-  fbMAX_3: FB_MotionStage;
-  fbMAY_3: FB_MotionStage;
-  
-  fbMAX_4: FB_MotionStage;
-  fbMAY_4: FB_MotionStage;*)
+	
 	
 	/////
 	{attribute 'pytmc' := '
@@ -46,163 +35,140 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[/// PMPS ???????????
-//LIMIT the array index
-iReqApperture := LIMIT(1,pv_iReqApperture,4);
+      <ST><![CDATA[
+IF (bInit) THEN
+	bInit := False;
 
-fbMAA_1_States(
-    stYStage := Main.M2,
-    stXStage := Main.M1,
-    fAprt1 := -0.05, //smallest
-    fAprt2 := -14.5534,
-	fAprt3 := -30.0728,
-    fAprt4 := -47.17);
-fbMAA_2_States(
-    stYStage := Main.M4,
-    stXStage := Main.M3,
-    fAprt1 :=0, //smallest
-    fAprt2 := -14.5034,
-	fAprt3 := -30.0228,
-    fAprt4 := -47.1);
-fbMAA_3_States(
-    stYStage := Main.M6,
-    stXStage := Main.M5,
-    fAprt1 := -0.0555, //smallest
-    fAprt2 := -14.5589,
-	fAprt3 := -30.0783,
-    fAprt4 := -47.0512);
-fbMAA_4_States(
-    stYStage := Main.M8,
-    stXStage := Main.M7,
-    fAprt1 := -0.0453, //smallest
-    fAprt2 := -14.5487,
-	fAprt3 := -30.0681,
-    fAprt4 := -47.04);
-
-(*
-IF(bInit) THEN
-	// initialise all the values of pre defined positions for each apperture in the assembly array 
-	VAA_1_Y_POS[1] :=0;
-	VAA_1_Y_POS[2] :=0;
-	VAA_1_Y_POS[3] :=0;
-	VAA_1_Y_POS[4] :=0;
-	
-	VAA_2_Y_POS[1] :=0;
-	VAA_2_Y_POS[2] :=0;
-	VAA_2_Y_POS[3] :=0;
-	VAA_2_Y_POS[4] :=0;
-	
-	VAA_3_Y_POS[1] :=0;
-	VAA_3_Y_POS[2] :=0;
-	VAA_3_Y_POS[3] :=0;
-	VAA_3_Y_POS[4] :=0;
-	
-	VAA_4_Y_POS[1] :=0;
-	VAA_4_Y_POS[2] :=0;
-	VAA_4_Y_POS[3] :=0;
-	VAA_4_Y_POS[4] :=0;
-END_IF
-
-
-(*No STO*)
-M1.bHardwareEnable := TRUE;
-M2.bHardwareEnable := TRUE;
-M3.bHardwareEnable := TRUE;
-M4.bHardwareEnable := TRUE;
-
-M5.bHardwareEnable := TRUE;
-M6.bHardwareEnable := TRUE;
-M7.bHardwareEnable := TRUE;
-M8.bHardwareEnable := TRUE;
-
-(*Instantiate the motion function blocks*)
-fbMAX_1(stMotionStage := M1);
-fbMAY_1(stMotionStage := M2);
-
-fbMAX_2(stMotionStage := M3);
-fbMAY_2(stMotionStage := M4);
-
-fbMAX_3(stMotionStage := M4);
-fbMAY_3(stMotionStage := M6);
-
-fbMAX_4(stMotionStage := M7);
-fbMAY_4(stMotionStage := M8);
-
-(* PTP to aperture position on the each aperture array assembly*)
-fbMAA_1_States(
-	stMotionStage:=M2,
-	fbGoAprt1:=VAA_1_Y_POS[1],
-	fbGoAprt2:=VAA_1_Y_POS[2],
-	fbGoAprt3:=VAA_1_Y_POS[3],
-	fbGoAprt4:=VAA_1_Y_POS[4]);
-
-fbMAA_2_States(
-	stMotionStage:=M4,
-	fbGoAprt1:=VAA_2_Y_POS[1],
-	fbGoAprt2:=VAA_2_Y_POS[2],
-	fbGoAprt3:=VAA_2_Y_POS[3],
-	fbGoAprt4:=VAA_2_Y_POS[4]);
-	
-fbMAA_3_States(
-	stMotionStage:=M6,
-	fbGoAprt1:=VAA_3_Y_POS[1],
-	fbGoAprt2:=VAA_3_Y_POS[2],
-	fbGoAprt3:=VAA_3_Y_POS[3],
-	fbGoAprt4:=VAA_3_Y_POS[4]);
-	
-fbMAA_4_States(
-	stMotionStage:=M8,
-	fbGoAprt1:=VAA_4_Y_POS[1],
-	fbGoAprt2:=VAA_4_Y_POS[2],
-	fbGoAprt3:=VAA_4_Y_POS[3],
-	fbGoAprt4:=VAA_4_Y_POS[4]);
-	
-If (bAllGo) Then
-
-	CASE iReqApperture of
+	/// PMPS 
+	//MAA 1 Y
+	fbMAA_1_States.nTransitionAssertionID := nTransitionAssertionRootID+10;
+	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
+	// Aperture 1
+	fbMAA_1_States.stAprt1.fPosition :=  -0.05;
+	// Aperture 2
+	fbMAA_1_States.stAprt2.fPosition := -14.5534;
+	// Aperture 3
+	fbMAA_1_States.stAprt3.fPosition := -30.0728;
+	// Aperture 4
+	fbMAA_1_States.stAprt4.fPosition := -47.17;
+	// X Cen
+	fbMAA_1_States.stXCen.fPosition := -2.083;
+	 
 		
-	1:
-		fbMAA_1_States.fbGoAprt1.bExecute := TRUE;
-		fbMAA_2_States.fbGoAprt1.bExecute := TRUE;
-		fbMAA_3_States.fbGoAprt1.bExecute := TRUE;
-		fbMAA_4_States.fbGoAprt1.bExecute := TRUE;		
-	2:
-		fbMAA_1_States.fbGoAprt2.bExecute := TRUE;
-		fbMAA_2_States.fbGoAprt2.bExecute := TRUE;
-		fbMAA_3_States.fbGoAprt2.bExecute := TRUE;
-		fbMAA_4_States.fbGoAprt2.bExecute := TRUE;	
+	//MAA 2 Y
+	fbMAA_2_States.nTransitionAssertionID := nTransitionAssertionRootID+20;
+	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
+	// Aperture 1
+	fbMAA_2_States.stAprt1.fPosition :=  -0.05;
+	// Aperture 2
+	fbMAA_2_States.stAprt2.fPosition := -14.5534;
+	// Aperture 3
+	fbMAA_2_States.stAprt3.fPosition := -30.0728;
+	// Aperture 4
+	fbMAA_2_States.stAprt4.fPosition := -47.17;
+	// X Cen
+	fbMAA_2_States.stXCen.fPosition :=-0.77;
 	
-	3:
-		fbMAA_1_States.fbGoAprt3.bExecute := TRUE;
-		fbMAA_2_States.fbGoAprt3.bExecute := TRUE;
-		fbMAA_3_States.fbGoAprt3.bExecute := TRUE;
-		fbMAA_4_States.fbGoAprt3.bExecute := TRUE;	
-	
-	4:
-		fbMAA_1_States.fbGoAprt4.bExecute := TRUE;
-		fbMAA_2_States.fbGoAprt4.bExecute := TRUE;
-		fbMAA_3_States.fbGoAprt4.bExecute := TRUE;
-		fbMAA_4_States.fbGoAprt4.bExecute := TRUE;	
-	
-	END_CASE
+		
+	//MAA 3 Y
+	fbMAA_3_States.nTransitionAssertionID := nTransitionAssertionRootID+30;
+	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
+	// Aperture 1
+	fbMAA_3_States.stAprt1.fPosition :=  -0.0555;
+	// Aperture 2
+	fbMAA_3_States.stAprt2.fPosition := -14.5589;
+	// Aperture 3
+	fbMAA_3_States.stAprt3.fPosition := -30.0783;
+	// Aperture 4
+	fbMAA_3_States.stAprt4.fPosition := -47.0512;
+	// X Cen
+	fbMAA_3_States.stXCen.fPosition :=2.031;
+		
+		
+	//MAA 4 Y
+	fbMAA_4_States.nTransitionAssertionID := nTransitionAssertionRootID+40;
+	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
+	// Aperture 1
+	fbMAA_4_States.stAprt1.fPosition :=  -0.0453;
+	// Aperture 2
+	fbMAA_4_States.stAprt2.fPosition := -14.5487;
+	// Aperture 3
+	fbMAA_4_States.stAprt3.fPosition := -30.0681;
+	// Aperture 4
+	fbMAA_4_States.stAprt4.fPosition := -47.04;
+	// X Cen
+	fbMAA_4_States.stXCen.fPosition :=2.0345;		
 
 END_IF
-*)
 
+
+fbMAA_1_States(
+	 fbArbiter := GVL_ILK.g_fbArbiter,
+    fbFFHWO :=  GVL_ILK.g_FastFaultOutput1,
+    stYStage := Main.M2,
+    stXStage := Main.M1);
+
+fbMAA_2_States(
+	fbArbiter := GVL_ILK.g_fbArbiter,
+    fbFFHWO := GVL_ILK.g_FastFaultOutput1,
+    stYStage := Main.M4,
+    stXStage := Main.M3); 
+
+fbMAA_3_States(
+	fbArbiter := GVL_ILK.g_fbArbiter,
+    fbFFHWO := GVL_ILK.g_FastFaultOutput1,
+    stYStage := Main.M6,
+    stXStage := Main.M5); 
+
+fbMAA_4_States(
+	fbArbiter := GVL_ILK.g_fbArbiter,
+    fbFFHWO := GVL_ILK.g_FastFaultOutput1,
+    stYStage := Main.M8,
+    stXStage := Main.M7);
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_Motion">
-      <LineId Id="3" Count="2" />
-      <LineId Id="161" Count="3" />
-      <LineId Id="169" Count="2" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="174" Count="5" />
-      <LineId Id="172" Count="0" />
-      <LineId Id="181" Count="5" />
-      <LineId Id="180" Count="0" />
-      <LineId Id="188" Count="5" />
+      <LineId Id="392" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="395" Count="0" />
+      <LineId Id="397" Count="0" />
+      <LineId Id="393" Count="0" />
+      <LineId Id="289" Count="0" />
+      <LineId Id="325" Count="0" />
+      <LineId Id="324" Count="0" />
+      <LineId Id="290" Count="1" />
+      <LineId Id="295" Count="0" />
+      <LineId Id="297" Count="0" />
+      <LineId Id="302" Count="1" />
+      <LineId Id="308" Count="1" />
+      <LineId Id="315" Count="1" />
+      <LineId Id="322" Count="0" />
+      <LineId Id="326" Count="0" />
+      <LineId Id="328" Count="4" />
+      <LineId Id="337" Count="1" />
+      <LineId Id="343" Count="1" />
+      <LineId Id="349" Count="1" />
+      <LineId Id="355" Count="1" />
+      <LineId Id="238" Count="0" />
+      <LineId Id="361" Count="0" />
+      <LineId Id="364" Count="11" />
+      <LineId Id="363" Count="0" />
+      <LineId Id="362" Count="0" />
+      <LineId Id="376" Count="0" />
+      <LineId Id="380" Count="11" />
+      <LineId Id="379" Count="0" />
       <LineId Id="187" Count="0" />
-      <LineId Id="7" Count="110" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="417" Count="5" />
+      <LineId Id="399" Count="0" />
+      <LineId Id="411" Count="0" />
+      <LineId Id="413" Count="3" />
+      <LineId Id="412" Count="0" />
+      <LineId Id="405" Count="0" />
+      <LineId Id="407" Count="3" />
+      <LineId Id="406" Count="0" />
+      <LineId Id="400" Count="4" />
+      <LineId Id="398" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

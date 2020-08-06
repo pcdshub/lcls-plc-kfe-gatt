@@ -23,6 +23,8 @@
 	 io: io;
     '}
     xFastFaultReset :   BOOL;
+	
+	g_fbArbiter   :   FB_Arbiter(1);
 
 
 

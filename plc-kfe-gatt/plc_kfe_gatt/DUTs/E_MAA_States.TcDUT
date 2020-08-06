@@ -7,7 +7,8 @@
     Aprt1 := 1, //smallest
     Aprt2 := 2,
     Aprt3 := 3,
-    Aprt4 := 4
+    Aprt4 := 4,
+	Centered:=5
 );
 END_TYPE
 ]]></Declaration>

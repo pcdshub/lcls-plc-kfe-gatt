@@ -1,55 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <POU Name="FB_MAA_States" Id="{1d2c1fdc-c4a6-489b-bb2f-4fd69cc8242c}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_MAA_States
-VAR_IN_OUT
-	   stMotionStage: DUT_MotionStage;
-END_VAR
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_MAA_States EXTENDS FB_PositionStateBase_WithPMPS
 VAR_INPUT
-	  bEnable: BOOL;
     {attribute 'pytmc' := '
-        pv: SET
-        io: io
+        pv: SET;
+        io: io;
+		field: ZRST Unknown;
+	    field: ONST 5.5mm;
+	    field: TWST 8mm;
+	    field: THST 10mm;
+	    field: FRST 12mmm;
     '}
     enumSet: E_MAA_states;
     bStatesLock: BOOL;
-	fAprt1: LREAL;
-	fAprt2: LREAL;
-	fAprt3: LREAL;
-	fAprt4: LREAL;
+	stAprt1: DUT_PositionState;
+	stAprt2: DUT_PositionState;
+	stAprt3: DUT_PositionState;
+	stAprt4: DUT_PositionState;
 END_VAR
 VAR_OUTPUT
-    bError: BOOL;
-    sErrorMessage: STRING;
-    bBusy: BOOL;
-    bDone: BOOL;
     {attribute 'pytmc' := '
         pv: GET
         io: i
+		field: ZRST Unknown;
+	    field: ONST 5.5mm;
+	    field: TWST 8mm;
+	    field: THST 10mm;
+	    field: FRST 12mmm;
     '}
-    enumGet: E_MAA_States;
+    enumGet: E_MAA_States;	
 END_VAR
 VAR
-    bInit: BOOL;
-    arrStates: ARRAY[1..15] OF DUT_PositionState;
-    nIter: INT;
-
-    {attribute 'pytmc' := '
-        pv:
-        io: io
-    '}
-    fbStateManager: FB_PositionStateManager;
-
-    fbLockAprt1: FB_PositionStateLock;
-    fbLockAprt2: FB_PositionStateLock;
-    fbLockAprt3: FB_PositionStateLock;
-    fbLockAprt4: FB_PositionStateLock;
+    bStatesInit: BOOL := TRUE;
 END_VAR
 VAR CONSTANT
-	
-
-	
-    fDelta: LREAL := 0.3;
+    fDelta: LREAL := 0.5;
     fVelocity: LREAL := 5;
     fAccel: LREAL := 200;
     fDecel: LREAL := 25;
@@ -57,48 +43,73 @@ END_VAR
 
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF NOT bInit THEN
-    bInit := FALSE;
-    FOR nIter := 1 TO 4 DO
-        arrStates[nIter].fDelta := fDelta;
-        arrStates[nIter].fVelocity := fVelocity;
-        arrStates[nIter].fAccel := fAccel;
-        arrStates[nIter].fDecel := fDecel;
-        arrStates[nIter].bLocked := bStatesLock;
-        arrStates[nIter].bValid := TRUE;
-        // TODO implement PMPS instead of doing this
-        arrStates[nIter].bMoveOk := TRUE;
-    END_FOR
-    arrStates[1].sName := '5.5mm';
-    arrStates[1].fPosition := fAprt1;
-    arrStates[2].sName := '8mm';
-    arrStates[2].fPosition := fAprt2;
-    arrStates[3].sName := '10mm';
-    arrStates[3].fPosition := fAprt3;
-    arrStates[4].sName := '12mm';
-    arrStates[4].fPosition := fAprt4;
+      <ST><![CDATA[IF bStatesInit THEN
+    bStatesInit := FALSE;
+	
+	stAprt1.sName := '5.5mm';
+    stAprt1.fVelocity := fVelocity;
+    stAprt1.fDelta := fDelta;
+    stAprt1.fAccel := fAccel;
+    stAprt1.fDecel := fAccel;
+    stAprt1.bMoveOk := TRUE;
+	
+	stAprt2.sName := '8mm';
+    stAprt2.fVelocity := fVelocity;
+    stAprt2.fDelta := fDelta;
+    stAprt2.fAccel := fAccel;
+    stAprt2.fDecel := fAccel;
+    stAprt2.bMoveOk := TRUE;
+	
+	stAprt3.sName := '10mm';
+    stAprt3.fVelocity := fVelocity;
+    stAprt3.fDelta := fDelta;
+    stAprt3.fAccel := fAccel;
+    stAprt3.fDecel := fAccel;
+    stAprt3.bMoveOk := TRUE;
+	
+	stAprt4.sName := '12mm';
+    stAprt4.fVelocity := fVelocity;
+    stAprt4.fDelta := fDelta;
+    stAprt4.fAccel := fAccel;
+    stAprt4.fDecel := fAccel;
+    stAprt4.bMoveOk := TRUE;
+	
+	
+	
+	arrStates[1] := stAprt1;
+    arrStates[2] := stAprt2;
+    arrStates[3] := stAprt3;
+    arrStates[4] := stAprt4;
 END_IF
 
-fbLockAprt1(stPositionState := arrStates[1]);
-fbLockAprt2(stPositionState := arrStates[2]);
-fbLockAprt3(stPositionState := arrStates[3]);
-fbLockAprt4(stPositionState := arrStates[4]);
 
-fbStateManager(
-    stMotionStage := stMotionStage,
-    arrStates := arrStates,
-    setState := enumSet,
-    bEnable := bEnable,
-    bError => bError,
-    sErrorMessage => sErrorMessage,
-    bBusy => bBusy,
-    bDone => bDone,
-    getState => enumGet);]]></ST>
+setState := enumSet;
+Exec();
+enumGet := getState;
+enumSet := setState;
+
+]]></ST>
     </Implementation>
     <LineIds Name="FB_MAA_States">
-      <LineId Id="3" Count="13" />
-      <LineId Id="20" Count="21" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="3" Count="1" />
+      <LineId Id="260" Count="0" />
+      <LineId Id="264" Count="4" />
+      <LineId Id="261" Count="1" />
+      <LineId Id="270" Count="5" />
+      <LineId Id="284" Count="5" />
+      <LineId Id="277" Count="0" />
+      <LineId Id="292" Count="0" />
+      <LineId Id="294" Count="4" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="290" Count="1" />
+      <LineId Id="269" Count="0" />
+      <LineId Id="257" Count="2" />
+      <LineId Id="256" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="251" Count="3" />
+      <LineId Id="245" Count="1" />
+      <LineId Id="242" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

@@ -31,7 +31,7 @@ VAR
 	fKp2 : REAL:= 0.01; 
 	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:Tn2 '}
 	fTn2 : REAL:= 0.5; 
-	arrTable	: ARRAY[1..9,1..2] OF FLOAT;
+	arrTable	: ARRAY[1..15,1..2] OF FLOAT;
 	fManValue											: FLOAT;
 	bExtrapolate										: BOOL;
 	eMode							: E_CTRL_MODE;
@@ -45,7 +45,7 @@ VAR
 	bInit							: BOOL	:= TRUE;
 	fbCTRL_LIN_INTERPOLATION					: FB_CTRL_LIN_INTERPOLATION;
 	//stCTRL_LIN_INTERPOLATION_PARAMS		: ST_CTRL_LIN_INTERPOLATION_PARAMS;
-	stCTRL_LIN_INTERPOLATION_PARAMS_GEM	: ST_CTRL_LIN_INTERPOLATION_PARAMS;
+	stCTRL_LIN_INTERPOLATION_PARAMS	: ST_CTRL_LIN_INTERPOLATION_PARAMS;
 	fbCTRL_DEADBAND						: FB_CTRL_DEADBAND;
 	stCTRL_DEADBAND_PARAMS			: ST_CTRL_DEADBAND_PARAMS;
 
@@ -94,17 +94,23 @@ THEN
 	arrTable[1,1] := 0;		arrTable[1,2] := 0;
 	arrTable[2,1] := 0.001;		arrTable[2,2] := 20;
 	arrTable[3,1] := 0.01024;		arrTable[3,2] := 30;
-	arrTable[4,1] :=  0.089;	    arrTable[4,2] := 40;
-	arrTable[5,1] :=  0.276;	    arrTable[5,2] := 50;
-	arrTable[6,1] := 2.299;		arrTable[6,2] := 60;
-	arrTable[7,1] := 9.522;		arrTable[7,2] := 70;
-	arrTable[8,1] := 13.815;	    arrTable[8,2] := 75;
-	arrTable[9,1] := 24.019;	    arrTable[9,2] := 80;
+	arrTable[4,1] :=  0.021;	    arrTable[4,2] := 40;
+	arrTable[5,1] :=  0.12;	    arrTable[5,2] := 50;
+	arrTable[6,1] := 0.8;		arrTable[6,2] := 60;
+	arrTable[7,1] := 2.1;		arrTable[7,2] := 65;
+	arrTable[8,1] := 2.8;		arrTable[6,2] := 69;
+	arrTable[9,1] := 3.1;		arrTable[7,2] := 70;
+	arrTable[10,1] := 5.4;		arrTable[6,2] := 77;
+	arrTable[11,1] := 6.3;	    arrTable[8,2] := 78;
+	arrTable[12,1] :=7.5;	    arrTable[9,2] := 80;
+	arrTable[13,1] :=8.2;	    arrTable[9,2] := 82;
+	arrTable[14,1] :=8.6;	    arrTable[9,2] := 84;
+	arrTable[15,1] :=9.5;	    arrTable[9,2] := 86;
 
 	(* init parameter struct *)
-	stCTRL_LIN_INTERPOLATION_PARAMS_GEM.tCtrlCycleTime					:= T#10ms;
-	stCTRL_LIN_INTERPOLATION_PARAMS_GEM.tTaskCycleTime					:= T#10ms;
-	stCTRL_LIN_INTERPOLATION_PARAMS_GEM.nDataTable_NumberOfRows		:= INT_TO_UINT(31);	
+	stCTRL_LIN_INTERPOLATION_PARAMS.tCtrlCycleTime					:= T#10ms;
+	stCTRL_LIN_INTERPOLATION_PARAMS.tTaskCycleTime					:= T#10ms;
+	stCTRL_LIN_INTERPOLATION_PARAMS.nDataTable_NumberOfRows		:= INT_TO_UINT(15);	
 
 	(*FBCNTRL*)
 	(* init parameter struct *)
@@ -123,9 +129,9 @@ THEN
 	bInit							:= FALSE;
 END_IF
 (* set the addresses *)
-	stCTRL_LIN_INTERPOLATION_PARAMS_GEM.pDataTable_ADR			:= ADR(arrTable);
-	stCTRL_LIN_INTERPOLATION_PARAMS_GEM.nDataTable_SIZEOF		:= SIZEOF(arrTable);
-
+	stCTRL_LIN_INTERPOLATION_PARAMS.pDataTable_ADR			:= ADR(arrTable);
+	stCTRL_LIN_INTERPOLATION_PARAMS.nDataTable_SIZEOF		:= SIZEOF(arrTable);
+	
 if (bGo) THEN
 	IF (bReset) THEN
 	(* set the mode to RESET*)
@@ -150,7 +156,7 @@ fbCTRL_LIN_INTERPOLATION(
 	fManValue:= fManValue , 
 	bExtrapolate:= bExtrapolate, 
 	eMode:= eMode, 
-	stParams:= stCTRL_LIN_INTERPOLATION_PARAMS_GEM,
+	stParams:= stCTRL_LIN_INTERPOLATION_PARAMS,
 	fOut=> , 
 	bInIsGreaterThanMaxElement=> , 
 	bInIsLessThanMinElement=> , 
@@ -216,7 +222,12 @@ FTRIG(CLK := bGo);
       <LineId Id="228" Count="0" />
       <LineId Id="11" Count="0" />
       <LineId Id="229" Count="0" />
-      <LineId Id="12" Count="30" />
+      <LineId Id="12" Count="27" />
+      <LineId Id="285" Count="1" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="287" Count="0" />
+      <LineId Id="41" Count="1" />
+      <LineId Id="288" Count="2" />
       <LineId Id="64" Count="108" />
       <LineId Id="2" Count="0" />
     </LineIds>

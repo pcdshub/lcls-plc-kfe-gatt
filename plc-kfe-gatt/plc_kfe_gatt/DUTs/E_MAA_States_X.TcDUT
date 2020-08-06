@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <DUT Name="E_MAA_States_X" Id="{04dcc261-9d17-4073-834e-b3e43d8d49db}">
+    <Declaration><![CDATA[TYPE E_MAA_States_X :
+(
+    Unknown := 0,
+	Centered:=1
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

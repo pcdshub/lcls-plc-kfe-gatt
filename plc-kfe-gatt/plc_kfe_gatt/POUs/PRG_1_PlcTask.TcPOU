@@ -34,6 +34,8 @@ ELSE
 END_IF
 
 PRG_ILK();
+//PMPS
+PRG_PMPS();
 
 //Logger
 fbLogHandler();
@@ -46,7 +48,10 @@ fbLogHandler();
       <LineId Id="13" Count="1" />
       <LineId Id="39" Count="0" />
       <LineId Id="34" Count="2" />
-      <LineId Id="15" Count="8" />
+      <LineId Id="15" Count="4" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="20" Count="3" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>
