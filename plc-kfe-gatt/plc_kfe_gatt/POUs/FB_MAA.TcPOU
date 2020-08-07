@@ -82,14 +82,14 @@ fbStates(
     stAprt2:=stAprt2,
     stAprt3:=stAprt3,
     stAprt4:=stAprt4);
-
+(*
 fbStates_X(
 	fbArbiter:=fbArbiter,
     fbFFHWO:=fbFFHWO,
     nTransitionAssertionID:=nTransitionAssertionID,
     stMotionStage:=stXStage,
 	bEnable:=TRUE,
-    stXCen:=stXCen);
+    stXCen:=stXCen);*)
 
 
 ]]></ST>

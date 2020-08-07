@@ -5,19 +5,19 @@
 	
 //MPS
 	{attribute 'pytmc' := '
-    pv: plc:lfe:gatt:FF1
+    pv: PLC:KFE:GATT:FF1
     '}
     {attribute 'TcLinkTo' := '.q_xFastFaultOut:=TIIB[=+-ES2202_00_07]^Channel 1^Output'}
     g_FastFaultOutput1  :   FB_HardwareFFOutput;
 	
 	{attribute 'pytmc' := '
-    pv: plc:lfe:gatt:FF2
+    pv: PLC:KFE:GATT:FF2
     '}
     {attribute 'TcLinkTo' := '.q_xFastFaultOut:=TIIB[=+-ES2202_00_07]^Channel 2^Output'}
     g_FastFaultOutput2  :   FB_HardwareFFOutput;
 	
 	{attribute 'pytmc' := ' 
-     pv: plc:kfe:FF_RESET;
+     pv: PLC:KFE:GATT:FF_RESET;
 	 field: ZNAM FALSE; 
 	 field: ONAM TRUE; 
 	 io: io;

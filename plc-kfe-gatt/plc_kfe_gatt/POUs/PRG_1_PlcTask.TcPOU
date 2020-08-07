@@ -26,11 +26,11 @@ if (NOT bDebug)Then
 	// Motorised valve
 	PRG_VGP();
 END_IF
-if (NOT bMotionTest)Then
+if (bMotionTest)Then
 	// Functionblock for PTP motion between different appertures
-	PRG_Motion();
-ELSE
 	PRG_Motors_Test();
+ELSE
+	PRG_Motion();
 END_IF
 
 PRG_ILK();

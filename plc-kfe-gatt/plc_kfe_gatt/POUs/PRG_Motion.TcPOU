@@ -52,7 +52,7 @@ IF (bInit) THEN
 	// Aperture 4
 	fbMAA_1_States.stAprt4.fPosition := -47.17;
 	// X Cen
-	fbMAA_1_States.stXCen.fPosition := -2.083;
+	fbMAA_1_States.stXCen.fPosition := 0;// -2.083;
 	 
 		
 	//MAA 2 Y
@@ -67,7 +67,7 @@ IF (bInit) THEN
 	// Aperture 4
 	fbMAA_2_States.stAprt4.fPosition := -47.17;
 	// X Cen
-	fbMAA_2_States.stXCen.fPosition :=-0.77;
+	fbMAA_2_States.stXCen.fPosition :=0;//-0.77;
 	
 		
 	//MAA 3 Y
@@ -82,7 +82,7 @@ IF (bInit) THEN
 	// Aperture 4
 	fbMAA_3_States.stAprt4.fPosition := -47.0512;
 	// X Cen
-	fbMAA_3_States.stXCen.fPosition :=2.031;
+	fbMAA_3_States.stXCen.fPosition :=0;//2.031;
 		
 		
 	//MAA 4 Y
@@ -97,7 +97,7 @@ IF (bInit) THEN
 	// Aperture 4
 	fbMAA_4_States.stAprt4.fPosition := -47.04;
 	// X Cen
-	fbMAA_4_States.stXCen.fPosition :=2.0345;		
+	fbMAA_4_States.stXCen.fPosition :=0;//2.0345;		
 
 END_IF
 
