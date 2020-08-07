@@ -31,7 +31,7 @@
 	{attribute 'pytmc' := 'pv: AT1K0:GAS_MA_X:MMS:3'}
 	{attribute 'TcLinkTo' := '.bLimitForwardEnable  := TIIB[=+-EL7041_04_07]^STM Status^Status^Digital input 2;
 	 						  .bLimitBackwardEnable := TIIB[=+-EL7041_04_07]^STM Status^Status^Digital input 1;
-	                          .bBrakeRelease        := TIIB[=+-ES2004_04_09]^Channel 1^Output,}
+	                          .bBrakeRelease        := TIIB[=+-ES2004_04_09]^Channel 1^Output'}
 							 // .nRawEncoderINT       :=  TIIB[=+-E3054_04_12]^AI Standard Channel 1^Value'}
 	M5: DUT_MotionStage;
 	{attribute 'pytmc' := 'pv: AT1K0:GAS_MA_Y:MMS:3'}
