@@ -28,7 +28,7 @@ VAR
     fbStates: FB_MAA_States;
 	
 	{attribute 'pytmc' := '
-        pv:X:STATE 
+        pv: X:STATE 
         io: io
     '}
     fbStates_X: FB_MAA_States_X;

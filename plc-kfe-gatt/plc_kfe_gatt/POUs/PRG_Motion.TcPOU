@@ -12,22 +12,22 @@ VAR
 	
 	/////
 	{attribute 'pytmc' := '
-		pv: AT1K0:GAS_MAA:MMS
+		pv: AT1K0:GAS_MAA:01
 		io: io
 	'}
 	fbMAA_1_States: FB_MAA;
 	{attribute 'pytmc' := '
-		pv: AT1K0:GAS_MAA:MMS
+		pv: AT1K0:GAS_MAA:02
 		io: io
 	'}
 	fbMAA_2_States: FB_MAA;
 	{attribute 'pytmc' := '
-		pv:  AT1K0:GAS_MAA:MMS
+		pv:  AT1K0:GAS_MAA:03
 		io: io
 	'}
 	fbMAA_3_States: FB_MAA;
 	{attribute 'pytmc' := '
-		pv: AT1K0:GAS_MAA:MMS
+		pv: AT1K0:GAS_MAA:04
 		io: io
 	'}
 	fbMAA_4_States: FB_MAA;
