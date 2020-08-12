@@ -1231,6 +1231,38 @@ External Setpoint Generation:
 					<Type>UINT</Type>
 				</Var>
 				<Var>
+					<Name>PRG_Motors_Test.Y1_ENC</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>PRG_Motors_Test.Y2_ENC</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>PRG_Motors_Test.Y3_ENC</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>PRG_Motors_Test.Y4_ENC</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>PRG_Motors_Test.X1_ENC</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>PRG_Motors_Test.X2_ENC</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>PRG_Motors_Test.X3_ENC</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>PRG_Motors_Test.X4_ENC</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
 					<Name>PRG_Motion.fbMAA_1_States.fbYStage.fbDriveVirtual.MasterAxis.NcToPlc</Name>
 					<Type GUID="{6A65C767-34E5-42BF-AD87-E1A503EAC7BE}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 					<SubVar>
@@ -1621,38 +1653,6 @@ External Setpoint Generation:
 ]]>
 						</Comment>
 					</SubVar>
-				</Var>
-				<Var>
-					<Name>PRG_Motors_Test.Y1_ENC</Name>
-					<Type>INT</Type>
-				</Var>
-				<Var>
-					<Name>PRG_Motors_Test.Y2_ENC</Name>
-					<Type>INT</Type>
-				</Var>
-				<Var>
-					<Name>PRG_Motors_Test.Y3_ENC</Name>
-					<Type>INT</Type>
-				</Var>
-				<Var>
-					<Name>PRG_Motors_Test.Y4_ENC</Name>
-					<Type>INT</Type>
-				</Var>
-				<Var>
-					<Name>PRG_Motors_Test.X1_ENC</Name>
-					<Type>INT</Type>
-				</Var>
-				<Var>
-					<Name>PRG_Motors_Test.X2_ENC</Name>
-					<Type>INT</Type>
-				</Var>
-				<Var>
-					<Name>PRG_Motors_Test.X3_ENC</Name>
-					<Type>INT</Type>
-				</Var>
-				<Var>
-					<Name>PRG_Motors_Test.X4_ENC</Name>
-					<Type>INT</Type>
 				</Var>
 				<Var>
 					<Name>PRG_PMPS.fbArbiterIO.i_stCurrentBP</Name>
@@ -4629,6 +4629,10 @@ IO]]>
 				<Link VarA="PlcTask Inputs^GVL_Devices.GCM_80.i_iPRESS_R" VarB="AI Standard Channel 1^GCM_80.i_iPRESS_R"/>
 				<Link VarA="PlcTask Inputs^GVL_Devices.GCM_81.i_iPRESS_R" VarB="AI Standard Channel 2^Value"/>
 			</OwnerB>
+			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_04_00^=+-EL7041_04_07">
+				<Link VarA="PlcTask Inputs^Main.M5.bLimitBackwardEnable" VarB="STM Status^Status^Digital input 1" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^Main.M5.bLimitForwardEnable" VarB="STM Status^Status^Digital input 2" AutoLink="true"/>
+			</OwnerB>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_04_00^=+-EL7041_04_08">
 				<Link VarA="PlcTask Inputs^Main.M6.bLimitBackwardEnable" VarB="STM Status^Status^Digital input 1" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^Main.M6.bLimitForwardEnable" VarB="STM Status^Status^Digital input 2" AutoLink="true"/>
@@ -4651,6 +4655,7 @@ IO]]>
 				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_PTM_80.q_RunDO" VarB="Channel 3^fb_AT1K0_GAS_PTM_80.q_RunDO"/>
 			</OwnerB>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_04_00^=+-ES2004_04_09">
+				<Link VarA="PlcTask Outputs^Main.M5.bBrakeRelease" VarB="Channel 1^Output" AutoLink="true"/>
 				<Link VarA="PlcTask Outputs^Main.M6.bBrakeRelease" VarB="Channel 2^Output" AutoLink="true"/>
 				<Link VarA="PlcTask Outputs^Main.M7.bBrakeRelease" VarB="Channel 3^Output" AutoLink="true"/>
 				<Link VarA="PlcTask Outputs^Main.M8.bBrakeRelease" VarB="Channel 4^Output" AutoLink="true"/>

@@ -12,22 +12,22 @@ VAR
 	
 	/////
 	{attribute 'pytmc' := '
-		pv: MMS:1:STATE
+		pv: AT1K0:GAS_MAA:MMS
 		io: io
 	'}
 	fbMAA_1_States: FB_MAA;
 	{attribute 'pytmc' := '
-		pv: MMS:2:STATE
+		pv: AT1K0:GAS_MAA:MMS
 		io: io
 	'}
 	fbMAA_2_States: FB_MAA;
 	{attribute 'pytmc' := '
-		pv: MMS:3:STATE
+		pv:  AT1K0:GAS_MAA:MMS
 		io: io
 	'}
 	fbMAA_3_States: FB_MAA;
 	{attribute 'pytmc' := '
-		pv: MMS:4:STATE
+		pv: AT1K0:GAS_MAA:MMS
 		io: io
 	'}
 	fbMAA_4_States: FB_MAA;
@@ -59,13 +59,13 @@ IF (bInit) THEN
 	fbMAA_2_States.nTransitionAssertionID := nTransitionAssertionRootID+20;
 	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
 	// Aperture 1
-	fbMAA_2_States.stAprt1.fPosition :=  -0.05;
+	fbMAA_2_States.stAprt1.fPosition :=  0;
 	// Aperture 2
-	fbMAA_2_States.stAprt2.fPosition := -14.5534;
+	fbMAA_2_States.stAprt2.fPosition := -14.5034;
 	// Aperture 3
-	fbMAA_2_States.stAprt3.fPosition := -30.0728;
+	fbMAA_2_States.stAprt3.fPosition := -30.0228;
 	// Aperture 4
-	fbMAA_2_States.stAprt4.fPosition := -47.17;
+	fbMAA_2_States.stAprt4.fPosition := -47.1;
 	// X Cen
 	fbMAA_2_States.stXCen.fPosition :=0;//-0.77;
 	

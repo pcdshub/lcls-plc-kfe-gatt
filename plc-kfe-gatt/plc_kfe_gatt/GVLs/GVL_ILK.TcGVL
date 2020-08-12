@@ -5,13 +5,13 @@
 	
 //MPS
 	{attribute 'pytmc' := '
-    pv: PLC:KFE:GATT:FF1
+    pv: PLC:KFE:GATT:FFO:01
     '}
     {attribute 'TcLinkTo' := '.q_xFastFaultOut:=TIIB[=+-ES2202_00_07]^Channel 1^Output'}
     g_FastFaultOutput1  :   FB_HardwareFFOutput;
 	
 	{attribute 'pytmc' := '
-    pv: PLC:KFE:GATT:FF2
+    pv: PLC:KFE:GATT:FFO:02
     '}
     {attribute 'TcLinkTo' := '.q_xFastFaultOut:=TIIB[=+-ES2202_00_07]^Channel 2^Output'}
     g_FastFaultOutput2  :   FB_HardwareFFOutput;

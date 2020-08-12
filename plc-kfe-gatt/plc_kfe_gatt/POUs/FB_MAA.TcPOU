@@ -22,13 +22,13 @@ VAR
 	fbXStage: FB_MotionStage;
 	
 	 {attribute 'pytmc' := '
-        pv: 
+        pv: Y:STATE
         io: io
     '}
     fbStates: FB_MAA_States;
 	
 	{attribute 'pytmc' := '
-        pv:X 
+        pv:X:STATE 
         io: io
     '}
     fbStates_X: FB_MAA_States_X;
@@ -52,20 +52,32 @@ stXStage.nBrakeMode := ENUM_StageBrakeMode.NO_BRAKE;
 stAprt1.nRequestAssertionID := nTransitionAssertionID+1;
 stAprt1.bUseRawCounts := FALSE;
 stAprt1.stBeamParams := PMPS_GVL.cstFullBeam;
+stAprt1.stBeamParams.astApertures[1].Height := 5.5;
+stAprt1.stBeamParams.astApertures[1].Width := 5.5;
 stAprt1.bValid := TRUE;
+
 stAprt2.nRequestAssertionID := nTransitionAssertionID+2;
 stAprt2.bUseRawCounts := FALSE;
 stAprt2.stBeamParams := PMPS_GVL.cstFullBeam;
+stAprt2.stBeamParams.astApertures[1].Height := 8;
+stAprt2.stBeamParams.astApertures[1].Width :=8;
 stAprt2.bValid := TRUE;
+
 stAprt3.nRequestAssertionID := nTransitionAssertionID+3;
 stAprt3.bUseRawCounts := FALSE;
 stAprt3.stBeamParams := PMPS_GVL.cstFullBeam;
+stAprt3.stBeamParams.astApertures[1].Height := 10;
+stAprt3.stBeamParams.astApertures[1].Width := 10;
 stAprt3.bValid := TRUE;
+
 stAprt4.nRequestAssertionID := nTransitionAssertionID+4;
 stAprt4.bUseRawCounts := FALSE;
 stAprt4.stBeamParams := PMPS_GVL.cstFullBeam;
+stAprt4.stBeamParams.astApertures[1].Height := 12;
+stAprt4.stBeamParams.astApertures[1].Width := 12;
 stAprt4.bValid := TRUE;
-stXCen.nRequestAssertionID := nTransitionAssertionID+5;
+
+stXCen.nRequestAssertionID := nTransitionAssertionID+6;
 stXCen.bUseRawCounts := FALSE;
 stXCen.stBeamParams := PMPS_GVL.cstFullBeam;
 stXCen.bValid := TRUE;
@@ -75,21 +87,21 @@ stXCen.bValid := TRUE;
 fbStates(
 	fbArbiter:=fbArbiter,
     fbFFHWO:=fbFFHWO,
-    nTransitionAssertionID:=nTransitionAssertionID,
+    nTransitionAssertionID:=nTransitionAssertionID+5,
     stMotionStage:=stYStage,
 	bEnable:=TRUE,
     stAprt1:=stAprt1,
     stAprt2:=stAprt2,
     stAprt3:=stAprt3,
     stAprt4:=stAprt4);
-(*
+
 fbStates_X(
 	fbArbiter:=fbArbiter,
     fbFFHWO:=fbFFHWO,
     nTransitionAssertionID:=nTransitionAssertionID,
     stMotionStage:=stXStage,
 	bEnable:=TRUE,
-    stXCen:=stXCen);*)
+    stXCen:=stXCen);
 
 
 ]]></ST>
@@ -109,18 +121,31 @@ fbStates_X(
       <LineId Id="165" Count="0" />
       <LineId Id="139" Count="0" />
       <LineId Id="141" Count="0" />
+      <LineId Id="201" Count="0" />
+      <LineId Id="206" Count="0" />
       <LineId Id="138" Count="0" />
+      <LineId Id="202" Count="0" />
       <LineId Id="164" Count="0" />
       <LineId Id="146" Count="0" />
       <LineId Id="148" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="207" Count="0" />
       <LineId Id="143" Count="0" />
+      <LineId Id="203" Count="0" />
       <LineId Id="163" Count="0" />
       <LineId Id="150" Count="0" />
-      <LineId Id="152" Count="1" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="210" Count="0" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="153" Count="0" />
+      <LineId Id="204" Count="0" />
       <LineId Id="162" Count="0" />
       <LineId Id="154" Count="0" />
       <LineId Id="156" Count="0" />
+      <LineId Id="212" Count="0" />
+      <LineId Id="211" Count="0" />
       <LineId Id="149" Count="0" />
+      <LineId Id="205" Count="0" />
       <LineId Id="161" Count="0" />
       <LineId Id="158" Count="0" />
       <LineId Id="160" Count="0" />
