@@ -34,19 +34,26 @@ VAR
     fbStates_X: FB_MAA_States_X;
 	
 	fReticle: LREAL;
+	
+	bInit:BOOL := TRUE;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//Stage Settings
+      <ST><![CDATA[if(bInit) THEN
+	stYStage.bHardwareEnable := TRUE;
+	stYStage.bPowerSelf := FALSE;
+	stYStage.nBrakeMode := ENUM_StageBrakeMode.IF_MOVING;
+	stXStage.bHardwareEnable := TRUE;
+	stXStage.bPowerSelf := FALSE;
+	stXStage.nBrakeMode := ENUM_StageBrakeMode.NO_BRAKE;
+	bInit:=FALSE;
+END_IF
+
+//Stage Settings
 fbYStage(stMotionStage:=stYStage);
-stYStage.bHardwareEnable := TRUE;
-stYStage.bPowerSelf := TRUE;
-stYStage.nBrakeMode := ENUM_StageBrakeMode.IF_MOVING;
 
 fbXStage(stMotionStage:=stXStage);
-stXStage.bHardwareEnable := TRUE;
-stXStage.bPowerSelf := TRUE;
-stXStage.nBrakeMode := ENUM_StageBrakeMode.NO_BRAKE;
+
 
 // States settings
 stAprt1.nRequestAssertionID := nTransitionAssertionID+1;
@@ -87,7 +94,7 @@ stXCen.bValid := TRUE;
 fbStates(
 	fbArbiter:=fbArbiter,
     fbFFHWO:=fbFFHWO,
-    nTransitionAssertionID:=nTransitionAssertionID+5,
+    nTransitionAssertionID:=nTransitionAssertionID,
     stMotionStage:=stYStage,
 	bEnable:=TRUE,
     stAprt1:=stAprt1,
@@ -98,7 +105,7 @@ fbStates(
 fbStates_X(
 	fbArbiter:=fbArbiter,
     fbFFHWO:=fbFFHWO,
-    nTransitionAssertionID:=nTransitionAssertionID,
+    nTransitionAssertionID:=nTransitionAssertionID+5,
     stMotionStage:=stXStage,
 	bEnable:=TRUE,
     stXCen:=stXCen);
@@ -107,15 +114,18 @@ fbStates_X(
 ]]></ST>
     </Implementation>
     <LineIds Name="FB_MAA">
+      <LineId Id="249" Count="0" />
+      <LineId Id="253" Count="1" />
+      <LineId Id="251" Count="0" />
+      <LineId Id="256" Count="1" />
+      <LineId Id="255" Count="0" />
+      <LineId Id="258" Count="0" />
+      <LineId Id="252" Count="0" />
+      <LineId Id="250" Count="0" />
       <LineId Id="137" Count="0" />
       <LineId Id="3" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="10" Count="0" />
-      <LineId Id="47" Count="0" />
       <LineId Id="128" Count="0" />
       <LineId Id="127" Count="0" />
-      <LineId Id="126" Count="0" />
-      <LineId Id="125" Count="0" />
       <LineId Id="48" Count="0" />
       <LineId Id="12" Count="1" />
       <LineId Id="165" Count="0" />

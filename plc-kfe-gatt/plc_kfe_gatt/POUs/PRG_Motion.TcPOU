@@ -101,27 +101,27 @@ IF (bInit) THEN
 
 END_IF
 
-
+//EBD
 fbMAA_1_States(
-	 fbArbiter := GVL_ILK.g_fbArbiter,
+	 fbArbiter := GVL_ILK.fbArbiter1,
     fbFFHWO :=  GVL_ILK.g_FastFaultOutput1,
     stYStage := Main.M2,
     stXStage := Main.M1);
 
 fbMAA_2_States(
-	fbArbiter := GVL_ILK.g_fbArbiter,
+	fbArbiter := GVL_ILK.fbArbiter1,
     fbFFHWO := GVL_ILK.g_FastFaultOutput1,
     stYStage := Main.M4,
     stXStage := Main.M3); 
-
+//FEE
 fbMAA_3_States(
-	fbArbiter := GVL_ILK.g_fbArbiter,
+	fbArbiter := GVL_ILK.fbArbiter2,
     fbFFHWO := GVL_ILK.g_FastFaultOutput1,
     stYStage := Main.M6,
     stXStage := Main.M5); 
 
 fbMAA_4_States(
-	fbArbiter := GVL_ILK.g_fbArbiter,
+	fbArbiter := GVL_ILK.fbArbiter2,
     fbFFHWO := GVL_ILK.g_FastFaultOutput1,
     stYStage := Main.M8,
     stXStage := Main.M7);

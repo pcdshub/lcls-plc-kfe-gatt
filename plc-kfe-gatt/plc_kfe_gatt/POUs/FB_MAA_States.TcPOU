@@ -10,7 +10,7 @@ VAR_INPUT
 	    field: ONST 5.5mm;
 	    field: TWST 8mm;
 	    field: THST 10mm;
-	    field: FRST 12mmm;
+	    field: FRST 12mm;
     '}
     enumSet: E_MAA_states;
     bStatesLock: BOOL;
@@ -27,7 +27,7 @@ VAR_OUTPUT
 	    field: ONST 5.5mm;
 	    field: TWST 8mm;
 	    field: THST 10mm;
-	    field: FRST 12mmm;
+	    field: FRST 12mm;
     '}
     enumGet: E_MAA_States;	
 END_VAR

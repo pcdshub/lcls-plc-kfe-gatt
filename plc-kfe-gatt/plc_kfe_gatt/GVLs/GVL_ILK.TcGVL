@@ -24,7 +24,8 @@
     '}
     xFastFaultReset :   BOOL;
 	
-	g_fbArbiter   :   FB_Arbiter(1);
+	fbArbiter1   :   FB_Arbiter(1);
+	fbArbiter2   :   FB_Arbiter(2);
 
 
 
