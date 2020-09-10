@@ -24,9 +24,9 @@ VAR_OUTPUT
 END_VAR
 VAR
     bStatesInit: BOOL := TRUE;
+	fDelta: LREAL := 0.5;
 END_VAR
 VAR CONSTANT
-    fDelta: LREAL := 0.2;
     fVelocity: LREAL := 0.1;
     fAccel: LREAL := 50;
     fDecel: LREAL := 25;

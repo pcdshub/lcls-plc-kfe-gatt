@@ -125,6 +125,23 @@ fbMAA_4_States(
     fbFFHWO := GVL_ILK.g_FastFaultOutput1,
     stYStage := Main.M8,
     stXStage := Main.M7);
+	
+	
+////////////////////
+//Set the right state i.e. apperture based on the current beam size/
+/////
+//Check new Photon energey or new transmission requested
+(*If(bAllGo) THEN
+	IF( rPhotonEnergy >=0.9E3) THEN
+		fbMAA_4_States.	
+		ELSIF ( rPhotonEnergy >=0.6E3) THEN
+			ELSIF ( rPhotonEnergy >=0.5E3) THEN
+				ELSE 
+	END_IF
+END_IF*)
+	
+
+	
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_Motion">
@@ -169,6 +186,17 @@ fbMAA_4_States(
       <LineId Id="406" Count="0" />
       <LineId Id="400" Count="4" />
       <LineId Id="398" Count="0" />
+      <LineId Id="455" Count="4" />
+      <LineId Id="462" Count="0" />
+      <LineId Id="470" Count="0" />
+      <LineId Id="461" Count="0" />
+      <LineId Id="474" Count="0" />
+      <LineId Id="465" Count="0" />
+      <LineId Id="467" Count="1" />
+      <LineId Id="466" Count="0" />
+      <LineId Id="473" Count="0" />
+      <LineId Id="463" Count="1" />
+      <LineId Id="460" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

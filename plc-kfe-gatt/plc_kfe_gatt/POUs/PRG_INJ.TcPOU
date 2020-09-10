@@ -24,7 +24,7 @@ VAR
 	 '}
 	bError : BOOL; 
 	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:Kp1 '}
-	fKp1 : REAL:= 0.25; 
+	fKp1 : REAL:= 0.3; 
 	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:Tn1 '}
 	fTn1 : REAL:= 0.5; 
 	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:Kp2 '}
@@ -120,7 +120,7 @@ THEN
 	stCTRL_PID_PARAMS.tTn					:= T#500ms;		(*  Tn									*)
 	stCTRL_PID_PARAMS.tTv					:= T#200ms;	(*  Tv									*)
 	stCTRL_PID_PARAMS.tTd					:= T#100ms;	(*  Td									*)
-	stCTRL_PID_PARAMS.fOutMaxLimit			:=  20;			(* maximum output limit				*)
+	stCTRL_PID_PARAMS.fOutMaxLimit			:=  7;			(* maximum output limit				*)
 	stCTRL_PID_PARAMS.fOutMinLimit			:=  -100;			(* minimum output limit				*)
 
 	(* set the mode to ACTIVE --> normal operation *)
@@ -131,7 +131,10 @@ END_IF
 (* set the addresses *)
 	stCTRL_LIN_INTERPOLATION_PARAMS.pDataTable_ADR			:= ADR(arrTable);
 	stCTRL_LIN_INTERPOLATION_PARAMS.nDataTable_SIZEOF		:= SIZEOF(arrTable);
-	
+
+fSetpointValue:= LIMIT(0,fSetpointValue,10);
+if (NOT (VVC_71.i_xExtILK_OK OR VVC_72.i_xExtILK_OK) OR (VVC_71.M_IsClosed() OR VVC_72.M_IsClosed() )) THEN bGo := FALSE; END_IF //Switch off the PID incase of interlock
+
 if (bGo) THEN
 	IF (bReset) THEN
 	(* set the mode to RESET*)
@@ -228,7 +231,9 @@ FTRIG(CLK := bGo);
       <LineId Id="287" Count="0" />
       <LineId Id="41" Count="1" />
       <LineId Id="288" Count="2" />
-      <LineId Id="64" Count="108" />
+      <LineId Id="64" Count="24" />
+      <LineId Id="346" Count="2" />
+      <LineId Id="89" Count="83" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

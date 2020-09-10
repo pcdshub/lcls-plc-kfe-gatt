@@ -33,9 +33,12 @@ VAR_OUTPUT
 END_VAR
 VAR
     bStatesInit: BOOL := TRUE;
+	fDelta1: LREAL := 2.5; //only for commissioning should change to more conservative values
+	fDelta2: LREAL := 4;
+	fDelta3: LREAL := 5;
+	fDelta4: LREAL := 6;
 END_VAR
 VAR CONSTANT
-    fDelta: LREAL := 0.5;
     fVelocity: LREAL := 5;
     fAccel: LREAL := 200;
     fDecel: LREAL := 25;
@@ -48,28 +51,28 @@ END_VAR
 	
 	stAprt1.sName := '5.5mm';
     stAprt1.fVelocity := fVelocity;
-    stAprt1.fDelta := fDelta;
+    stAprt1.fDelta := fDelta1;
     stAprt1.fAccel := fAccel;
     stAprt1.fDecel := fAccel;
     stAprt1.bMoveOk := TRUE;
 	
 	stAprt2.sName := '8mm';
     stAprt2.fVelocity := fVelocity;
-    stAprt2.fDelta := fDelta;
+    stAprt2.fDelta := fDelta2;
     stAprt2.fAccel := fAccel;
     stAprt2.fDecel := fAccel;
     stAprt2.bMoveOk := TRUE;
 	
 	stAprt3.sName := '10mm';
     stAprt3.fVelocity := fVelocity;
-    stAprt3.fDelta := fDelta;
+    stAprt3.fDelta := fDelta3;
     stAprt3.fAccel := fAccel;
     stAprt3.fDecel := fAccel;
     stAprt3.bMoveOk := TRUE;
 	
 	stAprt4.sName := '12mm';
     stAprt4.fVelocity := fVelocity;
-    stAprt4.fDelta := fDelta;
+    stAprt4.fDelta := fDelta4;
     stAprt4.fAccel := fAccel;
     stAprt4.fDecel := fAccel;
     stAprt4.bMoveOk := TRUE;

@@ -84,7 +84,7 @@ stAprt4.stBeamParams.astApertures[1].Height := 12;
 stAprt4.stBeamParams.astApertures[1].Width := 12;
 stAprt4.bValid := TRUE;
 
-stXCen.nRequestAssertionID := nTransitionAssertionID+6;
+stXCen.nRequestAssertionID := nTransitionAssertionID+5;
 stXCen.bUseRawCounts := FALSE;
 stXCen.stBeamParams := PMPS_GVL.cstFullBeam;
 stXCen.bValid := TRUE;
@@ -105,7 +105,7 @@ fbStates(
 fbStates_X(
 	fbArbiter:=fbArbiter,
     fbFFHWO:=fbFFHWO,
-    nTransitionAssertionID:=nTransitionAssertionID+5,
+    nTransitionAssertionID:=nTransitionAssertionID+6,
     stMotionStage:=stXStage,
 	bEnable:=TRUE,
     stXCen:=stXCen);

@@ -27,7 +27,9 @@
 	fbArbiter1   :   FB_Arbiter(1);
 	fbArbiter2   :   FB_Arbiter(2);
 
-
+	Req_Trans AT%I*: ST_PMPS_Attenuator_IO;
+	Cur_Trans AT%Q*: ST_PMPS_Attenuator_IO;
+	rPhotonEnergy AT%I*: REAL;
 
 	{attribute 'pytmc' := 'pv: AT1K0:GAS:VAC:OVRD_ON ;
  	field: ZNAM Override OFF; 
