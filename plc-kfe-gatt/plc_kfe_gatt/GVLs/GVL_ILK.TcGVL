@@ -23,8 +23,13 @@
 	 io: io;
     '}
     xFastFaultReset :   BOOL;
-	
+	{attribute 'pytmc' := '
+    pv: PLC:KFE:GATT:ARB:01
+    '}
 	fbArbiter1   :   FB_Arbiter(1);
+	{attribute 'pytmc' := '
+    pv: PLC:KFE:GATT:ARB:02
+    '}
 	fbArbiter2   :   FB_Arbiter(2);
 
 	Req_Trans AT%I*: ST_PMPS_Attenuator_IO;
