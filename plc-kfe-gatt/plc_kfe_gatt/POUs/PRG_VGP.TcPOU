@@ -46,24 +46,7 @@ VGP_80(
 	i_xExtIlkOK:=(fb_AT1K0_GAS_PTM_80.iq_stPtm.eState = pumpRUNNING), 
 	i_ReqPos:=  , 
 	arrTable:= arrTable , 
-	(*arrTable_ENC:= arrTable_ENC , *)
 	q_stVGP=> ); ]]></ST>
     </Implementation>
-    <LineIds Name="PRG_VGP">
-      <LineId Id="5" Count="0" />
-      <LineId Id="19" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="24" Count="12" />
-      <LineId Id="56" Count="4" />
-      <LineId Id="106" Count="1" />
-      <LineId Id="52" Count="0" />
-      <LineId Id="23" Count="0" />
-      <LineId Id="21" Count="0" />
-      <LineId Id="142" Count="0" />
-      <LineId Id="90" Count="0" />
-      <LineId Id="124" Count="0" />
-      <LineId Id="126" Count="4" />
-      <LineId Id="125" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

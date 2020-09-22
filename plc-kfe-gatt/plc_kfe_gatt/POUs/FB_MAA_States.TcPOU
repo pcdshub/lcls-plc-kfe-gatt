@@ -39,7 +39,7 @@ VAR
 	fDelta4: LREAL := 6;
 END_VAR
 VAR CONSTANT
-    fVelocity: LREAL := 5;
+    fVelocity: LREAL := 2.5;
     fAccel: LREAL := 200;
     fDecel: LREAL := 25;
 END_VAR

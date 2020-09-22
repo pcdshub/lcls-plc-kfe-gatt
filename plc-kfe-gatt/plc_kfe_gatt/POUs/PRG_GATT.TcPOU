@@ -99,7 +99,7 @@ fb_AT1K0_GAS_PTM_140(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_140.iq
 
 // Injector side
 fb_AT1K0_GAS_VVC_80.i_xExtILK_OK:= (fb_AT1K0_GAS_GPI_111.PG.rPRESS <= fb_AT1K0_GAS_PTM_80.iq_stPtm.rBackingPressureSP) AND NOT (fb_AT1K0_GAS_PTM_80.iq_stPtm.eState = pumpFAULT) AND  (fb_AT1K0_GAS_PMF_110.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_110.stPump.eState = pumpSTARTING );
-//fb_AT1K0_GAS_VVC_80(i_xExtILK_OK:= (fb_AT1K0_GAS_GPI_111.PG.rPRESS <= fb_AT1K0_GAS_PTM_80.iq_stPtm.rBackingPressureSP) AND(fb_AT1K0_GAS_PTM_80.iq_stPtm.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PTM_80.iq_stPtm.eState = pumpSTARTING )AND  (fb_AT1K0_GAS_PMF_110.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_110.stPump.eState = pumpSTARTING ) , i_xOverrideMode:= xSystemOverrideMode , iq_stValve=> );
+fb_AT1K0_GAS_VVC_80(i_xOverrideMode:= xSystemOverrideMode , iq_stValve=> );
 IF (fb_AT1K0_GAS_PTM_80.iq_stPtm.eState = pumpRUNNING) AND fb_AT1K0_GAS_VVC_80.M_IsClosed() THEN
 	 if (timer.Q) THEN fb_AT1K0_GAS_PTM_80.i_xExtILKOk := fb_AT1K0_GAS_VVC_80.M_IsOpen() AND F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_80.iq_stPtm, fb_AT1K0_GAS_GPI_111.PG,fb_AT1K0_GAS_GPI_80.PG,fb_AT1K0_GAS_PMF_110.stPump);//fb_AT1K0_GAS_PTM_80.i_xExtILKOk := FALSE;
  END_IF;

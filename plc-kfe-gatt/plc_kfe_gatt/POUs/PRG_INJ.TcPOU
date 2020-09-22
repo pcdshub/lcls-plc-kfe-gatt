@@ -3,33 +3,33 @@
   <POU Name="PRG_INJ" Id="{8b858f89-a705-4da6-a8c0-4cd0b412d38f}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_INJ
 VAR
-	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:SP '}
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:SP '}
 	fSetpointValue :FLOAT; 
-	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:GO;
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:GO;
 	 field: ZNAM STOP; 
 	 field: ONAM START; 
 	 io: io;
 	'}
 	bGo: BOOL; 
- 	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:RESET;
+ 	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:RESET;
 	 field: ZNAM FALSE; 
 	 field: ONAM TRUE; 
 	 io: io;
 	 '}
 	bReset : BOOL; 
-	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:ERROR;
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:ERROR;
     field: ZNAM FALSE; 
 	 field: ONAM TRUE; 
 	 io: io;
 	 '}
 	bError : BOOL; 
-	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:Kp1 '}
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp1 '}
 	fKp1 : REAL:= 0.3; 
-	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:Tn1 '}
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Tn1 '}
 	fTn1 : REAL:= 0.5; 
-	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:Kp2 '}
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp2 '}
 	fKp2 : REAL:= 0.01; 
-	{attribute 'pytmc' :=' pv: AT1K0:GATT:CNTRL:Tn2 '}
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Tn2 '}
 	fTn2 : REAL:= 0.5; 
 	arrTable	: ARRAY[1..15,1..2] OF FLOAT;
 	fManValue											: FLOAT;
@@ -91,21 +91,21 @@ IF bInit
 THEN
 	(* init array with the interpolation points  *)
 	(* 	fIn					 |		fOut		*)
-	arrTable[1,1] := 0;		arrTable[1,2] := 0;
+	arrTable[1,1] := 0;		arrTable[1,2] := 15;
 	arrTable[2,1] := 0.001;		arrTable[2,2] := 20;
 	arrTable[3,1] := 0.01024;		arrTable[3,2] := 30;
 	arrTable[4,1] :=  0.021;	    arrTable[4,2] := 40;
 	arrTable[5,1] :=  0.12;	    arrTable[5,2] := 50;
 	arrTable[6,1] := 0.8;		arrTable[6,2] := 60;
 	arrTable[7,1] := 2.1;		arrTable[7,2] := 65;
-	arrTable[8,1] := 2.8;		arrTable[6,2] := 69;
-	arrTable[9,1] := 3.1;		arrTable[7,2] := 70;
-	arrTable[10,1] := 5.4;		arrTable[6,2] := 77;
-	arrTable[11,1] := 6.3;	    arrTable[8,2] := 78;
-	arrTable[12,1] :=7.5;	    arrTable[9,2] := 80;
-	arrTable[13,1] :=8.2;	    arrTable[9,2] := 82;
-	arrTable[14,1] :=8.6;	    arrTable[9,2] := 84;
-	arrTable[15,1] :=9.5;	    arrTable[9,2] := 86;
+	arrTable[8,1] := 2.8;		arrTable[8,2] := 69;
+	arrTable[9,1] := 3.1;		arrTable[9,2] := 70;
+	arrTable[10,1] := 5.4;		arrTable[10,2] := 77;
+	arrTable[11,1] := 6.3;	    arrTable[11,2] := 78;
+	arrTable[12,1] :=7.5;	    arrTable[12,2] := 80;
+	arrTable[13,1] :=8.2;	    arrTable[13,2] := 82;
+	arrTable[14,1] :=8.6;	    arrTable[14,2] := 84;
+	arrTable[15,1] :=9.5;	    arrTable[15,2] := 86;
 
 	(* init parameter struct *)
 	stCTRL_LIN_INTERPOLATION_PARAMS.tCtrlCycleTime					:= T#10ms;
@@ -133,8 +133,11 @@ END_IF
 	stCTRL_LIN_INTERPOLATION_PARAMS.nDataTable_SIZEOF		:= SIZEOF(arrTable);
 
 fSetpointValue:= LIMIT(0,fSetpointValue,10);
-if (NOT (VVC_71.i_xExtILK_OK OR VVC_72.i_xExtILK_OK) OR (VVC_71.M_IsClosed() OR VVC_72.M_IsClosed() )) THEN bGo := FALSE; END_IF //Switch off the PID incase of interlock
-
+if (NOT (VVC_71.i_xExtILK_OK OR VVC_72.i_xExtILK_OK) OR (VVC_71.M_IsClosed() OR VVC_72.M_IsClosed() )) THEN 
+		//eMode	:= eCTRL_MODE_PASSIVE;
+		VCN_70.M_ValveControl(CloseValve);
+		fSetpointValue :=0; 
+END_IF //Switch off the PID incase of interlock
 if (bGo) THEN
 	IF (bReset) THEN
 	(* set the mode to RESET*)
@@ -232,7 +235,8 @@ FTRIG(CLK := bGo);
       <LineId Id="41" Count="1" />
       <LineId Id="288" Count="2" />
       <LineId Id="64" Count="24" />
-      <LineId Id="346" Count="2" />
+      <LineId Id="346" Count="1" />
+      <LineId Id="405" Count="3" />
       <LineId Id="89" Count="83" />
       <LineId Id="2" Count="0" />
     </LineIds>

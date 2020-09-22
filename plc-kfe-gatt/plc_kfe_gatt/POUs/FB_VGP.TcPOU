@@ -30,7 +30,7 @@ VAR CONSTANT
 END_VAR
 
 VAR
-	rOpenPosition: REAL:=1645; // Encoder MAX. Fully Open
+	rOpenPosition: REAL:=1680; // Encoder MAX. Fully Open
 	rTargetPosition : REAL;
 	rTargetVelocity: REAL:=30;
 	rHomingVelocity: REAL:=10;
@@ -106,20 +106,22 @@ ACT_INIT();
 // Interlocking
 q_stVGP.xIlkOK := i_xExtIlkOK;
 (*Checking which Control mode is selected*)
-IF q_stVGP.xIlkOK AND NOT (q_stVGP.pv_xError) THEN
+IF i_xExtIlkOK AND NOT (q_stVGP.pv_xError) THEN
 	IF q_stVGP.eValveControl = OpenValve THEN
 		q_stVGP.rReqPosition := rUpperLimit;
+		q_stVGP.pv_xGo_SW:=TRUE;
 	ELSIF q_stVGP.eValveControl = CloseValve THEN
 		q_stVGP.rReqPosition := 0;
+		q_stVGP.pv_xGo_SW:=TRUE;
 	ELSIF q_stVGP.eValveControl = ManualControl THEN
 		q_stVGP.rReqPosition := LIMIT(0, q_stVGP.rReqPosition, rUpperLimit);
 	ELSIF q_stVGP.eValveControl = PressureControl THEN
 		 q_stVGP.rReqPosition := LIMIT(0, i_ReqPos, rUpperLimit);
 	END_IF
-ELSE
+ELSIF NOT i_xExtIlkOK THEN
 	q_stVGP.rReqPosition := 0;
 	q_stVGP.eValveControl := CloseValve;//CloseValve;
-	bGo:=FALSE;
+	q_stVGP.pv_xGo_SW:=TRUE;
 END_IF
 
 
@@ -157,9 +159,9 @@ AXIS();
 q_stVGP.rEnoder_Position := LREAL_TO_REAL(Axis.NcToPlc.ActPos); // encoder position
 
 
-IF NOT (i_xExtIlkOK) THEN
+(*IF NOT (i_xExtIlkOK) THEN
 	q_stVGP.eState := NEWTARGETPOSITION;
-END_IF
+END_IF*)
 //Homing STATE is missing
 
 // state machine for axis motion
@@ -198,9 +200,10 @@ END_IF
 					ELSE 
 					q_stVGP.eState := READY;
 				END_IF
-			IF (q_stVGP.pv_xGo_SW) AND i_xExtIlkOK(* AND( rOldTargetPosition <> rTargetPosition) *) THEN
+			IF (q_stVGP.pv_xGo_SW) AND q_stVGP.pv_xHomed(* AND( rOldTargetPosition <> rTargetPosition) *) THEN
 				q_stVGP.pv_xGo_SW := false;
-				q_stVGP.eState := NEWTARGETPOSITION;	
+				q_stVGP.eState := NEWTARGETPOSITION;
+		        rOldTargetPosition:= rTargetPosition;
 			END_IF
 
 			
@@ -806,6 +809,16 @@ END_VAR
 	stCTRL_LIN_INTERPOLATION_PARAMS_ENC.nDataTable_SIZEOF		:= SIZEOF(arrTable_ENC);]]></ST>
       </Implementation>
     </Method>
+    <Method Name="M_SetGoSw" Id="{629e01f5-cead-485f-aa3f-4f90865eaa39}">
+      <Declaration><![CDATA[METHOD M_SetGoSw : BOOL
+VAR_INPUT
+	bGo:BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[q_stVGP.pv_xGo_SW:=bGo;]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="M_ValveControl" Id="{d751bf76-146a-4941-88f4-7263885a64c0}">
       <Declaration><![CDATA[METHOD M_ValveControl : BOOL
 VAR_INPUT
@@ -826,68 +839,5 @@ END_VAR
         <ST><![CDATA[rOpenPosition := EncoderMax;]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_VGP">
-      <LineId Id="3" Count="47" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_VGP.ACT_AXIS">
-      <LineId Id="2" Count="20" />
-      <LineId Id="234" Count="0" />
-      <LineId Id="23" Count="77" />
-      <LineId Id="106" Count="0" />
-      <LineId Id="239" Count="0" />
-      <LineId Id="238" Count="0" />
-      <LineId Id="237" Count="0" />
-      <LineId Id="236" Count="0" />
-      <LineId Id="107" Count="2" />
-      <LineId Id="233" Count="0" />
-      <LineId Id="112" Count="119" />
-      <LineId Id="1" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_VGP.ACT_HOME">
-      <LineId Id="2" Count="9" />
-      <LineId Id="19" Count="59" />
-      <LineId Id="85" Count="0" />
-      <LineId Id="180" Count="0" />
-      <LineId Id="86" Count="2" />
-      <LineId Id="184" Count="1" />
-      <LineId Id="178" Count="0" />
-      <LineId Id="186" Count="0" />
-      <LineId Id="188" Count="0" />
-      <LineId Id="187" Count="0" />
-      <LineId Id="162" Count="1" />
-      <LineId Id="168" Count="5" />
-      <LineId Id="175" Count="1" />
-      <LineId Id="182" Count="0" />
-      <LineId Id="174" Count="0" />
-      <LineId Id="89" Count="72" />
-      <LineId Id="1" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_VGP.ACT_INIT">
-      <LineId Id="2" Count="69" />
-      <LineId Id="1" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_VGP.ACT_LIN_INTERPOLATION">
-      <LineId Id="2" Count="30" />
-      <LineId Id="1" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_VGP.ACT_MONITOR">
-      <LineId Id="2" Count="33" />
-      <LineId Id="1" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_VGP.ConfigEncoder">
-      <LineId Id="3" Count="20" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_VGP.M_INIT">
-      <LineId Id="3" Count="55" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_VGP.M_ValveControl">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_VGP.SetEncoderMax">
-      <LineId Id="2" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

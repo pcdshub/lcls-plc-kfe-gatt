@@ -28,7 +28,7 @@ VAR
 END_VAR
 VAR CONSTANT
     fVelocity: LREAL := 0.1;
-    fAccel: LREAL := 50;
+    fAccel: LREAL := 25;
     fDecel: LREAL := 25;
 END_VAR
 

@@ -9,6 +9,45 @@ VAR
  nReqID:UDINT;
  nReqRM:UDINT;
  bRemove:bool;
+ 
+ //Testing
+ ID1:DWORD:=1010;;
+ ID2:DWORD:=1020;;
+ ID3:DWORD:=1030;;
+ ID4:DWORD:=1040;
+ bTrans:BOOL;
+ bAp11:BOOL;
+ bAp12:BOOL;
+ bAp13:BOOL;
+ bAp14:BOOL;
+
+
+ bTrans2:BOOL;
+ bTrans3:BOOL;
+ bTrans4:BOOL;
+ bTrans1X:BOOL;
+ bTrans2X:BOOL;
+ bTrans3X:BOOL;
+ bTrans4X:BOOL;
+ bAp1XS:BOOL;
+ bAp2XS:BOOL;
+ bAp3XS:BOOL;
+ bAp4XS:BOOL;
+ 
+ bAp21:BOOL;
+ bAp22:BOOL;
+ bAp23:BOOL;
+ bAp24:BOOL;
+ bAp31:BOOL;
+ bAp32:BOOL;
+ bAp33:BOOL;
+ bAp34:BOOL;
+ bAp41:BOOL;
+ bAp42:BOOL;
+ bAp43:BOOL;
+ bAp44:BOOL;
+ 
+ iAp:INT;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -24,30 +63,42 @@ g_FastFaultOutput2.Execute();
 fbArbiterIO(Arbiter := GVL_ILK.fbArbiter1, fbFFHWO := GVL_ILK.g_FastFaultOutput1);
 GVL_ILK.fbArbiter2.ElevateRequest(GVL_ILK.fbArbiter1);
 
-ar1:=GVL_ILK.fbArbiter1.CheckRequestInPool(nReqID);
-ar2:=GVL_ILK.fbArbiter2.CheckRequestInPool(nReqID);
+bTrans:= fbArbiter1.CheckRequestInPool(ID1);//TransitionID
+bAp11:= fbArbiter1.CheckRequestInPool(ID1+1);
+bAp12:= fbArbiter1.CheckRequestInPool(ID1+2);
+bAp13:= fbArbiter1.CheckRequestInPool(ID1+3);
+bAp14:= fbArbiter1.CheckRequestInPool(ID1+4);
+bTrans1X:= fbArbiter1.CheckRequestInPool(ID1+5);
+bAp1XS:= fbArbiter1.CheckRequestInPool(ID1+6);
+
+bTrans2:= fbArbiter1.CheckRequestInPool(ID2);//TransitionID
+bAp21:= fbArbiter1.CheckRequestInPool(ID2+1);
+bAp22:= fbArbiter1.CheckRequestInPool(ID2+2);
+bAp23:= fbArbiter1.CheckRequestInPool(ID2+3);
+bAp24:= fbArbiter1.CheckRequestInPool(ID2+4);
+bTrans2X:= fbArbiter1.CheckRequestInPool(ID2+5);
+bAp2XS:= fbArbiter1.CheckRequestInPool(ID2+6);
+
+bTrans3:= fbArbiter2.CheckRequestInPool(ID3);//TransitionID
+bAp31:= fbArbiter2.CheckRequestInPool(ID3+1);
+bAp32:= fbArbiter2.CheckRequestInPool(ID3+2);
+bAp33:= fbArbiter2.CheckRequestInPool(ID3+3);
+bAp34:= fbArbiter2.CheckRequestInPool(ID3+4);
+bTrans3X:= fbArbiter2.CheckRequestInPool(ID3+5);
+bAp3XS:= fbArbiter2.CheckRequestInPool(ID3+6);
+
+bTrans4:= fbArbiter2.CheckRequestInPool(ID4);//TransitionID
+bAp41:= fbArbiter2.CheckRequestInPool(ID4+1);
+bAp42:= fbArbiter2.CheckRequestInPool(ID4+2);
+bAp43:= fbArbiter2.CheckRequestInPool(ID4+3);
+bAp44:= fbArbiter2.CheckRequestInPool(ID4+4);
+bTrans3X:= fbArbiter2.CheckRequestInPool(ID4+5);
+bAp4XS:= fbArbiter2.CheckRequestInPool(ID4+6);
+
 if (bRemove) THEN
  	GVL_ILK.fbArbiter1.RemoveRequest(nReqRM);
 	GVL_ILK.fbArbiter2.RemoveRequest(nReqRM);  
 END_IF]]></ST>
     </Implementation>
-    <LineIds Name="PRG_PMPS">
-      <LineId Id="26" Count="0" />
-      <LineId Id="18" Count="1" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="12" Count="0" />
-      <LineId Id="24" Count="1" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="30" Count="0" />
-      <LineId Id="28" Count="0" />
-      <LineId Id="58" Count="0" />
-      <LineId Id="54" Count="0" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="40" Count="0" />
-      <LineId Id="39" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="50" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>
