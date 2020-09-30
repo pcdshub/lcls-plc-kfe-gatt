@@ -42,7 +42,25 @@
 	 io: io;'}
 	xSystemOverrideMode	:	BOOL; (* Global system override for the GATT*)
 
-
+	
+	//VRC ILK setpoints to OPEN
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:US:SP;
+	field: HOPR 1000;
+	field: LOPR 0;
+	field: PREC 2;
+	field: EGU "TORR";
+	'}
+	rVRC_US_SP :REAL; 
+	
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:DS:SP;
+	field: HOPR 1000;
+	field: LOPR 0;
+	field: PREC 2;
+	field: EGU "TORR";
+	'}
+	rVRC_DS_SP :REAL; 
+		
+	
 (* Interlock related bits, local to the PLC*)
 	US_MAA_OK:  BOOL;
 	US_Turbo_Valves_Open:  BOOL;

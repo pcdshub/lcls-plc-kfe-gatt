@@ -3,8 +3,13 @@
   <POU Name="PRG_INJ" Id="{8b858f89-a705-4da6-a8c0-4cd0b412d38f}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_INJ
 VAR
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:SP '}
-	fSetpointValue :FLOAT; 
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:SP;
+	field: HOPR 1000;
+	field: LOPR 0;
+	field: PREC 2;
+	field: EGU "TORR";
+	'}
+	fSetpointValue :REAL; 
 	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:GO;
 	 field: ZNAM STOP; 
 	 field: ONAM START; 
@@ -54,52 +59,87 @@ VAR
 	FTrig: F_TRIG;
 		
 
-	
+	{attribute 'pytmc' := '
+	pv: AT1K0:GAS:GAS_TYPE ;
+	type: mbbi ;
+	field: ZRST none ;
+	field: ONST N2;
+	field: TWST Ar ;
+	io: i
+	'}
+	SelectedGas: E_GasType;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
+      <ST><![CDATA[//Devices
 // Valves
 VCN_70(i_xExtIlkOK := (US_MAA_OK AND US_Turbo_Valves_Open AND US_Turbo_Running)
 						AND (DS_MAA_OK AND DS_Turbo_Valves_Open AND DS_Turbo_Running), 
 						i_ReqPos:= LREAL_TO_REAL(fbCTRL_LIN_INTERPOLATION.fOut + fbCTRL_PID.fOut));
 
-//VGP_80
 VVC_71(i_xExtILK_OK:= VVC_72.M_IsClosed() AND ((US_MAA_OK AND (*US_Roughing_Valves_Open AND*) US_Turbo_Valves_Open AND US_Turbo_Running) 
 						AND (DS_MAA_OK AND (*DS_Roughing_Valves_Open AND*) DS_Turbo_Valves_Open AND DS_Turbo_Running)), i_xOverrideMode:= , iq_stValve=> );
 VVC_72(i_xExtILK_OK:= VVC_71.M_IsClosed() AND ((US_MAA_OK AND (*US_Roughing_Valves_Open AND US_Turbo_Valves_Open AND *)US_Turbo_Running) 
 						AND (DS_MAA_OK AND (*DS_Roughing_Valves_Open AND DS_Turbo_Valves_Open AND*) DS_Turbo_Running)), i_xOverrideMode:= , iq_stValve=> );
 
 //Gauges
-GCM_70(PG=> , i_rFULL_SCALE:= 2000);
-GCM_80(PG=> , i_rFULL_SCALE:= 20);
-GCM_81(PG=> , i_rFULL_SCALE:= 0.25);
-(*Assign reading to psuedo gauge*)
-IF (GCM_81.PG.rPRESS >=0.22) THEN GCM_82 := GCM_80.PG;
-	ELSE
-	GCM_82 := GCM_81.PG;	
-END_IF
-// Set ADC bits for EL3174-0002
 GCM_70.M_SetBits(30518);
 GCM_80.M_SetBits(30518);
 GCM_81.M_SetBits(30518);
+GCM_70(PG=> , i_rFULL_SCALE:= 2000);
+GCM_80(PG=> , i_rFULL_SCALE:= 20);
+GCM_81(PG=> , i_rFULL_SCALE:= 0.25);
 
 
-//
+
+(*When to Open the VRC Valves to the MAA chambers*)
+(*When PID is ON*)
+IF (bGo) THEN
+	(*VRC US*)
+	IF ( fb_AT1K0_GAS_GPI_40.PG .rPRESS >= rVRC_US_SP ) THEN
+		IF (fb_AT1K0_GAS_VRC_50.M_IsOpen) THEN fb_AT1K0_GAS_VRC_60.M_Set_OPN_SW (TRUE);
+			ELSE fb_AT1K0_GAS_VRC_50.M_Set_OPN_SW (TRUE);
+		END_IF
+	END_IF
+	
+	(*VRC DS*)
+	IF ( fb_AT1K0_GAS_GPI_110.PG .rPRESS >= rVRC_DS_SP ) THEN
+		IF (fb_AT1K0_GAS_VRC_100.M_IsOpen) THEN fb_AT1K0_GAS_VRC_90.M_Set_OPN_SW (TRUE);
+			ELSE fb_AT1K0_GAS_VRC_100.M_Set_OPN_SW (TRUE);
+		END_IF
+	END_IF
+END_IF
+
+(*Gas Selection*)
+IF(VVC_71.M_IsOpen) THEN  SelectedGas := E_GasType.Argon;
+	ELSIF (VVC_72.M_IsOpen) THEN  SelectedGas := E_GasType.Nitrogen;
+END_IF
+
+(* Gauge selection *)
+(*Assign reading to psuedo gauge*)
+IF (fb_AT1K0_GAS_GCC_80.IG.rPRESS <=0.0001) THEN GCM_82 := fb_AT1K0_GAS_GCC_80.IG;
+	ELSIF (fb_AT1K0_GAS_GPI_80.PG.rPRESS <= 0.001) THEN GCM_82 := fb_AT1K0_GAS_GPI_80.PG;
+		ELSIF ( GCM_81.PG.rPRESS < 0.25 ) THEN GCM_82 := GCM_81.PG;
+			ElSE GCM_82 := GCM_80.PG;
+END_IF
+
+
+
+//control Loop and FeedForward table initialisation
 (*Iniitialization*)
 IF bInit
 THEN
 	(* init array with the interpolation points  *)
 	(* 	fIn					 |		fOut		*)
 	arrTable[1,1] := 0;		arrTable[1,2] := 15;
-	arrTable[2,1] := 0.001;		arrTable[2,2] := 20;
-	arrTable[3,1] := 0.01024;		arrTable[3,2] := 30;
+	arrTable[2,1] := 0.00001;		arrTable[2,2] := 20;
+	arrTable[3,1] := 0.001024;		arrTable[3,2] := 30;
 	arrTable[4,1] :=  0.021;	    arrTable[4,2] := 40;
-	arrTable[5,1] :=  0.12;	    arrTable[5,2] := 50;
+	arrTable[5,1] :=  0.1;	    arrTable[5,2] := 50;
 	arrTable[6,1] := 0.8;		arrTable[6,2] := 60;
-	arrTable[7,1] := 2.1;		arrTable[7,2] := 65;
-	arrTable[8,1] := 2.8;		arrTable[8,2] := 69;
-	arrTable[9,1] := 3.1;		arrTable[9,2] := 70;
+	arrTable[7,1] := 1.9;		arrTable[7,2] := 64;
+	arrTable[8,1] := 2;		arrTable[8,2] := 66;
+	arrTable[9,1] := 2.9;		arrTable[9,2] := 70;
 	arrTable[10,1] := 5.4;		arrTable[10,2] := 77;
 	arrTable[11,1] := 6.3;	    arrTable[11,2] := 78;
 	arrTable[12,1] :=7.5;	    arrTable[12,2] := 80;
@@ -120,11 +160,11 @@ THEN
 	stCTRL_PID_PARAMS.tTn					:= T#500ms;		(*  Tn									*)
 	stCTRL_PID_PARAMS.tTv					:= T#200ms;	(*  Tv									*)
 	stCTRL_PID_PARAMS.tTd					:= T#100ms;	(*  Td									*)
-	stCTRL_PID_PARAMS.fOutMaxLimit			:=  7;			(* maximum output limit				*)
+	stCTRL_PID_PARAMS.fOutMaxLimit			:=  10;			(* maximum output limit				*)
 	stCTRL_PID_PARAMS.fOutMinLimit			:=  -100;			(* minimum output limit				*)
 
 	(* set the mode to ACTIVE --> normal operation *)
-	eMode							:= eCTRL_MODE_ACTIVE   ;					
+	eMode							:= eCTRL_MODE_PASSIVE   ;					
 	(* reset the init flag *)
 	bInit							:= FALSE;
 END_IF
@@ -132,12 +172,13 @@ END_IF
 	stCTRL_LIN_INTERPOLATION_PARAMS.pDataTable_ADR			:= ADR(arrTable);
 	stCTRL_LIN_INTERPOLATION_PARAMS.nDataTable_SIZEOF		:= SIZEOF(arrTable);
 
-fSetpointValue:= LIMIT(0,fSetpointValue,10);
-if (NOT (VVC_71.i_xExtILK_OK OR VVC_72.i_xExtILK_OK) OR (VVC_71.M_IsClosed() OR VVC_72.M_IsClosed() )) THEN 
+    fSetpointValue:= LIMIT(0,fSetpointValue,10);
+	
+(*if (NOT (VVC_71.i_xExtILK_OK OR VVC_72.i_xExtILK_OK) OR (VVC_71.M_IsClosed() OR VVC_72.M_IsClosed() )) THEN 
 		//eMode	:= eCTRL_MODE_PASSIVE;
-		VCN_70.M_ValveControl(CloseValve);
 		fSetpointValue :=0; 
-END_IF //Switch off the PID incase of interlock
+END_IF *)
+
 if (bGo) THEN
 	IF (bReset) THEN
 	(* set the mode to RESET*)
@@ -150,7 +191,8 @@ if (bGo) THEN
  	VCN_70.M_ValveControl(PressureControl);
 	END_IF
 END_IF
-If(FTrig.Q)THEN
+FTRIG(CLK := bGo);
+IF(FTrig.Q)THEN
 		eMode							:= eCTRL_MODE_PASSIVE;
 		VCN_70.M_ValveControl(CloseValve);
 		fSetpointValue :=0;
@@ -171,16 +213,12 @@ fbCTRL_LIN_INTERPOLATION(
 	bError=> );
 
 
-(* Gauge selection *)
-IF (fSetpointValue >=0.22) THEN
-	fbCTRL_PID.fActualValue := GCM_80.PG.rPRESS;
-ELSE
-	fbCTRL_PID.fActualValue := GCM_81.PG.rPRESS;
-END_IF
+
+
 
 (* call controller *)
 fbCTRL_PID(		fSetpointValue		:= fSetpointValue,
-					fActualValue		:= ,
+					fActualValue		:= GCM_82.rPRESS ,
 					fManSyncValue	:= ,
 					bSync				:= bSync,
 					eMode				:= eMode,
@@ -219,26 +257,9 @@ bError := fbCTRL_PID.bError OR fbCTRL_LIN_INTERPOLATION.bError;
 IF (pid_on.Q) THEN eMode:= eCTRL_MODE_ACTIVE; pid_on.IN := FALSE; END_IF; //eCTRL_MODE_TUNE????*)
 
 
-FTRIG(CLK := bGo);
+
 
 ]]></ST>
     </Implementation>
-    <LineIds Name="PRG_INJ">
-      <LineId Id="3" Count="7" />
-      <LineId Id="228" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="229" Count="0" />
-      <LineId Id="12" Count="27" />
-      <LineId Id="285" Count="1" />
-      <LineId Id="40" Count="0" />
-      <LineId Id="287" Count="0" />
-      <LineId Id="41" Count="1" />
-      <LineId Id="288" Count="2" />
-      <LineId Id="64" Count="24" />
-      <LineId Id="346" Count="1" />
-      <LineId Id="405" Count="3" />
-      <LineId Id="89" Count="83" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>
