@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <POU Name="F_COEF_AR" Id="{2f1670b1-1c15-440a-a716-93f242c11d81}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_COEF_AR : REAL
+VAR_INPUT
+END_VAR
+VAR
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

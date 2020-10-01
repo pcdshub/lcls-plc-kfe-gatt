@@ -37,22 +37,12 @@ PRG_ILK();
 //PMPS
 PRG_PMPS();
 
+PRG_Transmission();
+
 //Logger
 fbLogHandler();
 
 ]]></ST>
     </Implementation>
-    <LineIds Name="PRG_1_PlcTask">
-      <LineId Id="49" Count="1" />
-      <LineId Id="3" Count="7" />
-      <LineId Id="13" Count="1" />
-      <LineId Id="39" Count="0" />
-      <LineId Id="34" Count="2" />
-      <LineId Id="15" Count="4" />
-      <LineId Id="62" Count="0" />
-      <LineId Id="61" Count="0" />
-      <LineId Id="20" Count="3" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

@@ -9,12 +9,18 @@ VAR_IN_OUT
 	stXStage: DUT_MotionStage;
 END_VAR
 VAR_INPUT
+	 {attribute 'pytmc' := '
+        pv: :PMPS:AribterEnabled
+        io: io
+    '}
+	bArbiterEnabled: BOOL;
 	 nTransitionAssertionID: UDINT;
 	stAprt1: DUT_PositionState;
 	stAprt2: DUT_PositionState;
 	stAprt3: DUT_PositionState;
 	stAprt4: DUT_PositionState;
 	stXCen: DUT_PositionState;
+	i_DevName: STRING:= 'AT1K0-MAA';
 END_VAR
 VAR
 
@@ -33,11 +39,17 @@ VAR
     '}
     fbStates_X: FB_MAA_States_X;
 	
-	fReticle: LREAL;
+	fSize1: LREAL:=25; //mm
+	fSize2: LREAL:=5; //mm
+	fSize3: LREAL:=7; //mm
+	fSize4: LREAL:=9; //mm
 	
 	bInit:BOOL := TRUE;
-	
 	tArbiterTimeout: TIME:= T#10S;
+	FFO    :    FB_FastFault :=(
+        i_DevName := ,
+        i_Desc := 'Fault occurs when the PMPS Aribter is switched off for the aperture plate states BPTM',
+        i_TypeCode := 16#1010);
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -54,36 +66,37 @@ END_VAR
 	stAprt1.nRequestAssertionID := nTransitionAssertionID+1;
 	stAprt1.bUseRawCounts := FALSE;
 	stAprt1.stBeamParams := PMPS_GVL.cstFullBeam;
-	stAprt1.stBeamParams.astApertures[1].Height := 5.5;
-	stAprt1.stBeamParams.astApertures[1].Width := 5.5;
+	stAprt1.stBeamParams.astApertures[1].Height := fSize1;
+	stAprt1.stBeamParams.astApertures[1].Width := fSize1;
 	stAprt1.bValid := TRUE;
 	
 	stAprt2.nRequestAssertionID := nTransitionAssertionID+2;
 	stAprt2.bUseRawCounts := FALSE;
 	stAprt2.stBeamParams := PMPS_GVL.cstFullBeam;
-	stAprt2.stBeamParams.astApertures[1].Height := 8;
-	stAprt2.stBeamParams.astApertures[1].Width :=8;
+	stAprt2.stBeamParams.astApertures[1].Height := fSize2;
+	stAprt2.stBeamParams.astApertures[1].Width :=fSize2;
 	stAprt2.bValid := TRUE;
 	
 	stAprt3.nRequestAssertionID := nTransitionAssertionID+3;
 	stAprt3.bUseRawCounts := FALSE;
 	stAprt3.stBeamParams := PMPS_GVL.cstFullBeam;
-	stAprt3.stBeamParams.astApertures[1].Height := 10;
-	stAprt3.stBeamParams.astApertures[1].Width := 10;
+	stAprt3.stBeamParams.astApertures[1].Height := fSize3;
+	stAprt3.stBeamParams.astApertures[1].Width := fSize3;
 	stAprt3.bValid := TRUE;
 	
 	stAprt4.nRequestAssertionID := nTransitionAssertionID+4;
 	stAprt4.bUseRawCounts := FALSE;
 	stAprt4.stBeamParams := PMPS_GVL.cstFullBeam;
-	stAprt4.stBeamParams.astApertures[1].Height := 12;
-	stAprt4.stBeamParams.astApertures[1].Width := 12;
+	stAprt4.stBeamParams.astApertures[1].Height := fSize4;
+	stAprt4.stBeamParams.astApertures[1].Width := fSize4;
 	stAprt4.bValid := TRUE;
 	
 	stXCen.nRequestAssertionID := nTransitionAssertionID+6;
 	stXCen.bUseRawCounts := FALSE;
 	stXCen.stBeamParams := PMPS_GVL.cstFullBeam;
 	stXCen.bValid := TRUE;
-
+	
+	FFO.i_DevName := i_DevName;
 
 END_IF
 
@@ -96,6 +109,7 @@ fbStates(
     fbFFHWO:=fbFFHWO,
     nTransitionAssertionID:=nTransitionAssertionID,
 	stTransitionBeam:= PMPS_GVL.cst0RateBeam,
+	bArbiterEnabled := bArbiterEnabled,
 	tArbiterTimeout :=tArbiterTimeout,
     stMotionStage:=stYStage,
 	bEnable:=TRUE,
@@ -115,7 +129,11 @@ fbStates_X(
     stXCen:=stXCen);
 
 
-]]></ST>
+(*FAST FAULT*)
+FFO(i_xOK := bArbiterEnabled,
+    i_xReset := ,
+	i_xAutoReset :=,
+    io_fbFFHWO := fbFFHWO);]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

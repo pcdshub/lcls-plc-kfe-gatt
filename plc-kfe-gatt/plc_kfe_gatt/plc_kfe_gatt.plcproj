@@ -105,10 +105,17 @@
     <Compile Include="POUs\Test\FB_ILK_TEST.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Transmission\F_COEF_AR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Transmission\PRG_Transmission.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DUTs" />
     <Folder Include="GVLs" />
+    <Folder Include="POUs\Transmission" />
     <Folder Include="POUs\Test" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />

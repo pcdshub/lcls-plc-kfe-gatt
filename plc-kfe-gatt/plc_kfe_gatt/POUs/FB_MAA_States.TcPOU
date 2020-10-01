@@ -37,6 +37,7 @@ VAR
 	fDelta2: LREAL := 4;
 	fDelta3: LREAL := 5;
 	fDelta4: LREAL := 6;
+
 END_VAR
 VAR CONSTANT
     fVelocity: LREAL := 2.5;
@@ -91,28 +92,14 @@ Exec();
 enumGet := getState;
 enumSet := setState;
 
+
+
+
+
+
+
+
 ]]></ST>
     </Implementation>
-    <LineIds Name="FB_MAA_States">
-      <LineId Id="3" Count="1" />
-      <LineId Id="260" Count="0" />
-      <LineId Id="264" Count="4" />
-      <LineId Id="261" Count="1" />
-      <LineId Id="270" Count="5" />
-      <LineId Id="284" Count="5" />
-      <LineId Id="277" Count="0" />
-      <LineId Id="292" Count="0" />
-      <LineId Id="294" Count="4" />
-      <LineId Id="293" Count="0" />
-      <LineId Id="290" Count="1" />
-      <LineId Id="269" Count="0" />
-      <LineId Id="257" Count="2" />
-      <LineId Id="256" Count="0" />
-      <LineId Id="26" Count="0" />
-      <LineId Id="244" Count="0" />
-      <LineId Id="251" Count="3" />
-      <LineId Id="245" Count="1" />
-      <LineId Id="242" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

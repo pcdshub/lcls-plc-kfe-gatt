@@ -32,8 +32,15 @@
     '}
 	fbArbiter2   :   FB_Arbiter(2);
 
+
+    {attribute 'TcLinkTo' := ':=TIIB[PMPS_PRE]^IO Inputs^Requested Transmission'}
 	Req_Trans AT%I*: ST_PMPS_Attenuator_IO;
+	 {attribute 'TcLinkTo' := ':=TIIB[PMPS_PRE]^IO Outputs^Current_Transmission'}
 	Cur_Trans AT%Q*: ST_PMPS_Attenuator_IO;
+	{attribute 'pytmc' := '
+    pv: AT1K0:GAS:PhotonEnergy
+    '}
+    {attribute 'TcLinkTo' := ':=TIIB[PMPS_PRE]^IO Inputs^rPhotonEnergy'}
 	rPhotonEnergy AT%I*: REAL;
 
 	{attribute 'pytmc' := 'pv: AT1K0:GAS:VAC:OVRD_ON ;

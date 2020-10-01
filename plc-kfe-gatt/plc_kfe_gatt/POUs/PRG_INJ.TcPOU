@@ -59,15 +59,6 @@ VAR
 	FTrig: F_TRIG;
 		
 
-	{attribute 'pytmc' := '
-	pv: AT1K0:GAS:GAS_TYPE ;
-	type: mbbi ;
-	field: ZRST none ;
-	field: ONST N2;
-	field: TWST Ar ;
-	io: i
-	'}
-	SelectedGas: E_GasType;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -131,14 +122,14 @@ IF bInit
 THEN
 	(* init array with the interpolation points  *)
 	(* 	fIn					 |		fOut		*)
-	arrTable[1,1] := 0;		arrTable[1,2] := 15;
-	arrTable[2,1] := 0.00001;		arrTable[2,2] := 20;
-	arrTable[3,1] := 0.001024;		arrTable[3,2] := 30;
-	arrTable[4,1] :=  0.021;	    arrTable[4,2] := 40;
+	arrTable[1,1] := 0;		    arrTable[1,2] := 15;
+	arrTable[2,1] := 0.00001;	arrTable[2,2] := 20;
+	arrTable[3,1] := 0.001024;	arrTable[3,2] := 30;
+	arrTable[4,1] :=  0.021;	arrTable[4,2] := 40;
 	arrTable[5,1] :=  0.1;	    arrTable[5,2] := 50;
 	arrTable[6,1] := 0.8;		arrTable[6,2] := 60;
 	arrTable[7,1] := 1.9;		arrTable[7,2] := 64;
-	arrTable[8,1] := 2;		arrTable[8,2] := 66;
+	arrTable[8,1] := 2;		    arrTable[8,2] := 66;
 	arrTable[9,1] := 2.9;		arrTable[9,2] := 70;
 	arrTable[10,1] := 5.4;		arrTable[10,2] := 77;
 	arrTable[11,1] := 6.3;	    arrTable[11,2] := 78;
@@ -160,7 +151,7 @@ THEN
 	stCTRL_PID_PARAMS.tTn					:= T#500ms;		(*  Tn									*)
 	stCTRL_PID_PARAMS.tTv					:= T#200ms;	(*  Tv									*)
 	stCTRL_PID_PARAMS.tTd					:= T#100ms;	(*  Td									*)
-	stCTRL_PID_PARAMS.fOutMaxLimit			:=  10;			(* maximum output limit				*)
+	stCTRL_PID_PARAMS.fOutMaxLimit			:=  20;			(* maximum output limit				*)
 	stCTRL_PID_PARAMS.fOutMinLimit			:=  -100;			(* minimum output limit				*)
 
 	(* set the mode to ACTIVE --> normal operation *)

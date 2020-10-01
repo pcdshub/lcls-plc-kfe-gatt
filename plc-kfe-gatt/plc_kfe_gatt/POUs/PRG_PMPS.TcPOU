@@ -98,7 +98,13 @@ bAp4XS:= fbArbiter2.CheckRequestInPool(ID4+6);
 if (bRemove) THEN
  	GVL_ILK.fbArbiter1.RemoveRequest(nReqRM);
 	GVL_ILK.fbArbiter2.RemoveRequest(nReqRM);  
-END_IF]]></ST>
+END_IF
+
+
+
+
+(* Photon Energy to Aperture Size watcher*)
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>
