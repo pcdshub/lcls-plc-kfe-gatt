@@ -190,6 +190,14 @@ IF(FTrig.Q)THEN
 END_IF
 
 
+
+
+(*Assign set point to the controllers*)
+IF (xAutoOnMode) THEN
+	fSetpointValue := rRequiredPressureSP;
+END_IF
+
+
 fbCTRL_LIN_INTERPOLATION(
 	fIn:= fSetpointValue , 
 	fManValue:= fManValue , 
@@ -202,9 +210,6 @@ fbCTRL_LIN_INTERPOLATION(
 	eState=> , 
 	eErrorId=> , 
 	bError=> );
-
-
-
 
 
 (* call controller *)
