@@ -88,22 +88,22 @@ GCM_81(PG=> , i_rFULL_SCALE:= 0.25);
 IF (bGo) THEN
 	(*VRC US*)
 	IF ( fb_AT1K0_GAS_GPI_40.PG .rPRESS >= rVRC_US_SP ) THEN
-		IF (fb_AT1K0_GAS_VRC_50.M_IsOpen) THEN fb_AT1K0_GAS_VRC_60.M_Set_OPN_SW (TRUE);
+		IF (fb_AT1K0_GAS_VRC_50.M_IsOpen()) THEN fb_AT1K0_GAS_VRC_60.M_Set_OPN_SW (TRUE);
 			ELSE fb_AT1K0_GAS_VRC_50.M_Set_OPN_SW (TRUE);
 		END_IF
 	END_IF
 	
 	(*VRC DS*)
 	IF ( fb_AT1K0_GAS_GPI_110.PG .rPRESS >= rVRC_DS_SP ) THEN
-		IF (fb_AT1K0_GAS_VRC_100.M_IsOpen) THEN fb_AT1K0_GAS_VRC_90.M_Set_OPN_SW (TRUE);
+		IF (fb_AT1K0_GAS_VRC_100.M_IsOpen()) THEN fb_AT1K0_GAS_VRC_90.M_Set_OPN_SW (TRUE);
 			ELSE fb_AT1K0_GAS_VRC_100.M_Set_OPN_SW (TRUE);
 		END_IF
 	END_IF
 END_IF
 
 (*Gas Selection*)
-IF(VVC_71.M_IsOpen) THEN  SelectedGas := E_GasType.Argon;
-	ELSIF (VVC_72.M_IsOpen) THEN  SelectedGas := E_GasType.Nitrogen;
+IF(VVC_71.M_IsOpen()) THEN  SelectedGas := E_GasType.Argon;
+	ELSIF (VVC_72.M_IsOpen()) THEN  SelectedGas := E_GasType.Nitrogen;
 END_IF
 
 (* Gauge selection *)

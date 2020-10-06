@@ -47,7 +47,7 @@ VAR
 	bInit:BOOL := TRUE;
 	tArbiterTimeout: TIME:= T#10S;
 	FFO    :    FB_FastFault :=(
-        i_DevName := ,
+        i_DevName := 'AT1K0-MAA',
         i_Desc := 'Fault occurs when the PMPS Aribter is switched off for the aperture plate states BPTM',
         i_TypeCode := 16#1010);
 END_VAR
