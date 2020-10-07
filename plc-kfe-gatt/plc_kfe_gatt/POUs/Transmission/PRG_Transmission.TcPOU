@@ -12,7 +12,7 @@ VAR
 	fbCTRL_LIN_INTERPOLATION_N2					: FB_CTRL_LIN_INTERPOLATION;
 	stCTRL_LIN_INTERPOLATION_PARAMS_N2	: ST_CTRL_LIN_INTERPOLATION_PARAMS;
 	eMode							: E_CTRL_MODE;
-	bInit: BOOL;
+	bInit: BOOL :=TRUE;
 	rGasCellLength : REAL:= 1450.696;
 	rCalculatedTransmissionValue: LREAL;
 	rRequestedTransmissionValue: REAL;
