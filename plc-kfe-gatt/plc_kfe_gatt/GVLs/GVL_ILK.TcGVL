@@ -62,7 +62,7 @@
 	field: PREC 2;
 	field: EGU "TORR";
 	'}
-	rVRC_US_SP :REAL; 
+	rVRC_US_SP :REAL:=0.001; 
 	
 	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:DS:SP;
 	field: HOPR 1000;
@@ -70,7 +70,7 @@
 	field: PREC 2;
 	field: EGU "TORR";
 	'}
-	rVRC_DS_SP :REAL; 
+	rVRC_DS_SP :REAL:=0.001; 
 		
 	
 (* Interlock related bits, local to the PLC*)

@@ -70,8 +70,8 @@ VCN_70(i_xExtIlkOK := (US_MAA_OK AND US_Turbo_Valves_Open AND US_Turbo_Running)
 
 VVC_71(i_xExtILK_OK:= VVC_72.M_IsClosed() AND ((US_MAA_OK AND (*US_Roughing_Valves_Open AND*) US_Turbo_Valves_Open AND US_Turbo_Running) 
 						AND (DS_MAA_OK AND (*DS_Roughing_Valves_Open AND*) DS_Turbo_Valves_Open AND DS_Turbo_Running)), i_xOverrideMode:= , iq_stValve=> );
-VVC_72(i_xExtILK_OK:= VVC_71.M_IsClosed() AND ((US_MAA_OK AND (*US_Roughing_Valves_Open AND US_Turbo_Valves_Open AND *)US_Turbo_Running) 
-						AND (DS_MAA_OK AND (*DS_Roughing_Valves_Open AND DS_Turbo_Valves_Open AND*) DS_Turbo_Running)), i_xOverrideMode:= , iq_stValve=> );
+VVC_72(i_xExtILK_OK:= VVC_71.M_IsClosed() AND ((US_MAA_OK AND (*US_Roughing_Valves_Open AND *)US_Turbo_Valves_Open AND US_Turbo_Running) 
+						AND (DS_MAA_OK AND (*DS_Roughing_Valves_Open AND *)DS_Turbo_Valves_Open AND DS_Turbo_Running)), i_xOverrideMode:= , iq_stValve=> );
 
 //Gauges
 GCM_70.M_SetBits(30518);
@@ -167,10 +167,10 @@ END_IF
 
     fSetpointValue:= LIMIT(0,fSetpointValue,10);
 	
-(*if (NOT (VVC_71.i_xExtILK_OK OR VVC_72.i_xExtILK_OK) OR (VVC_71.M_IsClosed() OR VVC_72.M_IsClosed() )) THEN 
+if (VVC_71.M_IsClosed() AND VVC_72.M_IsClosed() ) THEN 
 		//eMode	:= eCTRL_MODE_PASSIVE;
 		fSetpointValue :=0; 
-END_IF *)
+END_IF 
 
 if (bGo) THEN
 	IF (bReset) THEN

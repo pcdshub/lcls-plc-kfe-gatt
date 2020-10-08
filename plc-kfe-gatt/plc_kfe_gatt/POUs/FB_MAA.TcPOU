@@ -13,7 +13,7 @@ VAR_INPUT
         pv: :PMPS:AribterEnabled
         io: io
     '}
-	bArbiterEnabled: BOOL;
+	bArbiterEnabled: BOOL:=TRUE;;
 	 nTransitionAssertionID: UDINT;
 	stAprt1: DUT_PositionState;
 	stAprt2: DUT_PositionState;
