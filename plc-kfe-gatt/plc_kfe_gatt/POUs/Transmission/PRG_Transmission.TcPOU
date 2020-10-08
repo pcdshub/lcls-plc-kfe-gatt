@@ -14,7 +14,15 @@ VAR
 	eMode							: E_CTRL_MODE;
 	bInit: BOOL :=TRUE;
 	rGasCellLength : REAL:= 1450.696;
+	{attribute 'pytmc' := '
+    pv: AT1K0:GAS:TRANS;
+	io:i;
+    '}
 	rCalculatedTransmissionValue: LREAL;
+	{attribute 'pytmc' := '
+    pv: AT1K0:GAS:TRANS_REQ;
+	io:i;
+    '}
 	rRequestedTransmissionValue: REAL;
 	
 	iTorr: INT :=750;
