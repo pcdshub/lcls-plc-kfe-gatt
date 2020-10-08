@@ -10,7 +10,7 @@ VAR_INPUT
 	    field: ONST 5.5mm;
 	    field: TWST 8mm;
 	    field: THST 10mm;
-	    field: FRST 12mm;
+	    field: FRST 13mm;
     '}
     enumSet: E_MAA_states;
     bStatesLock: BOOL;
@@ -27,7 +27,7 @@ VAR_OUTPUT
 	    field: ONST 5.5mm;
 	    field: TWST 8mm;
 	    field: THST 10mm;
-	    field: FRST 12mm;
+	    field: FRST 13mm;
     '}
     enumGet: E_MAA_States;	
 END_VAR
@@ -40,7 +40,7 @@ VAR
 
 END_VAR
 VAR CONSTANT
-    fVelocity: LREAL := 2.5;
+    fVelocity: LREAL := 0.5;
     fAccel: LREAL := 200;
     fDecel: LREAL := 25;
 END_VAR
@@ -71,7 +71,7 @@ END_VAR
     stAprt3.fDecel := fAccel;
     stAprt3.bMoveOk := TRUE;
 	
-	stAprt4.sName := '12mm';
+	stAprt4.sName := '13mm';
     stAprt4.fVelocity := fVelocity;
     stAprt4.fDelta := fDelta4;
     stAprt4.fAccel := fAccel;

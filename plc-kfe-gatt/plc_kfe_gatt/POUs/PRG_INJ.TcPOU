@@ -15,7 +15,7 @@ VAR
 	 field: ONAM START; 
 	 io: io;
 	'}
-	bGo: BOOL; 
+	bGo: BOOL:=FALSE; 
  	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:RESET;
 	 field: ZNAM FALSE; 
 	 field: ONAM TRUE; 
@@ -109,10 +109,12 @@ END_IF
 (* Gauge selection *)
 (*Assign reading to psuedo gauge*)
 IF (fb_AT1K0_GAS_GCC_80.IG.rPRESS <=0.0001) AND (fb_AT1K0_GAS_GCC_80.IG.rPRESS >0) THEN GCM_82 := fb_AT1K0_GAS_GCC_80.IG;
-	ELSIF (fb_AT1K0_GAS_GPI_80.PG.rPRESS <= 0.001) THEN GCM_82 := fb_AT1K0_GAS_GPI_80.PG;
+	ELSIF (fb_AT1K0_GAS_GPI_80.PG.rPRESS <= 0.001) AND (fb_AT1K0_GAS_GPI_80.PG.rPRESS > 0.0001) THEN GCM_82 := fb_AT1K0_GAS_GPI_80.PG;
 		ELSIF ( GCM_81.PG.rPRESS < 0.25 ) THEN GCM_82 := GCM_81.PG;
 			ElSE GCM_82 := GCM_80.PG;
 END_IF
+
+
 
 
 

@@ -1602,8 +1602,8 @@ External Setpoint Generation:
 						<OtherSettings AllowMotionCmdToSlave="true"/>
 					</AxisPara>
 					<Encoder Name="Enc" EncType="7">
-						<EncPara ScaleFactorNumerator="0.001452636719" Offset="-47.5985" MaxCount="#x0000ffff" ReferenceSystem="1">
-							<SoftEndMinControl Enable="true" Range="-47.8"/>
+						<EncPara ScaleFactorNumerator="0.001490478515625" Offset="-48.83" MaxCount="#x0000ffff" ReferenceSystem="1">
+							<SoftEndMinControl Enable="true" Range="-48.8"/>
 							<SoftEndMaxControl Enable="true"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
 						</EncPara>
@@ -2073,9 +2073,9 @@ External Setpoint Generation:
 						<OtherSettings AllowMotionCmdToSlave="true"/>
 					</AxisPara>
 					<Encoder Name="Enc" EncType="7">
-						<EncPara ScaleFactorNumerator="0.001440429688" Offset="-47.056" MaxCount="#x0000ffff" ReferenceSystem="1">
-							<SoftEndMinControl Enable="true" Range="-47.25"/>
-							<SoftEndMaxControl Enable="true" Range="0.01"/>
+						<EncPara ScaleFactorNumerator="0.001524353027344" Offset="-49.38" MaxCount="#x0000ffff" ReferenceSystem="1">
+							<SoftEndMinControl Enable="true" Range="-48.99"/>
+							<SoftEndMaxControl Enable="true"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
 						</EncPara>
 						<Vars VarGrpType="1">
@@ -2546,7 +2546,7 @@ External Setpoint Generation:
 					<Encoder Name="Enc" EncType="7">
 						<EncPara ScaleFactorNumerator="0.001514892578125" Offset="-49.49" MaxCount="#x0000ffff" ReferenceSystem="1">
 							<SoftEndMinControl Enable="true" Range="-49.27"/>
-							<SoftEndMaxControl Enable="true" Range="0.027"/>
+							<SoftEndMaxControl Enable="true"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
 						</EncPara>
 						<Vars VarGrpType="1">
@@ -2706,7 +2706,7 @@ Drive Status 4 (manually linked):
 					</Drive>
 					<Controller Name="Ctrl" CtrType="1">
 						<CtrPara PriorControlFactor="1">
-							<PosDiffControl Range="0.05"/>
+							<PosDiffControl Range="0.2"/>
 							<Observer BandWidth="20"/>
 						</CtrPara>
 					</Controller>

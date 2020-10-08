@@ -44,13 +44,13 @@ IF (bInit) THEN
 	fbMAA_1_States.nTransitionAssertionID := nTransitionAssertionRootID+10;
 	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
 	// Aperture 1
-	fbMAA_1_States.stAprt1.fPosition :=  -0.05;
+	fbMAA_1_States.stAprt1.fPosition :=  -2.08;
 	// Aperture 2
-	fbMAA_1_States.stAprt2.fPosition := -14.5534;
+	fbMAA_1_States.stAprt2.fPosition := -16.38;
 	// Aperture 3
-	fbMAA_1_States.stAprt3.fPosition := -30.0728;
+	fbMAA_1_States.stAprt3.fPosition := -31.65;
 	// Aperture 4
-	fbMAA_1_States.stAprt4.fPosition := -47.17;
+	fbMAA_1_States.stAprt4.fPosition := -48.7;
 	// X Cen
 	fbMAA_1_States.stXCen.fPosition := 0;// -2.083;
 	 
@@ -59,13 +59,13 @@ IF (bInit) THEN
 	fbMAA_2_States.nTransitionAssertionID := nTransitionAssertionRootID+20;
 	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
 	// Aperture 1
-	fbMAA_2_States.stAprt1.fPosition :=  0;
+	fbMAA_2_States.stAprt1.fPosition :=  -1.99;
 	// Aperture 2
-	fbMAA_2_States.stAprt2.fPosition := -14.5034;
+	fbMAA_2_States.stAprt2.fPosition := -16.57;
 	// Aperture 3
-	fbMAA_2_States.stAprt3.fPosition := -30.0228;
+	fbMAA_2_States.stAprt3.fPosition := -31.93;
 	// Aperture 4
-	fbMAA_2_States.stAprt4.fPosition := -47.1;
+	fbMAA_2_States.stAprt4.fPosition := -48.96;
 	// X Cen
 	fbMAA_2_States.stXCen.fPosition :=0;//-0.77;
 	

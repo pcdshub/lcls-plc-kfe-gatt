@@ -39,10 +39,10 @@ VAR
     '}
     fbStates_X: FB_MAA_States_X;
 	
-	fSize1: LREAL:=25; //mm
-	fSize2: LREAL:=5; //mm
-	fSize3: LREAL:=7; //mm
-	fSize4: LREAL:=9; //mm
+	fSize1: REAL:=25; //mm
+	fSize2: REAL:=5; //mm
+	fSize3: REAL:=7; //mm
+	fSize4: REAL:=9; //mm
 	
 	bInit:BOOL := TRUE;
 	tArbiterTimeout: TIME:= T#10S;
