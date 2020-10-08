@@ -29,7 +29,7 @@ VAR
 	 '}
 	bError : BOOL; 
 	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp1 '}
-	fKp1 : REAL:= 0.3; 
+	fKp1 : REAL:= 0.5; 
 	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Tn1 '}
 	fTn1 : REAL:= 0.5; 
 	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp2 '}
@@ -125,7 +125,7 @@ THEN
 	(* init array with the interpolation points  *)
 	(* 	fIn					 |		fOut		*)
 	arrTable[1,1] := 0;		    arrTable[1,2] := 15;
-	arrTable[2,1] := 0.00001;	arrTable[2,2] := 20;
+	arrTable[2,1] := 0.00001;	arrTable[2,2] := 18;
 	arrTable[3,1] := 0.001024;	arrTable[3,2] := 30;
 	arrTable[4,1] :=  0.021;	arrTable[4,2] := 40;
 	arrTable[5,1] :=  0.1;	    arrTable[5,2] := 50;
