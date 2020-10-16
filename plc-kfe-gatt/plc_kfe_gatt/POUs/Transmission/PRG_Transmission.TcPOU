@@ -24,7 +24,12 @@ VAR
 	io:i;
     '}
 	rRequestedTransmissionValue: REAL;
-	
+	{attribute 'pytmc' := '
+    pv: AT1K0:GAS:TRANS_SP;
+	io:i;
+    '}
+	rTransmissionSP: LREAL;
+	TransmissionValue: REAL;
 	iTorr: INT :=750;
 	rR_Ar:REAL := 1.66e-3;
 	rR_N2:REAL := 1.16e-3;
@@ -43,10 +48,22 @@ Cur_Trans.nTran:= TO_UINT(rCalculatedTransmissionValue*100);
 //Cur_Trans.xAttOK := 1;
 (*Calculate Pressure setpoint from requested transmission value*)
 rRequestedTransmissionValue := TO_REAL(Req_Trans.nTran/100);
+
+(*Transmission Request selcetion*)
+IF (xPMPSMode) THEN
+	TransmissionValue := TO_REAL(Req_Trans.nTran/100);
+	ELSE TransmissionValue := rTransmissionSP;
+END_IF
+
 IF ( SelectedGas = E_GasType.Argon) THEN
-		rRequiredPressureSP := (-LN(rRequestedTransmissionValue)/(fbCTRL_LIN_INTERPOLATION_Ar.fOut*rR_Ar*rGasCellLength))*iTorr;
+	   if (fbCTRL_LIN_INTERPOLATION_Ar.fOut <>0) THEN
+		rRequiredPressureSP := (-LN(TransmissionValue)/(fbCTRL_LIN_INTERPOLATION_Ar.fOut*rR_Ar*rGasCellLength))*iTorr;
+		END_IF
 	ELSE 
-		rRequiredPressureSP := (-LN(rRequestedTransmissionValue)/(fbCTRL_LIN_INTERPOLATION_N2.fOut*rR_N2*rGasCellLength))*iTorr;
+		IF (fbCTRL_LIN_INTERPOLATION_N2.fOut <>0) THEN
+			rRequiredPressureSP := (-LN(TransmissionValue)/(fbCTRL_LIN_INTERPOLATION_N2.fOut*rR_N2*rGasCellLength))*iTorr;
+		END_IF
+		
 END_IF
 
 ]]></ST>
@@ -184,7 +201,7 @@ END_IF
 
 fbCTRL_LIN_INTERPOLATION_Ar(
 	fIn:= rPhotonEnergy , 
-	fManValue:= 0 , 
+	fManValue:= 1 , 
 	bExtrapolate:= TRUE, 
 	eMode:= eMode, 
 	stParams:= stCTRL_LIN_INTERPOLATION_PARAMS_Ar,
@@ -197,7 +214,7 @@ fbCTRL_LIN_INTERPOLATION_Ar(
 
 fbCTRL_LIN_INTERPOLATION_N2(
 	fIn:= rPhotonEnergy , 
-	fManValue:= 0 , 
+	fManValue:= 1 , 
 	bExtrapolate:= TRUE, 
 	eMode:= eMode, 
 	stParams:= stCTRL_LIN_INTERPOLATION_PARAMS_N2,
