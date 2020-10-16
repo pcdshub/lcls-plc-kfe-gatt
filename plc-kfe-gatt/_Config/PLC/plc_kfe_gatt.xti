@@ -3700,6 +3700,14 @@ IO]]>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
+					<Name>GVL_ILK.g_FastFaultOutput1.q_xFastFaultOut</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_ILK.g_FastFaultOutput2.q_xFastFaultOut</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
 					<Name>GVL_Devices.fb_AT1K0_GAS_VRC_10.q_xOPN_DO</Name>
 					<Type>BOOL</Type>
 				</Var>
@@ -4199,10 +4207,6 @@ IO]]>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>GVL_ILK.g_FastFaultOutput1.q_xFastFaultOut</Name>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
 					<Name>GVL_ILK.Cur_Trans</Name>
 					<Type GUID="{D01709AA-9B4A-464A-B4D1-4BF476CFE7DE}">ST_PMPS_Attenuator_IO</Type>
 				</Var>
@@ -4362,10 +4366,6 @@ IO]]>
 					<Comment>
 						<![CDATA[ Disable Gauge High Voltage when True // 'TcLinkTo' (EL2794) ^Output]]>
 					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_ILK.g_FastFaultOutput2.q_xFastFaultOut</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>

@@ -22,11 +22,7 @@ VAR_INPUT
 	stXCen: DUT_PositionState;
 	i_DevName: STRING:= 'AT1K0-MAA';
 END_VAR
-VAR
-
-	fbYStage: FB_MotionStage;
-	fbXStage: FB_MotionStage;
-	
+VAR_OUTPUT	
 	 {attribute 'pytmc' := '
         pv: Y:STATE
         io: io
@@ -38,8 +34,14 @@ VAR
         io: io
     '}
     fbStates_X: FB_MAA_States_X;
+END_VAR
+VAR
+
+	fbYStage: FB_MotionStage;
+	fbXStage: FB_MotionStage;
 	
-	fSize1: REAL:=25; //mm
+	
+	fSize1: REAL:=4; //mm
 	fSize2: REAL:=5; //mm
 	fSize3: REAL:=7; //mm
 	fSize4: REAL:=9; //mm

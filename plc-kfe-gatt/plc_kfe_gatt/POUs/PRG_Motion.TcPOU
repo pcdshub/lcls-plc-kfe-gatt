@@ -44,7 +44,7 @@ IF (bInit) THEN
 	fbMAA_1_States.nTransitionAssertionID := nTransitionAssertionRootID+10;
 	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
 	// Aperture 1
-	fbMAA_1_States.stAprt1.fPosition :=  -2.08;
+	fbMAA_1_States.stAprt1.fPosition :=  -1.3;
 	// Aperture 2
 	fbMAA_1_States.stAprt2.fPosition := -16.38;
 	// Aperture 3
@@ -59,7 +59,7 @@ IF (bInit) THEN
 	fbMAA_2_States.nTransitionAssertionID := nTransitionAssertionRootID+20;
 	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
 	// Aperture 1
-	fbMAA_2_States.stAprt1.fPosition :=  -1.99;
+	fbMAA_2_States.stAprt1.fPosition :=  -1.4;
 	// Aperture 2
 	fbMAA_2_States.stAprt2.fPosition := -16.57;
 	// Aperture 3
@@ -74,7 +74,7 @@ IF (bInit) THEN
 	fbMAA_3_States.nTransitionAssertionID := nTransitionAssertionRootID+30;
 	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
 	// Aperture 1
-	fbMAA_3_States.stAprt1.fPosition :=  -2;
+	fbMAA_3_States.stAprt1.fPosition :=  -1.15;
 	// Aperture 2
 	fbMAA_3_States.stAprt2.fPosition := -16.2;
 	// Aperture 3
@@ -89,7 +89,7 @@ IF (bInit) THEN
 	fbMAA_4_States.nTransitionAssertionID := nTransitionAssertionRootID+40;
 	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
 	// Aperture 1
-	fbMAA_4_States.stAprt1.fPosition :=  -2.09;
+	fbMAA_4_States.stAprt1.fPosition :=  -1;
 	// Aperture 2
 	fbMAA_4_States.stAprt2.fPosition := -16.6;
 	// Aperture 3
@@ -130,7 +130,12 @@ fbMAA_4_States(
     stYStage := Main.M8,
     stXStage := Main.M7);
 	
-	
+
+(*Set global OK bit*)
+US_MAA_OK := (fbMAA_1_States.fbStates.enumGet = fbMAA_2_States.fbStates.enumGet) AND (fbMAA_2_States.fbStates.enumGet = fbMAA_3_States.fbStates.enumGet)AND( fbMAA_3_States.fbStates.enumGet = fbMAA_4_States.fbStates.enumGet) AND NOT (fbMAA_1_States.fbStates.bError) AND NOT (fbMAA_2_States.fbStates.bError);
+DS_MAA_OK := (fbMAA_3_States.fbStates.enumGet = fbMAA_4_States.fbStates.enumGet) AND NOT (fbMAA_3_States.fbStates.bError) AND NOT (fbMAA_4_States.fbStates.bError);
+
+IF (US_MAA_OK AND DS_MAA_OK) THEN 	eSelectedAprt:=fbMAA_1_States.fbStates.enumGet; END_IF;
 ////////////////////
 //Set the right state i.e. apperture based on the current beam size/
 /////
