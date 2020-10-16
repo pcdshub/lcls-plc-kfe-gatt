@@ -32,11 +32,11 @@
     '}
 	fbArbiter2   :   FB_Arbiter(2);
 	
-	{attribute 'pytmc' := 'pv: AT1K0:GAS:AUTO_ON ;
- 	field: ZNAM Override OFF; 
-	field: ONAM Override ON; 
+	{attribute 'pytmc' := 'pv: AT1K0:GAS:MODE ;
+ 	field: ZNAM Local; 
+	field: ONAM PMPS; 
 	 io: io;'}
-	xAutoOnMode	:	BOOL; 
+	xPMPSMode	:	BOOL; 
 
     {attribute 'TcLinkTo' := ':=TIIB[PMPS_PRE]^IO Inputs^Requested Transmission'}
 	Req_Trans AT%I*: ST_PMPS_Attenuator_IO;

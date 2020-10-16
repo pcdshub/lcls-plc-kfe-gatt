@@ -28,12 +28,17 @@ VAR
 	 io: io;
 	 '}
 	bError : BOOL; 
+	// different gains for different apertures
 	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp1 '}
-	fKp1 : REAL:= 0.5; 
+	fKp1 : REAL:= 0.3; 
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp2 '}
+	fKp2 : REAL:= 0.5; 
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp3 '}
+	fKp3 : REAL:= 0.6; 
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp4 '}
+	fKp4 : REAL:= 1.0; 
 	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Tn1 '}
 	fTn1 : REAL:= 0.5; 
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp2 '}
-	fKp2 : REAL:= 0.01; 
 	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Tn2 '}
 	fTn2 : REAL:= 0.5; 
 	arrTable	: ARRAY[1..15,1..2] OF FLOAT;
@@ -57,7 +62,10 @@ VAR
 	pid_on :TON;
 	wait : time := T#10S;
 	FTrig: F_TRIG;
-		
+	fTrig_PMPS: F_TRIG;
+	rTrig_PMPS: R_TRIG;	
+	
+
 
 END_VAR
 ]]></Declaration>
@@ -82,7 +90,7 @@ GCM_80(PG=> , i_rFULL_SCALE:= 20);
 GCM_81(PG=> , i_rFULL_SCALE:= 0.25);
 
 
-
+(*Automation of other devices*)
 (*When to Open the VRC Valves to the MAA chambers*)
 (*When PID is ON*)
 IF (bGo) THEN
@@ -99,6 +107,9 @@ IF (bGo) THEN
 			ELSE fb_AT1K0_GAS_VRC_100.M_Set_OPN_SW (TRUE);
 		END_IF
 	END_IF
+	ELSE
+		//Try to switch on the GCC in the Gas cell for accurate transmission calculation
+		IF  NOT(fb_AT1K0_GAS_GCC_80.IG.i_xHV_ON) THEN fb_AT1K0_GAS_GCC_80.M_HVE(TRUE); END_IF;
 END_IF
 
 (*Gas Selection*)
@@ -114,59 +125,24 @@ IF (fb_AT1K0_GAS_GCC_80.IG.rPRESS <=0.0001) AND (fb_AT1K0_GAS_GCC_80.IG.rPRESS >
 			ElSE GCM_82 := GCM_80.PG;
 END_IF
 
-
-
-
-
-//control Loop and FeedForward table initialisation
-(*Iniitialization*)
-IF bInit
-THEN
-	(* init array with the interpolation points  *)
-	(* 	fIn					 |		fOut		*)
-	arrTable[1,1] := 0;		    arrTable[1,2] := 15;
-	arrTable[2,1] := 0.00001;	arrTable[2,2] := 18;
-	arrTable[3,1] := 0.001024;	arrTable[3,2] := 30;
-	arrTable[4,1] :=  0.021;	arrTable[4,2] := 40;
-	arrTable[5,1] :=  0.1;	    arrTable[5,2] := 50;
-	arrTable[6,1] := 0.8;		arrTable[6,2] := 60;
-	arrTable[7,1] := 1.9;		arrTable[7,2] := 64;
-	arrTable[8,1] := 2;		    arrTable[8,2] := 66;
-	arrTable[9,1] := 2.9;		arrTable[9,2] := 70;
-	arrTable[10,1] := 5.4;		arrTable[10,2] := 77;
-	arrTable[11,1] := 6.3;	    arrTable[11,2] := 78;
-	arrTable[12,1] :=7.5;	    arrTable[12,2] := 80;
-	arrTable[13,1] :=8.2;	    arrTable[13,2] := 82;
-	arrTable[14,1] :=8.6;	    arrTable[14,2] := 84;
-	arrTable[15,1] :=9.5;	    arrTable[15,2] := 86;
-
-	(* init parameter struct *)
-	stCTRL_LIN_INTERPOLATION_PARAMS.tCtrlCycleTime					:= T#10ms;
-	stCTRL_LIN_INTERPOLATION_PARAMS.tTaskCycleTime					:= T#10ms;
-	stCTRL_LIN_INTERPOLATION_PARAMS.nDataTable_NumberOfRows		:= INT_TO_UINT(15);	
-
-	(*FBCNTRL*)
-	(* init parameter struct *)
-	stCTRL_PID_PARAMS.tCtrlCycleTime		:= T#10ms;
-	stCTRL_PID_PARAMS.tTaskCycleTime		:= T#10ms;
-	stCTRL_PID_PARAMS.fKp					:= fKp1;			(* proportional gain Kp				*)
-	stCTRL_PID_PARAMS.tTn					:= T#500ms;		(*  Tn									*)
-	stCTRL_PID_PARAMS.tTv					:= T#200ms;	(*  Tv									*)
-	stCTRL_PID_PARAMS.tTd					:= T#100ms;	(*  Td									*)
-	stCTRL_PID_PARAMS.fOutMaxLimit			:=  20;			(* maximum output limit				*)
-	stCTRL_PID_PARAMS.fOutMinLimit			:=  -100;			(* minimum output limit				*)
-
-	(* set the mode to ACTIVE --> normal operation *)
-	eMode							:= eCTRL_MODE_PASSIVE   ;					
-	(* reset the init flag *)
-	bInit							:= FALSE;
-END_IF
-(* set the addresses *)
-	stCTRL_LIN_INTERPOLATION_PARAMS.pDataTable_ADR			:= ADR(arrTable);
-	stCTRL_LIN_INTERPOLATION_PARAMS.nDataTable_SIZEOF		:= SIZEOF(arrTable);
-
-    fSetpointValue:= LIMIT(0,fSetpointValue,10);
+(* Gain selection *)
+CASE eSelectedAprt OF
+	E_MAA_States.Aprt1:
+		stCTRL_PID_PARAMS.fKp					:= fKp1;
+	E_MAA_States.Aprt2:
+		stCTRL_PID_PARAMS.fKp					:= fKp2;
+	E_MAA_States.Aprt3:
+		stCTRL_PID_PARAMS.fKp					:= fKp3;
+	E_MAA_States.Aprt4:
+		stCTRL_PID_PARAMS.fKp					:= fKp4;	
+END_CASE
 	
+(*Setpoint Validation*)
+// As calculated by the PRG_INJ
+fSetpointValue := rRequiredPressureSP;
+fSetpointValue:= LIMIT(0,fSetpointValue,10);
+	
+(*Interlock setpoint reset*)
 if (VVC_71.M_IsClosed() AND VVC_72.M_IsClosed() ) THEN 
 		//eMode	:= eCTRL_MODE_PASSIVE;
 		fSetpointValue :=0; 
@@ -189,14 +165,6 @@ IF(FTrig.Q)THEN
 		eMode							:= eCTRL_MODE_PASSIVE;
 		VCN_70.M_ValveControl(CloseValve);
 		fSetpointValue :=0;
-END_IF
-
-
-
-
-(*Assign set point to the controllers*)
-IF (xAutoOnMode) THEN
-	fSetpointValue := rRequiredPressureSP;
 END_IF
 
 
@@ -242,22 +210,64 @@ stCTRL_DEADBAND_PARAMS.fThreshold	:=  fSetpointValue*0.0016 ;
 
 bError := fbCTRL_PID.bError OR fbCTRL_LIN_INTERPOLATION.bError;
 				
-
-	
-
-// or NOT???
-
-//stCTRL_PID_PARAMS.bDInTheFeedbackPath := fbCTRL_DEADBAND.bInIsUnderThreshold;
-
-
-//timer
-(*pid_on(IN:=, PT:= wait, Q=>, ET =>);
-IF (pid_on.Q) THEN eMode:= eCTRL_MODE_ACTIVE; pid_on.IN := FALSE; END_IF; //eCTRL_MODE_TUNE????*)
-
-
-
+// Turn the PID on rising edge of the PMPSMode and off at falling edge
+fTrig_PMPS(CLK:= xPMPSMode);
+rTrig_PMPS(CLK:= xPMPSMode);
+IF (xPMPSMode) THEN bGo := TRUE; END_IF	
+IF (fTrig_PMPS.Q) THEN bGo := FALSE; END_IF
+//IF (rTrig_PMPS.Q) THEN bGo := TRUE; END_IF
 
 ]]></ST>
     </Implementation>
+    <Action Name="ACT_Init" Id="{34882f0d-6946-4b6d-ab99-e24f4514a23d}">
+      <Implementation>
+        <ST><![CDATA[//control Loop and FeedForward table initialisation
+(*Iniitialization*)
+IF bInit
+THEN
+	(* init array with the interpolation points  *)
+	(* 	fIn					 |		fOut		*)
+	arrTable[1,1] := 0;		    arrTable[1,2] := 12;
+	arrTable[2,1] := 0.00001;	arrTable[2,2] := 18;
+	arrTable[3,1] := 0.001024;	arrTable[3,2] := 30;
+	arrTable[4,1] :=  0.021;	arrTable[4,2] := 40;
+	arrTable[5,1] :=  0.1;	    arrTable[5,2] := 50;
+	arrTable[6,1] := 0.8;		arrTable[6,2] := 60;
+	arrTable[7,1] := 1.5;		arrTable[7,2] := 64;
+	arrTable[8,1] := 2;		    arrTable[8,2] := 66;
+	arrTable[9,1] := 2.9;		arrTable[9,2] := 68;
+	arrTable[10,1] := 5.4;		arrTable[10,2] := 77;
+	arrTable[11,1] := 6.9;	    arrTable[11,2] := 78;
+	arrTable[12,1] :=9;	    arrTable[12,2] := 80;
+	arrTable[13,1] :=9.85;	    arrTable[13,2] := 82;
+	arrTable[14,1] :=9.9;	    arrTable[14,2] := 84;
+	arrTable[15,1] :=10;	    arrTable[15,2] := 86;
+
+	(* init parameter struct *)
+	stCTRL_LIN_INTERPOLATION_PARAMS.tCtrlCycleTime					:= T#10ms;
+	stCTRL_LIN_INTERPOLATION_PARAMS.tTaskCycleTime					:= T#10ms;
+	stCTRL_LIN_INTERPOLATION_PARAMS.nDataTable_NumberOfRows		:= INT_TO_UINT(15);	
+
+	(*FBCNTRL*)
+	(* init parameter struct *)
+	stCTRL_PID_PARAMS.tCtrlCycleTime		:= T#10ms;
+	stCTRL_PID_PARAMS.tTaskCycleTime		:= T#10ms;
+	stCTRL_PID_PARAMS.fKp					:= fKp1;			(* proportional gain Kp				*)
+	stCTRL_PID_PARAMS.tTn					:= T#500ms;		(*  Tn									*)
+	stCTRL_PID_PARAMS.tTv					:= T#200ms;	(*  Tv									*)
+	stCTRL_PID_PARAMS.tTd					:= T#100ms;	(*  Td									*)
+	stCTRL_PID_PARAMS.fOutMaxLimit			:=  20;			(* maximum output limit				*)
+	stCTRL_PID_PARAMS.fOutMinLimit			:=  -100;			(* minimum output limit				*)
+
+	(* set the mode to ACTIVE --> normal operation *)
+	eMode							:= eCTRL_MODE_PASSIVE   ;					
+	(* reset the init flag *)
+	bInit							:= FALSE;
+END_IF
+(* set the addresses *)
+	stCTRL_LIN_INTERPOLATION_PARAMS.pDataTable_ADR			:= ADR(arrTable);
+	stCTRL_LIN_INTERPOLATION_PARAMS.nDataTable_SIZEOF	:= SIZEOF(arrTable);]]></ST>
+      </Implementation>
+    </Action>
   </POU>
 </TcPlcObject>

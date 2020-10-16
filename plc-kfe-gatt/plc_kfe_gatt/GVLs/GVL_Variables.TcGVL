@@ -18,6 +18,7 @@
 	field: EGU "TORR";
 	'}
 	rRequiredPressureSP: REAL;
+	eSelectedAprt:E_MAA_States;
 END_VAR
 
 //xSystemOverrideMode : BOOL; (* Global system override for the prototype section*)
