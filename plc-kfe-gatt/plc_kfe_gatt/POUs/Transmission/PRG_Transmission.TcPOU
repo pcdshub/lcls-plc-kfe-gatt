@@ -14,22 +14,9 @@ VAR
 	eMode							: E_CTRL_MODE;
 	bInit: BOOL :=TRUE;
 	rGasCellLength : REAL:= 1450.696;
-	{attribute 'pytmc' := '
-    pv: AT1K0:GAS:TRANS;
-	io:i;
-    '}
-	rCalculatedTransmissionValue: LREAL;
-	{attribute 'pytmc' := '
-    pv: AT1K0:GAS:TRANS_REQ;
-	io:i;
-    '}
-	rRequestedTransmissionValue: REAL;
-	{attribute 'pytmc' := '
-    pv: AT1K0:GAS:TRANS_SP;
-	io:i;
-    '}
-	rTransmissionSP: LREAL;
-	TransmissionValue: REAL;
+
+	
+	tNewTransmission: R_TRIG;
 	iTorr: INT :=750;
 	rR_Ar:REAL := 1.66e-3;
 	rR_N2:REAL := 1.16e-3;
@@ -65,6 +52,8 @@ IF ( SelectedGas = E_GasType.Argon) THEN
 		END_IF
 		
 END_IF
+
+
 
 ]]></ST>
     </Implementation>

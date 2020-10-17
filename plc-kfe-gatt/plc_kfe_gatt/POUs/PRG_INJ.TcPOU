@@ -65,7 +65,8 @@ VAR
 	fTrig_PMPS: F_TRIG;
 	rTrig_PMPS: R_TRIG;	
 	
-
+	rtAction : R_TRIG;
+	rtTrans: R_TRIG;
 
 END_VAR
 ]]></Declaration>
@@ -137,9 +138,17 @@ CASE eSelectedAprt OF
 		stCTRL_PID_PARAMS.fKp					:= fKp4;	
 END_CASE
 	
+
+
+(* On change transmission reset *)
+IF( OldTransmissionValue <> TransmissionValue) THEN
+	OldTransmissionValue := TransmissionValue;
+	// change setpoint
+	// As calculated by the PRG_INJ
+	fSetpointValue := rRequiredPressureSP;
+	fbLogger(sMsg:='AT1K0 new transmission request.', eSevr:=TcEventSeverity.Info);
+END_IF
 (*Setpoint Validation*)
-// As calculated by the PRG_INJ
-fSetpointValue := rRequiredPressureSP;
 fSetpointValue:= LIMIT(0,fSetpointValue,10);
 	
 (*Interlock setpoint reset*)
@@ -217,7 +226,7 @@ IF (xPMPSMode) THEN bGo := TRUE; END_IF
 IF (fTrig_PMPS.Q) THEN bGo := FALSE; END_IF
 //IF (rTrig_PMPS.Q) THEN bGo := TRUE; END_IF
 
-]]></ST>
+ACT_Logger();]]></ST>
     </Implementation>
     <Action Name="ACT_Init" Id="{34882f0d-6946-4b6d-ab99-e24f4514a23d}">
       <Implementation>
@@ -267,6 +276,16 @@ END_IF
 (* set the addresses *)
 	stCTRL_LIN_INTERPOLATION_PARAMS.pDataTable_ADR			:= ADR(arrTable);
 	stCTRL_LIN_INTERPOLATION_PARAMS.nDataTable_SIZEOF	:= SIZEOF(arrTable);]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_Logger" Id="{f54af55b-dc6e-4d67-a7ae-15da10ebcc66}">
+      <Implementation>
+        <ST><![CDATA[rtAction(CLK:=eSelectedAprt <>  eSetAprt);
+
+IF (fTrig_PMPS.Q) THEN fbLogger(sMsg:='AT1K0 switched to local mode.', eSevr:=TcEventSeverity.Info);  END_IF
+IF (rTrig_PMPS.Q) THEN fbLogger(sMsg:='AT1K0 switched to PMPS mode.', eSevr:=TcEventSeverity.Info);   END_IF
+
+IF (rtAction.Q) THEN  fbLogger(sMsg:='AT1K0-MAA current aperture size mismatch', eSevr:=TcEventSeverity.Critical);   END_IF]]></ST>
       </Implementation>
     </Action>
   </POU>

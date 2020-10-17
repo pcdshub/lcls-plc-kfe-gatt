@@ -32,6 +32,8 @@ VAR
 	'}
 	fbMAA_4_States: FB_MAA;
 
+	
+
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -41,7 +43,7 @@ IF (bInit) THEN
 
 	/// PMPS 
 	//MAA 1 Y
-	fbMAA_1_States.nTransitionAssertionID := nTransitionAssertionRootID+10;
+	fbMAA_1_States.nTransitionAssertionID := 43536;// nTransitionAssertionRootID+10;
 	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
 	// Aperture 1
 	fbMAA_1_States.stAprt1.fPosition :=  -1.3;
@@ -56,7 +58,7 @@ IF (bInit) THEN
 	 
 		
 	//MAA 2 Y
-	fbMAA_2_States.nTransitionAssertionID := nTransitionAssertionRootID+20;
+	fbMAA_2_States.nTransitionAssertionID := 43552;//nTransitionAssertionRootID+20;
 	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
 	// Aperture 1
 	fbMAA_2_States.stAprt1.fPosition :=  -1.4;
@@ -71,7 +73,7 @@ IF (bInit) THEN
 	
 		
 	//MAA 3 Y
-	fbMAA_3_States.nTransitionAssertionID := nTransitionAssertionRootID+30;
+	fbMAA_3_States.nTransitionAssertionID := 43568;//nTransitionAssertionRootID+30;
 	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
 	// Aperture 1
 	fbMAA_3_States.stAprt1.fPosition :=  -1.15;
@@ -86,7 +88,7 @@ IF (bInit) THEN
 		
 		
 	//MAA 4 Y
-	fbMAA_4_States.nTransitionAssertionID := nTransitionAssertionRootID+40;
+	fbMAA_4_States.nTransitionAssertionID := 43584;//nTransitionAssertionRootID+40;
 	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
 	// Aperture 1
 	fbMAA_4_States.stAprt1.fPosition :=  -1;
@@ -117,14 +119,14 @@ fbMAA_2_States(
     stXStage := Main.M3); 
 //FEE
 fbMAA_3_States(
-	fbArbiter := GVL_ILK.fbArbiter2,
+	fbArbiter := GVL_ILK.fbArbiter1,
 	i_DevName:= 'AT1K0:GAS_MAA:03',
     fbFFHWO := GVL_ILK.g_FastFaultOutput1,
     stYStage := Main.M6,
     stXStage := Main.M5); 
 
 fbMAA_4_States(
-	fbArbiter := GVL_ILK.fbArbiter2,
+	fbArbiter := GVL_ILK.fbArbiter1,
 	i_DevName:= 'AT1K0:GAS_MAA:04',
     fbFFHWO := GVL_ILK.g_FastFaultOutput1,
     stYStage := Main.M8,
@@ -135,19 +137,21 @@ fbMAA_4_States(
 US_MAA_OK := (fbMAA_1_States.fbStates.enumGet = fbMAA_2_States.fbStates.enumGet) AND (fbMAA_2_States.fbStates.enumGet = fbMAA_3_States.fbStates.enumGet)AND( fbMAA_3_States.fbStates.enumGet = fbMAA_4_States.fbStates.enumGet) AND NOT (fbMAA_1_States.fbStates.bError) AND NOT (fbMAA_2_States.fbStates.bError);
 DS_MAA_OK := (fbMAA_3_States.fbStates.enumGet = fbMAA_4_States.fbStates.enumGet) AND NOT (fbMAA_3_States.fbStates.bError) AND NOT (fbMAA_4_States.fbStates.bError);
 
-IF (US_MAA_OK AND DS_MAA_OK) THEN 	eSelectedAprt:=fbMAA_1_States.fbStates.enumGet; END_IF;
+IF (US_MAA_OK AND DS_MAA_OK) THEN 	eSelectedAprt:=fbMAA_1_States.fbStates.enumGet;
+ELSE  eSelectedAprt:= E_MAA_States.Aprt1; END_IF;
 ////////////////////
 //Set the right state i.e. apperture based on the current beam size/
 /////
-//Check new Photon energey or new transmission requested
-(*If(bAllGo) THEN
 	IF( rPhotonEnergy >=0.9E3) THEN
-		fbMAA_4_States.	
+		eSetAprt := E_MAA_States.Aprt1;
 		ELSIF ( rPhotonEnergy >=0.6E3) THEN
+			eSetAprt := E_MAA_States.Aprt2;
 			ELSIF ( rPhotonEnergy >=0.5E3) THEN
+				eSetAprt := E_MAA_States.Aprt3;
 				ELSE 
+					eSetAprt := E_MAA_States.Aprt4;
 	END_IF
-END_IF*)
+
 	
 
 

@@ -19,6 +19,26 @@
 	'}
 	rRequiredPressureSP: REAL;
 	eSelectedAprt:E_MAA_States;
+	eSetAprt:E_MAA_States;
+	{attribute 'pytmc' := '
+    pv: AT1K0:GAS:TRANS;
+	io:i;
+    '}
+	rCalculatedTransmissionValue: LREAL;
+	{attribute 'pytmc' := '
+    pv: AT1K0:GAS:TRANS_REQ;
+	io:i;
+    '}
+	rRequestedTransmissionValue: REAL;
+	{attribute 'pytmc' := '
+    pv: AT1K0:GAS:TRANS_SP;
+	io:i;
+    '}
+	rTransmissionSP: LREAL;
+	
+	TransmissionValue: REAL;
+	OldTransmissionValue: REAL;
+	
 END_VAR
 
 //xSystemOverrideMode : BOOL; (* Global system override for the prototype section*)

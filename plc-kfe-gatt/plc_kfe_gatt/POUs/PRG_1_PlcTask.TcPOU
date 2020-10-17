@@ -6,7 +6,6 @@ VAR
 
 bDebug : Bool := FALSE;
 bMotionTest : Bool := FALSE;
-fbLogHandler: FB_LogHandler;
 fb_ADS_WATCHDOG:FB_ADS_WATCHDOG;	
 sVarName : STRING:='GVL_VAC_INTF.n_AT1K0_VAC_counter';
 END_VAR
