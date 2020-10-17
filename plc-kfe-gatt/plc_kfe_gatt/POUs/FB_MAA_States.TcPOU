@@ -36,7 +36,7 @@ VAR
 	fDelta1: LREAL := 2.5; //only for commissioning should change to more conservative values
 	fDelta2: LREAL := 4;
 	fDelta3: LREAL := 5;
-	fDelta4: LREAL := 6;
+	fDelta4: LREAL := 13;
 
 END_VAR
 VAR CONSTANT

@@ -285,7 +285,7 @@ END_IF
 IF (fTrig_PMPS.Q) THEN fbLogger(sMsg:='AT1K0 switched to local mode.', eSevr:=TcEventSeverity.Info);  END_IF
 IF (rTrig_PMPS.Q) THEN fbLogger(sMsg:='AT1K0 switched to PMPS mode.', eSevr:=TcEventSeverity.Info);   END_IF
 
-IF (rtAction.Q) THEN  fbLogger(sMsg:='AT1K0-MAA current aperture size mismatch', eSevr:=TcEventSeverity.Critical);   END_IF]]></ST>
+IF (rtAction.Q) THEN  fbLogger(sMsg:='AT1K0-MAA current aperture size mismatch, change aperture state or switch to local mode', eSevr:=TcEventSeverity.Critical);   END_IF]]></ST>
       </Implementation>
     </Action>
   </POU>
