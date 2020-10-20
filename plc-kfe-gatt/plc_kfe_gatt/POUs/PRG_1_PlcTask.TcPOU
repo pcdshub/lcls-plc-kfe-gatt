@@ -18,8 +18,6 @@ fb_ADS_WATCHDOG(sNetId:='172.21.92.61.1.1' , nPort:=851 , sVarName:=sVarName,bEr
 DIAGNOSTICS();
 // Vacuum and differential pumping
 PRG_GATT();
-// Injector
-PRG_INJ();
 
 if (NOT bDebug)Then
 	// Motorised valve
@@ -32,12 +30,14 @@ ELSE
 	PRG_Motion();
 END_IF
 
+
 PRG_ILK();
 //PMPS
 PRG_PMPS();
-
+PRG_GasSelection();
 PRG_Transmission();
-
+// Injector
+PRG_INJ();
 //Logger
 fbLogHandler();
 

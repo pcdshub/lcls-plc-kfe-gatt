@@ -33,14 +33,14 @@ VAR_OUTPUT
 END_VAR
 VAR
     bStatesInit: BOOL := TRUE;
-	fDelta1: LREAL := 2.5; //only for commissioning should change to more conservative values
-	fDelta2: LREAL := 4;
-	fDelta3: LREAL := 5;
-	fDelta4: LREAL := 13;
+	fDelta1: LREAL := 0.5; //only for commissioning should change to more conservative values
+	fDelta2: LREAL := 0.5;
+	fDelta3: LREAL := 0.5;
+	fDelta4: LREAL := 7;
 
 END_VAR
 VAR CONSTANT
-    fVelocity: LREAL := 0.5;
+    fVelocity: LREAL := 1;
     fAccel: LREAL := 200;
     fDecel: LREAL := 25;
 END_VAR

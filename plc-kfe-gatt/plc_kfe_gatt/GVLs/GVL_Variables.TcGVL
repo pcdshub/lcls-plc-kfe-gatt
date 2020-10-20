@@ -38,6 +38,9 @@
 	
 	TransmissionValue: REAL;
 	OldTransmissionValue: REAL;
+	rtNewTrans : R_TRIG;
+	bChangeAperture: BOOL:=FALSE;
+	bChangeGas:BOOL:=FALSE;
 	
 END_VAR
 

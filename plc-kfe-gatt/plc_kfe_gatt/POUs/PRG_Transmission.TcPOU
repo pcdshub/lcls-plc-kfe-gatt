@@ -13,14 +13,21 @@ VAR
 	stCTRL_LIN_INTERPOLATION_PARAMS_N2	: ST_CTRL_LIN_INTERPOLATION_PARAMS;
 	eMode							: E_CTRL_MODE;
 	bInit: BOOL :=TRUE;
-	rGasCellLength : REAL:= 1450.696;
-
+		
 	
-	tNewTransmission: R_TRIG;
+		
+	FFO    :    FB_FastFault :=(
+	i_DevName := 'AT1K0-MAA',
+	i_Desc := 'Fault occurs when the PMPS mode is switched off',
+	i_TypeCode := 16#AAFF);
+END_VAR
+VAR CONSTANT
+	rGasCellLength : REAL:= 1450.696;
 	iTorr: INT :=750;
 	rR_Ar:REAL := 1.66e-3;
 	rR_N2:REAL := 1.16e-3;
 END_VAR
+
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[A_INIT();
@@ -36,7 +43,7 @@ Cur_Trans.nTran:= TO_UINT(rCalculatedTransmissionValue*100);
 (*Calculate Pressure setpoint from requested transmission value*)
 rRequestedTransmissionValue := TO_REAL(Req_Trans.nTran/100);
 
-(*Transmission Request selcetion*)
+(*Transmission Request selection*)
 IF (xPMPSMode) THEN
 	TransmissionValue := TO_REAL(Req_Trans.nTran/100);
 	ELSE TransmissionValue := rTransmissionSP;
@@ -53,6 +60,12 @@ IF ( SelectedGas = E_GasType.Argon) THEN
 		
 END_IF
 
+
+(*FAST FAULT*)
+FFO(i_xOK := xPMPSMode,
+    i_xReset := ,
+	i_xAutoReset :=,
+    io_fbFFHWO := GVL_ILK.g_FastFaultOutput1);
 
 
 ]]></ST>

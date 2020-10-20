@@ -151,6 +151,16 @@ ELSE  eSelectedAprt:= E_MAA_States.Aprt1; END_IF;
 				ELSE 
 					eSetAprt := E_MAA_States.Aprt4;
 	END_IF
+(*Aperture state selection*)
+IF (xPMPSMode) ANd (bChangeAperture) THEN
+	fbMAA_1_States.fbStates.enumSet := eSetAprt;
+	fbMAA_2_States.fbStates.enumSet := eSetAprt;
+	fbMAA_3_States.fbStates.enumSet := eSetAprt;
+	fbMAA_4_States.fbStates.enumSet := eSetAprt;
+	bChangeAperture:=False;
+	fbLogger(sMsg:='AT1K0-MAA moving to right apperture size', eSevr:=TcEventSeverity.Verbose);
+END_IF
+	
 
 	
 

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <POU Name="PRG_GasSelection" Id="{38f47206-c1e7-4017-85ba-7477df6f8757}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_GasSelection
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+(*Gas Selection*)
+IF(VVC_71.M_IsOpen()) THEN  SelectedGas := E_GasType.Argon;
+	ELSIF (VVC_72.M_IsOpen()) THEN  SelectedGas := E_GasType.Nitrogen;
+END_IF
+
+IF (bChangeGas) THEN
+	bChangeGas := FALSE;
+END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

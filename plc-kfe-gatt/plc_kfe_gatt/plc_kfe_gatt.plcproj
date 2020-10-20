@@ -81,6 +81,9 @@
     <Compile Include="POUs\PRG_1_PlcTask.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\PRG_GasSelection.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\PRG_GATT.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -99,6 +102,9 @@
     <Compile Include="POUs\PRG_PMPS.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\PRG_Transmission.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\PRG_VGP.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -106,9 +112,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Transmission\F_COEF_AR.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\Transmission\PRG_Transmission.TcPOU">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
