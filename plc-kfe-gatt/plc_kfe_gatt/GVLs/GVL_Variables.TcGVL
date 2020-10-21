@@ -24,7 +24,7 @@
     pv: AT1K0:GAS:TRANS;
 	io:i;
     '}
-	rCalculatedTransmissionValue: LREAL;
+	rCalculatedTransmissionValue: REAL;
 	{attribute 'pytmc' := '
     pv: AT1K0:GAS:TRANS_REQ;
 	io:i;
@@ -34,7 +34,7 @@
     pv: AT1K0:GAS:TRANS_SP;
 	io:i;
     '}
-	rTransmissionSP: LREAL;
+	rTransmissionSP: REAL;
 	
 	TransmissionValue: REAL;
 	OldTransmissionValue: REAL;
