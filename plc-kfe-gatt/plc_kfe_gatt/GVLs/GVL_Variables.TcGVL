@@ -24,12 +24,12 @@
     pv: AT1K0:GAS:TRANS;
 	io:i;
     '}
-	rCalculatedTransmissionValue: REAL;
+	rCalculatedTransmissionValue: REAL:=1;
 	{attribute 'pytmc' := '
     pv: AT1K0:GAS:TRANS_REQ;
 	io:i;
     '}
-	rRequestedTransmissionValue: REAL;
+	rRequestedTransmissionValue: REAL:=1;
 	{attribute 'pytmc' := '
     pv: AT1K0:GAS:TRANS_SP;
 	io:io;
