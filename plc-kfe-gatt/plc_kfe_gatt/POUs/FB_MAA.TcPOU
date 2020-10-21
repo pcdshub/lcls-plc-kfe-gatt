@@ -7,6 +7,7 @@ VAR_IN_OUT
     fbFFHWO: FB_HardwareFFOutput;
 	stYStage: DUT_MotionStage;
 	stXStage: DUT_MotionStage;
+	
 END_VAR
 VAR_INPUT
 	 {attribute 'pytmc' := '
@@ -21,9 +22,10 @@ VAR_INPUT
 	stAprt4: DUT_PositionState;
 	stXCen: DUT_PositionState;
 	i_DevName: STRING:= 'AT1K0-MAA';
+	 enumSet: E_MAA_states;
 END_VAR
 VAR_OUTPUT	
-	 {attribute 'pytmc' := '
+	{attribute 'pytmc' := '
         pv: Y:STATE
         io: io
     '}
@@ -118,7 +120,8 @@ fbStates(
     stAprt1:=stAprt1,
     stAprt2:=stAprt2,
     stAprt3:=stAprt3,
-    stAprt4:=stAprt4);
+    stAprt4:=stAprt4,
+	 enumSet:= enumSet);
 
 fbStates_X(
 	fbArbiter:=fbArbiter,
