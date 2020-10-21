@@ -23,7 +23,7 @@ VAR_INPUT
 	stXCen: DUT_PositionState;
 	i_DevName: STRING:= 'AT1K0-MAA';
 	 {attribute 'pytmc' := '
-        pv: SET;
+        pv: Y:STATE:SET;
         io: io;
 		field: ZRST Unknown;
 	    field: ONST 5.5mm;
