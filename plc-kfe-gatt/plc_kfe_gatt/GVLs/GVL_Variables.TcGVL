@@ -32,7 +32,7 @@
 	rRequestedTransmissionValue: REAL;
 	{attribute 'pytmc' := '
     pv: AT1K0:GAS:TRANS_SP;
-	io:i;
+	io:io;
     '}
 	rTransmissionSP: REAL;
 	
