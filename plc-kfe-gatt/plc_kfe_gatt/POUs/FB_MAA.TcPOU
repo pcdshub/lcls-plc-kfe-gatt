@@ -52,10 +52,10 @@ VAR
 	fbXStage: FB_MotionStage;
 	
 	
-	fSize1: REAL:=4.02; //mm
-	fSize2: REAL:=7.02; //mm
-	fSize3: REAL:=8.52; //mm
-	fSize4: REAL:=9.02; //mm
+	fSize1: REAL:=4.0; //mm
+	fSize2: REAL:=7.0; //mm
+	fSize3: REAL:=8.5; //mm
+	fSize4: REAL:=9.0; //mm
 	
 	bInit:BOOL := TRUE;
 	tArbiterTimeout: TIME:= T#10S;

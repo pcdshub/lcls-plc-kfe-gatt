@@ -138,7 +138,7 @@ US_MAA_OK := (fbMAA_1_States.fbStates.enumGet = fbMAA_2_States.fbStates.enumGet)
 DS_MAA_OK := (fbMAA_3_States.fbStates.enumGet = fbMAA_4_States.fbStates.enumGet) AND NOT (fbMAA_3_States.fbStates.bError) AND NOT (fbMAA_4_States.fbStates.bError);
 
 IF (US_MAA_OK AND DS_MAA_OK) THEN 	eSelectedAprt:=fbMAA_1_States.fbStates.enumGet;
-ELSE  eSelectedAprt:= E_MAA_States.Aprt1; END_IF;
+ELSE  eSelectedAprt:= E_MAA_States.Unknown; END_IF;
 ////////////////////
 //Set the right state i.e. apperture based on the current beam size/
 /////
@@ -163,7 +163,10 @@ IF (xPMPSMode) ANd (bChangeAperture) THEN
 	bChangeAperture:=False;
 END_IF
 	
-
+IF NOT (xPMPSMode) AND bChangeAperture AND (eSelectedAprt <> eSetAprt)  THEN
+	fbLogger(sMsg:='AT1K0-MAA is not set to right apperture size', eSevr:=TcEventSeverity.Critical);
+	bChangeAperture:=False;
+END_IF
 	
 
 

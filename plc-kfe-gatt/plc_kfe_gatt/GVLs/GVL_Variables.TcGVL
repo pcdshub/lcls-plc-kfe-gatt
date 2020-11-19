@@ -34,7 +34,7 @@
     pv: AT1K0:GAS:TRANS_SP;
 	io:io;
     '}
-	rTransmissionSP: REAL;
+	rTransmissionSP: REAL:=1;
 	
 	TransmissionValue: REAL;
 	OldTransmissionValue: REAL;

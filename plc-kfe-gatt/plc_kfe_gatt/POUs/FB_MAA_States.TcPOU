@@ -2,8 +2,10 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <POU Name="FB_MAA_States" Id="{1d2c1fdc-c4a6-489b-bb2f-4fd69cc8242c}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_MAA_States EXTENDS FB_PositionStateBase_WithPMPS
-VAR_INPUT
+VAR_IN_OUT
     enumSet: E_MAA_states;
+END_VAR
+VAR_INPUT
     bStatesLock: BOOL;
 	stAprt1: DUT_PositionState;
 	stAprt2: DUT_PositionState;

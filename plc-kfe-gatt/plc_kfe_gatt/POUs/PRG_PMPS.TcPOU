@@ -9,6 +9,7 @@ VAR
  nReqID:UDINT;
  nReqRM:UDINT;
  bRemove:bool;
+ rtRemove: R_TRIG;
  
  //Testing
  ID1:DWORD:=43536;
@@ -61,7 +62,7 @@ g_FastFaultOutput2.Execute();
 (* Arbiter Instantiation*)
 (*Arbiter one responsible for the aperture valves*)
 fbArbiterIO(Arbiter := GVL_ILK.fbArbiter1, fbFFHWO := GVL_ILK.g_FastFaultOutput1);
-GVL_ILK.fbArbiter2.ElevateRequest(GVL_ILK.fbArbiter1);
+//GVL_ILK.fbArbiter2.ElevateRequest(GVL_ILK.fbArbiter1);
 
 bTrans:= fbArbiter1.CheckRequestInPool(ID1);//TransitionID
 bAp11:= fbArbiter1.CheckRequestInPool(ID1+1);
@@ -79,25 +80,27 @@ bAp24:= fbArbiter1.CheckRequestInPool(ID2+4);
 bTrans2X:= fbArbiter1.CheckRequestInPool(ID2+5);
 bAp2XS:= fbArbiter1.CheckRequestInPool(ID2+6);
 
-bTrans3:= fbArbiter2.CheckRequestInPool(ID3);//TransitionID
-bAp31:= fbArbiter2.CheckRequestInPool(ID3+1);
-bAp32:= fbArbiter2.CheckRequestInPool(ID3+2);
-bAp33:= fbArbiter2.CheckRequestInPool(ID3+3);
-bAp34:= fbArbiter2.CheckRequestInPool(ID3+4);
-bTrans3X:= fbArbiter2.CheckRequestInPool(ID3+5);
-bAp3XS:= fbArbiter2.CheckRequestInPool(ID3+6);
+bTrans3:= fbArbiter1.CheckRequestInPool(ID3);//TransitionID
+bAp31:= fbArbiter1.CheckRequestInPool(ID3+1);
+bAp32:= fbArbiter1.CheckRequestInPool(ID3+2);
+bAp33:= fbArbiter1.CheckRequestInPool(ID3+3);
+bAp34:= fbArbiter1.CheckRequestInPool(ID3+4);
+bTrans3X:= fbArbiter1.CheckRequestInPool(ID3+5);
+bAp3XS:= fbArbiter1.CheckRequestInPool(ID3+6);
 
-bTrans4:= fbArbiter2.CheckRequestInPool(ID4);//TransitionID
-bAp41:= fbArbiter2.CheckRequestInPool(ID4+1);
-bAp42:= fbArbiter2.CheckRequestInPool(ID4+2);
-bAp43:= fbArbiter2.CheckRequestInPool(ID4+3);
-bAp44:= fbArbiter2.CheckRequestInPool(ID4+4);
-bTrans3X:= fbArbiter2.CheckRequestInPool(ID4+5);
-bAp4XS:= fbArbiter2.CheckRequestInPool(ID4+6);
+bTrans4:= fbArbiter1.CheckRequestInPool(ID4);//TransitionID
+bAp41:= fbArbiter1.CheckRequestInPool(ID4+1);
+bAp42:= fbArbiter1.CheckRequestInPool(ID4+2);
+bAp43:= fbArbiter1.CheckRequestInPool(ID4+3);
+bAp44:= fbArbiter1.CheckRequestInPool(ID4+4);
+bTrans3X:= fbArbiter1.CheckRequestInPool(ID4+5);
+bAp4XS:= fbArbiter1.CheckRequestInPool(ID4+6);
 
-if (bRemove) THEN
+
+rtRemove(CLK:= bRemove);
+if (rtRemove.Q) THEN
  	GVL_ILK.fbArbiter1.RemoveRequest(nReqRM);
-	GVL_ILK.fbArbiter2.RemoveRequest(nReqRM);  
+	//GVL_ILK.fbArbiter2.RemoveRequest(nReqRM);  
 END_IF
 
 

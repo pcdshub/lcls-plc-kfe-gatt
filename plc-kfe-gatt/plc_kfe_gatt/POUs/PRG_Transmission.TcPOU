@@ -46,6 +46,7 @@ rRequestedTransmissionValue := (TO_REAL(Req_Trans.nTran)/100);
 (*Transmission Request selection*)
 IF (xPMPSMode) THEN
 	TransmissionValue := (TO_REAL(Req_Trans.nTran)/100);
+	rTransmissionSP := TransmissionValue;
 	ELSE TransmissionValue := rTransmissionSP;
 END_IF
 
