@@ -5,6 +5,7 @@
 
 fbLogHandler: FB_LogHandler;
 fbLogger : FB_LogMessage := (eSubsystem:=E_SubSystem.MPS);
+fbEcatDiagWrapper : FB_EcatDiagWrapper;
 
 END_VAR
 ]]></Declaration>

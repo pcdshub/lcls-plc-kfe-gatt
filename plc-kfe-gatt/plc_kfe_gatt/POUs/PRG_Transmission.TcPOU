@@ -38,17 +38,23 @@ IF ( SelectedGas = E_GasType.Argon) THEN
 	ELSE 
 		rCalculatedTransmissionValue := EXP(-fbCTRL_LIN_INTERPOLATION_N2.fOut*(GCM_82.rPRESS/iTorr)*rR_N2*rGasCellLength);
 END_IF
-Cur_Trans.nTran:= TO_UINT(rCalculatedTransmissionValue*100);
+Cur_Trans.nTran:= TO_UINT(rCalculatedTransmissionValue*PMPS_GVL.TRANS_SCALING_FACTOR);
 //Cur_Trans.xAttOK := 1;
 (*Calculate Pressure setpoint from requested transmission value*)
-rRequestedTransmissionValue := (TO_REAL(Req_Trans.nTran)/100);
+IF NOT (PMPS_GVL.TRANS_SCALING_FACTOR = 0) THEN
+	rRequestedTransmission := (TO_REAL(Req_Trans.nTran)/PMPS_GVL.TRANS_SCALING_FACTOR);
+END_IF
 
 (*Transmission Request selection*)
 IF (xPMPSMode) THEN
-	TransmissionValue := (TO_REAL(Req_Trans.nTran)/100);
-	rTransmissionSP := TransmissionValue;
-	ELSE TransmissionValue := rTransmissionSP;
+	IF NOT (PMPS_GVL.TRANS_SCALING_FACTOR = 0) THEN TransmissionValue := (TO_REAL(Req_Trans.nTran)/PMPS_GVL.TRANS_SCALING_FACTOR); END_IF
+	rTransmissionSP :=  LIMIT(0.00000000001,TransmissionValue,1);
+	ELSE TransmissionValue := LIMIT(0.00000000001,rTransmissionSP,1);
 END_IF
+// Set Status to the arbiter
+stStatus.PMPSMode:= xPMPSMode;
+stStatus.LocalMode := NOT(xPMPSMode);
+
 
 IF ( SelectedGas = E_GasType.Argon) THEN
 	   if (fbCTRL_LIN_INTERPOLATION_Ar.fOut <>0) THEN
@@ -66,7 +72,7 @@ END_IF
 FFO(i_xOK := xPMPSMode,
     i_xReset := ,
 	i_xAutoReset :=,
-    io_fbFFHWO := GVL_ILK.g_FastFaultOutput1);
+    io_fbFFHWO := GVL_PMPS.g_FastFaultOutput1);
 
 
 ]]></ST>

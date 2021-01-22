@@ -105,30 +105,30 @@ END_IF
 
 //EBD
 fbMAA_1_States(
-	 fbArbiter := GVL_ILK.fbArbiter1,
+	 fbArbiter := GVL_PMPS.fbArbiter1,
 	 i_DevName:= 'AT1K0:GAS_MAA:01',
-    fbFFHWO :=  GVL_ILK.g_FastFaultOutput1,
+    fbFFHWO :=  GVL_PMPS.g_FastFaultOutput1,
     stYStage := Main.M2,
     stXStage := Main.M1);
 
 fbMAA_2_States(
-	fbArbiter := GVL_ILK.fbArbiter1,
+	fbArbiter := GVL_PMPS.fbArbiter1,
 	i_DevName:= 'AT1K0:GAS_MAA:02',
-    fbFFHWO := GVL_ILK.g_FastFaultOutput1,
+    fbFFHWO := GVL_PMPS.g_FastFaultOutput1,
     stYStage := Main.M4,
     stXStage := Main.M3); 
 //FEE
 fbMAA_3_States(
-	fbArbiter := GVL_ILK.fbArbiter1,
+	fbArbiter := GVL_PMPS.fbArbiter1,
 	i_DevName:= 'AT1K0:GAS_MAA:03',
-    fbFFHWO := GVL_ILK.g_FastFaultOutput1,
+    fbFFHWO := GVL_PMPS.g_FastFaultOutput1,
     stYStage := Main.M6,
     stXStage := Main.M5); 
 
 fbMAA_4_States(
-	fbArbiter := GVL_ILK.fbArbiter1,
+	fbArbiter := GVL_PMPS.fbArbiter1,
 	i_DevName:= 'AT1K0:GAS_MAA:04',
-    fbFFHWO := GVL_ILK.g_FastFaultOutput1,
+    fbFFHWO := GVL_PMPS.g_FastFaultOutput1,
     stYStage := Main.M8,
     stXStage := Main.M7);
 	
@@ -152,7 +152,7 @@ ELSE  eSelectedAprt:= E_MAA_States.Unknown; END_IF;
 					eSetAprt := E_MAA_States.Aprt4;
 	END_IF
 (*Aperture state selection*)
-IF (xPMPSMode) ANd (bChangeAperture) THEN
+IF (xPMPSMode) AND (bChangeAperture) THEN
 	fbMAA_1_States.enumSet := eSetAprt;
 	fbMAA_2_States.enumSet := eSetAprt;
 	fbMAA_3_States.enumSet := eSetAprt;
