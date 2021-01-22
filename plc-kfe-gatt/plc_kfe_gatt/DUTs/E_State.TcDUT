@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <DUT Name="E_State" Id="{8f764333-c274-49db-ad7b-896b41852292}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_State :
+(
+	unknown,
+	error,
+	warning,
+	ok
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

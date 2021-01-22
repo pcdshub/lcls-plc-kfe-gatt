@@ -10,7 +10,7 @@ VAR
 	field: EGU "TORR";
 	'}
 	fSetpointValue :REAL; 
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:GO;
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:ON;
 	 field: ZNAM STOP; 
 	 field: ONAM START; 
 	 io: io;
@@ -78,6 +78,12 @@ VAR
 	rLimit4 : REAL:= 62; 
 	rLimit:REAL;
 	rDelta:REAL:=5;
+	
+	//FFO
+		TRANS_FFO    :    FB_FastFault :=(
+        i_DevName := 'AT1K0-GAS',
+        i_Desc := 'Fault occurs when the current transmission exceeds the requested transmission by 5%',
+        i_TypeCode := 16#AFF);
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -144,8 +150,9 @@ rtNewTrans(CLK:=  OldTransmissionValue <> TransmissionValue);
 IF(rtNewTrans.Q) THEN
 	OldTransmissionValue := TransmissionValue;
 	bChangeAperture:=TRUE;
-	bChangeAperture:=TRUE;
 	fbLogger(sMsg:='AT1K0 new transmission request.', eSevr:=TcEventSeverity.Info);
+	stStatus.AtTarget := 0;
+	stStatus.Moving := 1;
 END_IF
 // change setpoint
 // As calculated by the PRG_INJ
@@ -156,7 +163,9 @@ fSetpointValue:= LIMIT(0,fSetpointValue,10);
 
 ACT_init();
 ACT_Cntrl();
-ACT_Logger();]]></ST>
+ACT_Logger();
+ACT_FFO();
+ACT_STATE();]]></ST>
     </Implementation>
     <Action Name="ACT_Cntrl" Id="{30d130d1-3707-45b3-a846-71f5c8fc9aec}">
       <Implementation>
@@ -170,7 +179,7 @@ IF (fTrig_PMPS.Q) THEN bGo := FALSE; END_IF
 
 if (bGo) THEN
 	//VCN_70.i_ReqPos:= LREAL_TO_REAL(fbCTRL_LIN_INTERPOLATION.fOut + fbCTRL_PID.fOut);
-	VCN_70.i_ReqPos:= LREAL_TO_REAL(LIMIT(0,fbCTRL_LIN_INTERPOLATION.fOut + fbCTRL_PID.fOut,rLimit+rDelta));
+	VCN_70.i_ReqPos:= LREAL_TO_REAL(fbCTRL_LIN_INTERPOLATION.fOut + fbCTRL_PID.fOut);
 	IF (bReset) THEN
 	(* set the mode to RESET*)
 	eMode							:= eCTRL_MODE_RESET   ;
@@ -235,6 +244,18 @@ stCTRL_DEADBAND_PARAMS.fThreshold	:=  fSetpointValue*0.0016 ;
 				);*)
 
 bError := fbCTRL_PID.bError OR fbCTRL_LIN_INTERPOLATION.bError;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_FFO" Id="{ecde1749-3bc9-4b1d-a490-cdf34d3ee006}">
+      <Implementation>
+        <ST><![CDATA[TRANS_FFO.i_xOK := (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*5/100)));
+
+//auto reset true	
+(*FAST FAULT*)
+TRANS_FFO(i_xOK := ,
+    i_xReset := ,
+	i_xAutoReset :=,
+    io_fbFFHWO := GVL_PMPS.g_FastFaultOutput1);]]></ST>
       </Implementation>
     </Action>
     <Action Name="ACT_Init" Id="{34882f0d-6946-4b6d-ab99-e24f4514a23d}">
@@ -349,11 +370,15 @@ THEN
 	stCTRL_PID_PARAMS.tTn					:= T#500ms;		(*  Tn									*)
 	stCTRL_PID_PARAMS.tTv					:= T#200ms;	(*  Tv									*)
 	stCTRL_PID_PARAMS.tTd					:= T#200ms;	(*  Td									*)
-	stCTRL_PID_PARAMS.fOutMaxLimit			:=  7;			(* maximum output limit				*)
+	stCTRL_PID_PARAMS.fOutMaxLimit			:=  15;			(* maximum output limit				*)
 	stCTRL_PID_PARAMS.fOutMinLimit			:=  -100;			(* minimum output limit				*)
 
 	(* set the mode to ACTIVE --> normal operation *)
 	eMode							:= eCTRL_MODE_PASSIVE   ;					
+	
+	(*set the upper limit on the VCN*)
+	VCN_70.M_SetThrottle(78);
+	
 	(* reset the init flag *)
 	bInit							:= FALSE;
 END_IF
@@ -365,19 +390,23 @@ IF (bGo) THEN
 		 E_MAA_States.Aprt1:
 			arrTable := arrTableAprt1;
 			stCTRL_PID_PARAMS.fKp	:= fKp1;
-			rLimit:= rLimit1;
+			//rLimit:= rLimit1;
+			//VCN_70.M_SetThrottle(78);
 		 E_MAA_States.Aprt2:
 			arrTable := arrTableAprt2;
 			stCTRL_PID_PARAMS.fKp	:= fKp2;
-			rLimit:= rLimit2;
+			//rLimit:= rLimit2;
+			//VCN_70.M_SetThrottle(78);
 		 E_MAA_States.Aprt3:
 			arrTable := arrTableAprt3;
 			stCTRL_PID_PARAMS.fKp	:= fKp3;
-			rLimit:= rLimit3;
+			//rLimit:= rLimit3;
+			//VCN_70.M_SetThrottle(78);
 		 E_MAA_States.Aprt4:
 			arrTable := arrTableAprt4;
 			stCTRL_PID_PARAMS.fKp	:= fKp4;
-			rLimit:= rLimit4;
+			//rLimit:= rLimit4;
+			//VCN_70.M_SetThrottle(78);
 	END_CASE
 END_IF
 
@@ -395,6 +424,34 @@ IF (fTrig_PMPS.Q) THEN fbLogger(sMsg:='AT1K0 switched to local mode.', eSevr:=Tc
 IF (rTrig_PMPS.Q) THEN fbLogger(sMsg:='AT1K0 switched to PMPS mode.', eSevr:=TcEventSeverity.Info);   END_IF
 
 IF (rtAction.Q) THEN  fbLogger(sMsg:='AT1K0-MAA current aperture size mismatch, change aperture state or switch to local mode', eSevr:=TcEventSeverity.Critical);   END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_STATE" Id="{7ea5bee8-6577-4f4e-9199-ba70a29710d8}">
+      <Implementation>
+        <ST><![CDATA[IF (rCalculatedTransmissionValue > (TransmissionValue + (TransmissionValue*5/100))) THEN
+	 eState := E_State.error;
+	ELSIF (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*5/100))) AND (rCalculatedTransmissionValue >= (TransmissionValue - (TransmissionValue*10/100))) THEN
+		// ok
+		eState := E_State.ok;
+		// At Target
+		stStatus.AtTarget := 1;
+		stStatus.Moving := 0;
+	ELSIF (rCalculatedTransmissionValue < (TransmissionValue - (TransmissionValue*10/100))) THEN
+		//warning
+		eState := E_State.warning;
+	ELSE eState := E_State.unknown;
+END_IF
+// State ok when the Transmission is within the acceptable range and the MAA are not in errors
+stStatus.OK := TRANS_FFO.i_xOK AND US_MAA_OK AND DS_MAA_OK AND (eState = E_State.ok);
+
+
+bStatus.0 := stStatus.AtTarget;
+bStatus.1 := stStatus.Moving;
+bStatus.2 := stStatus.LocalMode;
+bStatus.3 := stStatus.PMPSMode;
+bStatus.4 := stStatus.OK;
+bStatus.5 := stStatus.Toggle;
+bStatus.6 := stStatus.Include;]]></ST>
       </Implementation>
     </Action>
   </POU>
