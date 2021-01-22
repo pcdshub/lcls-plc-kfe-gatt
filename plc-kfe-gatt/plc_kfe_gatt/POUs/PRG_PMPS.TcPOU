@@ -61,7 +61,7 @@ g_FastFaultOutput2.Execute();
 
 (* Arbiter Instantiation*)
 (*Arbiter one responsible for the aperture valves*)
-fbArbiterIO(Arbiter := GVL_ILK.fbArbiter1, fbFFHWO := GVL_ILK.g_FastFaultOutput1);
+fbArbiterIO(Arbiter := GVL_PMPS.fbArbiter1, fbFFHWO := GVL_PMPS.g_FastFaultOutput1);
 //GVL_ILK.fbArbiter2.ElevateRequest(GVL_ILK.fbArbiter1);
 
 bTrans:= fbArbiter1.CheckRequestInPool(ID1);//TransitionID
@@ -99,7 +99,7 @@ bAp4XS:= fbArbiter1.CheckRequestInPool(ID4+6);
 
 rtRemove(CLK:= bRemove);
 if (rtRemove.Q) THEN
- 	GVL_ILK.fbArbiter1.RemoveRequest(nReqRM);
+ 	GVL_PMPS.fbArbiter1.RemoveRequest(nReqRM);
 	//GVL_ILK.fbArbiter2.RemoveRequest(nReqRM);  
 END_IF
 

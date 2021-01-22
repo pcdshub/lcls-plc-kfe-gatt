@@ -2,6 +2,8 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <GVL Name="GVL_Variables" Id="{b51a938b-2a65-48fa-a2b5-847fac352052}">
     <Declaration><![CDATA[VAR_GLOBAL
+	
+(*Transmission related variables*)
 	{attribute 'pytmc' := '
 	pv: AT1K0:GAS:GAS_TYPE ;
 	type: mbbi ;
@@ -18,23 +20,61 @@
 	field: EGU "TORR";
 	'}
 	rRequiredPressureSP: REAL;
+	 {attribute 'pytmc' := '
+        pv:  AT1K0:GAS:MAA:GET;
+        io: i;
+		field: ZRST Unknown;
+	    field: ONST 5.5mm;
+	    field: TWST 8mm;
+	    field: THST 10mm;
+	    field: FRST 13mm;
+    '}
 	eSelectedAprt:E_MAA_States;
+	{attribute 'pytmc' := '
+        pv:  AT1K0:GAS:MAA:SET;
+        io: i;
+		field: ZRST Unknown;
+	    field: ONST 5.5mm;
+	    field: TWST 8mm;
+	    field: THST 10mm;
+	    field: FRST 13mm;
+    '}
 	eSetAprt:E_MAA_States;
 	{attribute 'pytmc' := '
     pv: AT1K0:GAS:TRANS;
+	field: HOPR 1000;
+	field: LOPR 0;
+	field: PREC 2;
 	io:i;
     '}
 	rCalculatedTransmissionValue: REAL:=1;
 	{attribute 'pytmc' := '
     pv: AT1K0:GAS:TRANS_REQ;
+	field: HOPR 1000;
+	field: LOPR 0;
+	field: PREC 2;
 	io:i;
     '}
-	rRequestedTransmissionValue: REAL:=1;
+	rRequestedTransmission: REAL:=1;
 	{attribute 'pytmc' := '
     pv: AT1K0:GAS:TRANS_SP;
+	field: HOPR 1000;
+	field: LOPR 0;
+	field: PREC 2;
 	io:io;
     '}
 	rTransmissionSP: REAL:=1;
+	
+	
+	{attribute 'pytmc' := '
+    pv:  AT1K0:GAS:STATE;
+	field: ZRST unknown;
+	field: ONST error;
+	field: TWST warning;
+	field: THST ok;
+	io: i;
+    '}
+	eState:E_State;
 	
 	TransmissionValue: REAL;
 	OldTransmissionValue: REAL;
@@ -42,9 +82,48 @@
 	bChangeAperture: BOOL:=FALSE;
 	bChangeGas:BOOL:=FALSE;
 	
-END_VAR
+	
+	
+	(* EPS and Interlock Variables*)
+	{attribute 'pytmc' := 'pv: AT1K0:GAS:VAC:OVRD_ON ;
+ 	field: ZNAM Override OFF; 
+	field: ONAM Override ON; 
+	 io: io;'}
+	xSystemOverrideMode	:	BOOL; (* Global system override for the GATT*)
 
-//xSystemOverrideMode : BOOL; (* Global system override for the prototype section*)
+	
+	//VRC ILK setpoints to OPEN
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:US:SP;
+	field: HOPR 1000;
+	field: LOPR 0;
+	field: PREC 2;
+	field: EGU "TORR";
+	'}
+	rVRC_US_SP :REAL:=0.001; 
+	
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:DS:SP;
+	field: HOPR 1000;
+	field: LOPR 0;
+	field: PREC 2;
+	field: EGU "TORR";
+	'}
+	rVRC_DS_SP :REAL:=0.001; 
+	
+	
+	(* Interlock related bits, local to the PLC*)
+	US_MAA_OK:  BOOL;
+	US_Turbo_Valves_Open:  BOOL;
+	DS_MAA_OK: BOOL;
+	DS_Turbo_Valves_Open:  BOOL;
+	US_Turbo_Running:  BOOL;
+	DS_Turbo_Running:  BOOL;
+	TwinscrewPumps_Valves_Closed: BOOL;
+	US_Roughing_Valves_Open : BOOL;
+	DS_Roughing_Valves_Open : BOOL;
+	US_Aperture_Closed: BOOL;
+	DS_Aperture_Closed: BOOL;
+
+END_VAR
 
 
 ]]></Declaration>
