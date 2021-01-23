@@ -4,7 +4,7 @@
     <Declaration><![CDATA[VAR_GLOBAL
 
 fbLogHandler: FB_LogHandler;
-fbLogger : FB_LogMessage := (eSubsystem:=E_SubSystem.MPS);
+fbLogger : FB_LogMessage := (eSubsystem:=E_SubSystem.MPS,nMinTimeViolationAcceptable:=10,nLocalTripThreshold := T#500ms);
 fbEcatDiagWrapper : FB_EcatDiagWrapper;
 
 END_VAR
