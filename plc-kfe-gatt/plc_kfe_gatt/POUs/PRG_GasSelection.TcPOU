@@ -3,6 +3,10 @@
   <POU Name="PRG_GasSelection" Id="{38f47206-c1e7-4017-85ba-7477df6f8757}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_GasSelection
 VAR
+	N2LowerEdge: REAL := 300;
+	N2UpperEdge: REAL := 450;
+	rDelta: REAL :=20;
+	ArEdge:REAL:=2300;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -13,7 +17,23 @@ IF(VVC_71.M_IsOpen()) THEN  SelectedGas := E_GasType.Argon;
 END_IF
 
 IF (bChangeGas) THEN
-	bChangeGas := FALSE;
+	IF(rPhotonEnergy >=N2LowerEdge-rDelta) AND (rPhotonEnergy <=N2UpperEdge-rDelta) AND  (SelectedGas = E_GasType.Nitrogen) THEN
+		//Block N2
+		VVC_72.M_Set_OPN_SW (false);
+		IF VVC_72.M_IsClosed() THEN 
+			VVC_71.M_Set_OPN_SW (TRUE);
+			bChangeGas := FALSE;
+			fbLogger(sMsg:='AT1K0 switched to Ar', eSevr:=TcEventSeverity.Verbose);
+			END_IF;
+	ELSIF (rPhotonEnergy >=2300) AND (SelectedGas = E_GasType.Argon)  THEN
+		//Block Ar
+		VVC_71.M_Set_OPN_SW (false);
+		IF VVC_71.M_IsClosed() THEN 
+			VVC_72.M_Set_OPN_SW (TRUE); 
+			bChangeGas := FALSE; 
+			fbLogger(sMsg:='AT1K0 switched to N2', eSevr:=TcEventSeverity.Verbose);
+		END_IF;
+	END_IF
 END_IF
 ]]></ST>
     </Implementation>

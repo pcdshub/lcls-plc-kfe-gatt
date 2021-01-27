@@ -79,6 +79,12 @@ VAR
 	rLimit:REAL;
 	rDelta:REAL:=5;
 	
+	tSettle: TON;
+	tSettleTime: Time := T#30S;
+	
+	tExceed: TON;
+	tExceedTime: Time := T#5mS;
+	
 	//FFO
 		TRANS_FFO    :    FB_FastFault :=(
         i_DevName := 'AT1K0-GAS',
@@ -146,10 +152,11 @@ END_IF
 IF  NOT(fb_AT1K0_GAS_GCC_80.IG.i_xHV_ON) AND (fb_AT1K0_GAS_GPI_80.PG.rPRESS <= 1.1E-4) THEN fb_AT1K0_GAS_GCC_80.M_HVE(TRUE); END_IF;
 
 (* On change transmission reset *)
-rtNewTrans(CLK:=  OldTransmissionValue <> TransmissionValue);
+rtNewTrans(CLK:=  (OldTransmissionValue <> TransmissionValue) OR (fTrig_PMPS.Q) OR (rTrig_PMPS.Q));
 IF(rtNewTrans.Q) THEN
 	OldTransmissionValue := TransmissionValue;
 	bChangeAperture:=TRUE;
+	bChangeGas := TRUE;
 	fbLogger(sMsg:='AT1K0 new transmission request.', eSevr:=TcEventSeverity.Info);
 	stStatus.AtTarget := 0;
 	stStatus.Moving := 1;
@@ -248,7 +255,7 @@ bError := fbCTRL_PID.bError OR fbCTRL_LIN_INTERPOLATION.bError;]]></ST>
     </Action>
     <Action Name="ACT_FFO" Id="{ecde1749-3bc9-4b1d-a490-cdf34d3ee006}">
       <Implementation>
-        <ST><![CDATA[TRANS_FFO.i_xOK := (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*5/100)));
+        <ST><![CDATA[TRANS_FFO.i_xOK := (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*5/100))) AND NOT tExceed.Q;
 
 //auto reset true	
 (*FAST FAULT*)
@@ -428,9 +435,10 @@ IF (rtAction.Q) THEN  fbLogger(sMsg:='AT1K0-MAA current aperture size mismatch, 
     </Action>
     <Action Name="ACT_STATE" Id="{7ea5bee8-6577-4f4e-9199-ba70a29710d8}">
       <Implementation>
-        <ST><![CDATA[IF (rCalculatedTransmissionValue > (TransmissionValue + (TransmissionValue*5/100))) THEN
+        <ST><![CDATA[IF tExceed.Q THEN
 	 eState := E_State.error;
-	ELSIF (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*5/100))) AND (rCalculatedTransmissionValue >= (TransmissionValue - (TransmissionValue*10/100))) THEN
+	 stStatus.AtTarget := 0;
+	ELSIF tSettle.Q THEN
 		// ok
 		eState := E_State.ok;
 		// At Target
@@ -442,7 +450,8 @@ IF (rtAction.Q) THEN  fbLogger(sMsg:='AT1K0-MAA current aperture size mismatch, 
 	ELSE eState := E_State.unknown;
 END_IF
 // State ok when the Transmission is within the acceptable range and the MAA are not in errors
-stStatus.OK := TRANS_FFO.i_xOK AND US_MAA_OK AND DS_MAA_OK AND (eState = E_State.ok);
+stStatus.OK := (*TRANS_FFO.i_xOK AND*) US_MAA_OK AND DS_MAA_OK AND US_Turbo_Valves_Open 
+					AND DS_Turbo_Valves_Open AND US_Turbo_Running AND DS_Turbo_Running;  ;
 
 
 bStatus.0 := stStatus.AtTarget;
@@ -451,7 +460,14 @@ bStatus.2 := stStatus.LocalMode;
 bStatus.3 := stStatus.PMPSMode;
 bStatus.4 := stStatus.OK;
 bStatus.5 := stStatus.Toggle;
-bStatus.6 := stStatus.Include;]]></ST>
+bStatus.6 := stStatus.Include;
+
+tSettle(IN:= (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*5/100))) AND (rCalculatedTransmissionValue >= (TransmissionValue - (TransmissionValue*10/100))),
+	PT := tSettleTime);
+	
+	
+tExceed(IN:= (rCalculatedTransmissionValue > (TransmissionValue + (TransmissionValue*5/100))),
+	PT := tExceedTime);]]></ST>
       </Implementation>
     </Action>
   </POU>
