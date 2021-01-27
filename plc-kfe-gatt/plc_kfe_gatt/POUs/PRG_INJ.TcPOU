@@ -156,6 +156,7 @@ rtNewTrans(CLK:=  (OldTransmissionValue <> TransmissionValue) OR (fTrig_PMPS.Q) 
 IF(rtNewTrans.Q) THEN
 	OldTransmissionValue := TransmissionValue;
 	bChangeAperture:=TRUE;
+	bChangeGas := TRUE;
 	fbLogger(sMsg:='AT1K0 new transmission request.', eSevr:=TcEventSeverity.Info);
 	stStatus.AtTarget := 0;
 	stStatus.Moving := 1;
