@@ -80,7 +80,7 @@ VAR
 	rDelta:REAL:=5;
 	
 	tSettle: TON;
-	tSettleTime: Time := T#30S;
+	tSettleTime: Time := T#5S;
 	
 	tExceed: TON;
 	tExceedTime: Time := T#5mS;
@@ -260,8 +260,8 @@ bError := fbCTRL_PID.bError OR fbCTRL_LIN_INTERPOLATION.bError;]]></ST>
 //auto reset true	
 (*FAST FAULT*)
 TRANS_FFO(i_xOK := ,
-    i_xReset := ,
-	i_xAutoReset :=,
+    i_xReset :=  ,
+	i_xAutoReset := TRUE,
     io_fbFFHWO := GVL_PMPS.g_FastFaultOutput1);]]></ST>
       </Implementation>
     </Action>
