@@ -146,7 +146,7 @@ fbStates_X(
 (*FAST FAULT*)
 FFO(i_xOK := bArbiterEnabled,
     i_xReset := ,
-	i_xAutoReset :=,
+	i_xAutoReset := TRUE,
     io_fbFFHWO := fbFFHWO);]]></ST>
     </Implementation>
   </POU>

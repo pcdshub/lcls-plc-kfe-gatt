@@ -85,6 +85,11 @@ VAR
 	tExceed: TON;
 	tExceedTime: Time := T#5mS;
 	
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:TransPerc '}
+	rTransPerc : REAL; 
+	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:PressPerc '}
+	rPressPerc : REAL; 
+	
 	//FFO
 		TRANS_FFO    :    FB_FastFault :=(
         i_DevName := 'AT1K0-GAS',
@@ -163,7 +168,10 @@ IF(rtNewTrans.Q) THEN
 END_IF
 // change setpoint
 // As calculated by the PRG_INJ
-fSetpointValue := rRequiredPressureSP;
+IF NOT (xPressureControlMode) THEN
+	fSetpointValue := rRequiredPressureSP;
+END_IF
+
 (*Setpoint Validation*)
 fSetpointValue:= LIMIT(0,fSetpointValue,10);
 	
@@ -181,7 +189,12 @@ ACT_STATE();]]></ST>
 fTrig_PMPS(CLK:= xPMPSMode);
 rTrig_PMPS(CLK:= xPMPSMode);
 IF (xPMPSMode) THEN bGo := TRUE; END_IF	
-IF (fTrig_PMPS.Q) THEN bGo := FALSE; END_IF
+IF (fTrig_PMPS.Q) THEN
+	 bGo := FALSE; 
+	 bChangeAperture:=FALSE;
+	 bChangeGas := FALSE;
+	 rTransmissionSP:=1;
+END_IF
 //IF (rTrig_PMPS.Q) THEN bGo := TRUE; END_IF
 
 if (bGo) THEN
@@ -208,6 +221,11 @@ END_IF
 if (VVC_71.M_IsClosed() AND VVC_72.M_IsClosed() ) THEN 
 		//eMode	:= eCTRL_MODE_PASSIVE;
 		fSetpointValue :=0; 
+END_IF 
+
+(*Switch PID Mode to passive if VCN is interlocked*)
+IF NOT (VCN_70.i_xExtIlkOK) THEN 
+		eMode	:= eCTRL_MODE_PASSIVE;
 END_IF 
 
 fbCTRL_LIN_INTERPOLATION(
@@ -461,6 +479,13 @@ bStatus.3 := stStatus.PMPSMode;
 bStatus.4 := stStatus.OK;
 bStatus.5 := stStatus.Toggle;
 bStatus.6 := stStatus.Include;
+
+xAtTarget :=  stStatus.AtTarget;
+xMoving :=  stStatus.Moving;
+xOK :=  stStatus.OK;
+
+IF (TransmissionValue >0) THEN rTransPerc:= rCalculatedTransmissionValue*100/TransmissionValue; END_IF
+IF (fSetpointValue >0) THEN rPressPerc:= GCM_82.rPRESS*100/fSetpointValue; END_IF
 
 tSettle(IN:= (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*5/100))) AND (rCalculatedTransmissionValue >= (TransmissionValue - (TransmissionValue*10/100))),
 	PT := tSettleTime);
