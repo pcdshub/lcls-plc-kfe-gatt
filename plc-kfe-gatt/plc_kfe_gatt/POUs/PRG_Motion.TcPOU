@@ -158,13 +158,13 @@ IF (xPMPSMode) AND (bChangeAperture) THEN
 	fbMAA_3_States.enumSet := eSetAprt;
 	fbMAA_4_States.enumSet := eSetAprt;
 	bChangeAperture:=False;
-	fbLogger(sMsg:='AT1K0-MAA moving to right apperture size', eSevr:=TcEventSeverity.Verbose);
+	fbLogger(sMsg:='AT1K0-MAA moving to correct apperture size', eSevr:=TcEventSeverity.Verbose);
 	ELSE
 	bChangeAperture:=False;
 END_IF
 	
 IF NOT (xPMPSMode) AND bChangeAperture AND (eSelectedAprt <> eSetAprt)  THEN
-	fbLogger(sMsg:='AT1K0-MAA is not set to right apperture size', eSevr:=TcEventSeverity.Critical);
+	fbLogger(sMsg:='AT1K0-MAA is not set to correct apperture size', eSevr:=TcEventSeverity.Critical);
 	bChangeAperture:=False;
 END_IF
 	

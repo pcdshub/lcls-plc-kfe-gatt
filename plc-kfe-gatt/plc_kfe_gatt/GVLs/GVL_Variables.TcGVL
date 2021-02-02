@@ -109,6 +109,38 @@
 	'}
 	rVRC_DS_SP :REAL:=0.001; 
 	
+	{attribute 'pytmc' := '
+	pv: AT1K0:GAS:MODE:PressureControl ;
+ 	field: ZNAM Local; 
+	field: ONAM PMPS; 
+	 io: io;
+	'}
+	xPressureControlMode	:BOOL := FALSE; 
+	
+	{attribute 'pytmc' := '
+	pv: AT1K0:GAS:AtTarget ;
+ 	field: ZNAM FALSE; 
+	field: ONAM TRUE; 
+	 io: io;
+	'}
+	xAtTarget	:BOOL := FALSE; 
+	
+	{attribute 'pytmc' := '
+	pv: AT1K0:GAS:Moving ;
+ 	field: ZNAM FALSE; 
+	field: ONAM TRUE; 
+	 io: io;
+	'}
+	xMoving	:BOOL := FALSE; 
+	
+	{attribute 'pytmc' := '
+	pv: AT1K0:GAS:OK ;
+ 	field: ZNAM FALSE; 
+	field: ONAM TRUE; 
+	 io: io;
+	'}
+	xOK	:BOOL := FALSE; 
+	
 	
 	(* Interlock related bits, local to the PLC*)
 	US_MAA_OK:  BOOL;

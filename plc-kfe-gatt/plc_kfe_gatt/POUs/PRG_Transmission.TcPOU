@@ -17,7 +17,7 @@ VAR
 	
 		
 	FFO    :    FB_FastFault :=(
-	i_DevName := 'AT1K0-MAA',
+	i_DevName := 'AT1K0-GAS',
 	i_Desc := 'Fault occurs when the PMPS mode is switched off',
 	i_TypeCode := 16#AAFF);
 END_VAR
@@ -39,7 +39,7 @@ IF ( SelectedGas = E_GasType.Argon) THEN
 		rCalculatedTransmissionValue := EXP(-fbCTRL_LIN_INTERPOLATION_N2.fOut*(GCM_82.rPRESS/iTorr)*rR_N2*rGasCellLength);
 END_IF
 Cur_Trans.nTran:= TO_UINT(rCalculatedTransmissionValue*PMPS_GVL.TRANS_SCALING_FACTOR);
-//Cur_Trans.xAttOK := 1;
+
 (*Calculate Pressure setpoint from requested transmission value*)
 IF NOT (PMPS_GVL.TRANS_SCALING_FACTOR = 0) THEN
 	rRequestedTransmission := (TO_REAL(Req_Trans.nTran)/PMPS_GVL.TRANS_SCALING_FACTOR);
@@ -47,6 +47,7 @@ END_IF
 
 (*Transmission Request selection*)
 IF (xPMPSMode) THEN
+	xPressureControlMode := FALSE;
 	IF NOT (PMPS_GVL.TRANS_SCALING_FACTOR = 0) THEN TransmissionValue := (TO_REAL(Req_Trans.nTran)/PMPS_GVL.TRANS_SCALING_FACTOR); END_IF
 	rTransmissionSP :=  LIMIT(0.00000000001,TransmissionValue,1);
 	ELSE TransmissionValue := LIMIT(0.00000000001,rTransmissionSP,1);

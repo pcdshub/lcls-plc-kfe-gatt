@@ -16,7 +16,7 @@ IF(VVC_71.M_IsOpen()) THEN  SelectedGas := E_GasType.Argon;
 	ELSIF (VVC_72.M_IsOpen()) THEN  SelectedGas := E_GasType.Nitrogen;
 END_IF
 
-IF (bChangeGas) THEN
+IF (xPMPSMode) AND (bChangeGas) THEN
 	IF(rPhotonEnergy >=N2LowerEdge-rDelta) AND (rPhotonEnergy <=N2UpperEdge-rDelta)(* AND   NOT (SelectedGas = E_GasType.Argon)*) THEN
 		//Block N2
 		VVC_72.M_Set_OPN_SW (false);
@@ -33,7 +33,13 @@ IF (bChangeGas) THEN
 			bChangeGas := FALSE; 
 			fbLogger(sMsg:='AT1K0 switched to N2', eSevr:=TcEventSeverity.Verbose);
 		END_IF;
+	ELSE 
+		VVC_72.M_Set_OPN_SW (TRUE); 
+		bChangeGas := FALSE; 
+		//fbLogger(sMsg:='AT1K0 switched to N2', eSevr:=TcEventSeverity.Verbose);
 	END_IF
+	ELSE
+		bChangeGas := FALSE;
 END_IF
 ]]></ST>
     </Implementation>
