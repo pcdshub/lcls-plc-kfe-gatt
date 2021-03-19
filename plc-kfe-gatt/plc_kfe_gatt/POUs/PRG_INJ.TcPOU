@@ -76,7 +76,7 @@ VAR
 	rLimit2 : REAL:= 78;
 	rLimit3 : REAL:= 78;
 	rLimit4 : REAL:= 62; 
-	rLimit:REAL;
+	rLimit:REAL:=78;
 	rDelta:REAL:=5;
 	
 	tSettle: TON;
@@ -395,14 +395,14 @@ THEN
 	stCTRL_PID_PARAMS.tTn					:= T#500ms;		(*  Tn									*)
 	stCTRL_PID_PARAMS.tTv					:= T#200ms;	(*  Tv									*)
 	stCTRL_PID_PARAMS.tTd					:= T#200ms;	(*  Td									*)
-	stCTRL_PID_PARAMS.fOutMaxLimit			:=  15;			(* maximum output limit				*)
+	stCTRL_PID_PARAMS.fOutMaxLimit			:=  25;			(* maximum output limit				*)
 	stCTRL_PID_PARAMS.fOutMinLimit			:=  -100;			(* minimum output limit				*)
 
 	(* set the mode to ACTIVE --> normal operation *)
 	eMode							:= eCTRL_MODE_PASSIVE   ;					
 	
 	(*set the upper limit on the VCN*)
-	VCN_70.M_SetThrottle(78);
+	VCN_70.M_SetThrottle(rLimit);
 	
 	(* reset the init flag *)
 	bInit							:= FALSE;

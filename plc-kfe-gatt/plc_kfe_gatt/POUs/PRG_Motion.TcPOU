@@ -152,7 +152,7 @@ ELSE  eSelectedAprt:= E_MAA_States.Unknown; END_IF;
 					eSetAprt := E_MAA_States.Aprt4;
 	END_IF
 (*Aperture state selection*)
-IF (xPMPSMode) AND (bChangeAperture) THEN
+IF (xPMPSMode) AND (bChangeAperture)  AND (eSelectedAprt <> eSetAprt) THEN
 	fbMAA_1_States.enumSet := eSetAprt;
 	fbMAA_2_States.enumSet := eSetAprt;
 	fbMAA_3_States.enumSet := eSetAprt;
