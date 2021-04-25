@@ -975,6 +975,14 @@ External Setpoint Generation:
 			</Hides>
 		</DataType>
 		<DataType>
+			<Name GUID="{DEB4B00F-B627-457A-9652-50382C02AE5D}" Namespace="Tc2_System" AutoDeleteType="true">T_AmsNetIdArr</Name>
+			<Comment>
+				<![CDATA[ TwinCAT AMS netID address bytes. ]]>
+			</Comment>
+			<BitSize>48</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000041}">AMSNETID</BaseType>
+		</DataType>
+		<DataType>
 			<Name GUID="{D01709AA-9B4A-464A-B4D1-4BF476CFE7DE}">ST_PMPS_Attenuator_IO</Name>
 			<BitSize>32</BitSize>
 			<SubItem>
@@ -994,14 +1002,6 @@ External Setpoint Generation:
 				<Hide GUID="{E96BEA56-6301-4A6A-BF6A-F08340C87594}"/>
 				<Hide GUID="{FE32F9A9-7E7A-413D-8D77-0C99C34D8CD9}"/>
 			</Hides>
-		</DataType>
-		<DataType>
-			<Name GUID="{DEB4B00F-B627-457A-9652-50382C02AE5D}" Namespace="Tc2_System" AutoDeleteType="true">T_AmsNetIdArr</Name>
-			<Comment>
-				<![CDATA[ TwinCAT AMS netID address bytes. ]]>
-			</Comment>
-			<BitSize>48</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000041}">AMSNETID</BaseType>
 		</DataType>
 		<DataType>
 			<Name GUID="{875D2B22-B7EB-497E-B933-0C004593CCF3}" Namespace="MC" TcBaseType="true" HideType="true" IecDeclaration="DWORD;">PLCTONC_AXIS_REF_CTRL</Name>
@@ -1813,14 +1813,6 @@ External Setpoint Generation:
 				<Var>
 					<Name>PRG_PMPS.fbArbiterIO.xTxPDO_state</Name>
 					<Type>BIT</Type>
-				</Var>
-				<Var>
-					<Name>GVL_PMPS.Req_Trans</Name>
-					<Type GUID="{D01709AA-9B4A-464A-B4D1-4BF476CFE7DE}">ST_PMPS_Attenuator_IO</Type>
-				</Var>
-				<Var>
-					<Name>GVL_PMPS.rPhotonEnergy</Name>
-					<Type>REAL</Type>
 				</Var>
 				<Var>
 					<Name>GVL_Devices.VGP_80.Axis.NcToPlc</Name>
@@ -2756,6 +2748,17 @@ External Setpoint Generation:
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_VRC_11.i_xOpnLS</Name>
+					<Comment>
+						<![CDATA[IO]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_VRC_11.i_xClsLS</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
 					<Name>GVL_GATT.fbEcatDiagWrapper.wFrmXWcState</Name>
 					<Comment>
 						<![CDATA[ link to task related ethercat frame state (Frm1WcState)]]>
@@ -2796,6 +2799,14 @@ External Setpoint Generation:
 						<![CDATA[ link to CfgSlaveCount of EtherCAT Master (InfoData)]]>
 					</Comment>
 					<Type>UINT</Type>
+				</Var>
+				<Var>
+					<Name>GVL_PMPS.Req_Trans</Name>
+					<Type GUID="{D01709AA-9B4A-464A-B4D1-4BF476CFE7DE}">ST_PMPS_Attenuator_IO</Type>
+				</Var>
+				<Var>
+					<Name>GVL_PMPS.rPhotonEnergy</Name>
+					<Type>REAL</Type>
 				</Var>
 				<Var>
 					<Name>Main.M1.Axis.NcToPlc</Name>
@@ -3747,18 +3758,6 @@ External Setpoint Generation:
 					</SubVar>
 				</Var>
 				<Var>
-					<Name>GVL_PMPS.g_FastFaultOutput1.q_xFastFaultOut</Name>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_PMPS.g_FastFaultOutput2.q_xFastFaultOut</Name>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_PMPS.Cur_Trans</Name>
-					<Type GUID="{D01709AA-9B4A-464A-B4D1-4BF476CFE7DE}">ST_PMPS_Attenuator_IO</Type>
-				</Var>
-				<Var>
 					<Name>GVL_PMPS.bStatus</Name>
 					<Type>BYTE</Type>
 				</Var>
@@ -4359,6 +4358,26 @@ IO]]>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_VRC_11.q_xOPN_DO</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_VRC_11.q_xOPN_DO_2</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_PMPS.g_FastFaultOutput1.q_xFastFaultOut</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_PMPS.g_FastFaultOutput2.q_xFastFaultOut</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_PMPS.Cur_Trans</Name>
+					<Type GUID="{D01709AA-9B4A-464A-B4D1-4BF476CFE7DE}">ST_PMPS_Attenuator_IO</Type>
+				</Var>
+				<Var>
 					<Name>Main.M1.Axis.PlcToNc</Name>
 					<Type GUID="{63A84524-72E3-41C8-BEAB-4CCE44690A13}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
@@ -4611,6 +4630,9 @@ IO]]>
 				<Link VarA="PlcTask Outputs^Main.M2.bBrakeRelease" VarB="Channel 3^Output" AutoLink="true"/>
 				<Link VarA="PlcTask Outputs^Main.M4.bBrakeRelease" VarB="Channel 4^Output" AutoLink="true"/>
 			</OwnerB>
+			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_02_00^=+-ES2008_02_14">
+				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_VRC_11.q_xOPN_DO" VarB="Channel 1^Output" AutoLink="true"/>
+			</OwnerB>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_02_00^=+-ES7041_02_05">
 				<Link VarA="PlcTask Inputs^Main.M1.bLimitBackwardEnable" VarB="STM Status^Status^Digital input 2" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^Main.M1.bLimitForwardEnable" VarB="STM Status^Status^Digital input 1" AutoLink="true"/>
@@ -4690,6 +4712,10 @@ IO]]>
 			</OwnerB>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_03_00^=+-ES1004_03_19">
 				<Link VarA="PlcTask Inputs^GVL_Devices.fb_AT1K0_GAS_PTM_40.i_xAccel" VarB="Channel 1^fb_AT1K0_GAS_PTM_40.i_xAccel"/>
+			</OwnerB>
+			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_03_00^=+-ES1004_03_21">
+				<Link VarA="PlcTask Inputs^GVL_Devices.fb_AT1K0_GAS_VRC_11.i_xClsLS" VarB="Channel 1^Input" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^GVL_Devices.fb_AT1K0_GAS_VRC_11.i_xOpnLS" VarB="Channel 2^Input" AutoLink="true"/>
 			</OwnerB>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_03_00^=+-ES3064_03_04">
 				<Link VarA="PlcTask Inputs^GVL_Devices.fb_AT1K0_GAS_PTM_10.i_iCurrentMon" VarB="AI Standard Channel 2^fb_AT1K0_GAS_PTM_10.i_iCurrentMon"/>

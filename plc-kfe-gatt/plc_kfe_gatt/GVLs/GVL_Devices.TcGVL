@@ -194,6 +194,14 @@ fb_AT1K0_GAS_VVC_140 : FB_VVC;
 {attribute 'pytmc' := ' pv: AT1K0:GAS:VVC:80 '}
 {attribute 'TcLinkTo' := 	'.q_xOPN_DO	:=	TIIB[=+-EL2212_04_18]^DOX Control Channel 2^Control^Output'}
 fb_AT1K0_GAS_VVC_80 : FB_VVC;
+//NEW added Valve instead of the manual valve at the roughing line in the EBD
+{attribute 'pytmc' := ' pv: AT1K0:GAS:VRC:11 '}
+{attribute 'TcLinkTo' := 	'.q_xOPN_DO	:=	TIIB[=+-ES2008_02_14]^Channel 1^Output;
+							.i_xClsLS	:=	TIIB[=+-ES1004_03_21]^Channel 1^Input;
+							.i_xOpnLS	:=	TIIB[=+-ES1004_03_21]^Channel 2^Input'}
+
+
+fb_AT1K0_GAS_VRC_11 : FB_VRC_EBD;
 
 END_VAR]]></Declaration>
   </GVL>
