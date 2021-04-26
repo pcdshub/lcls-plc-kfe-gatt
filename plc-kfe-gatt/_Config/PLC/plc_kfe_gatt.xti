@@ -4714,8 +4714,8 @@ IO]]>
 				<Link VarA="PlcTask Inputs^GVL_Devices.fb_AT1K0_GAS_PTM_40.i_xAccel" VarB="Channel 1^fb_AT1K0_GAS_PTM_40.i_xAccel"/>
 			</OwnerB>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_03_00^=+-ES1004_03_21">
-				<Link VarA="PlcTask Inputs^GVL_Devices.fb_AT1K0_GAS_VRC_11.i_xClsLS" VarB="Channel 1^Input" AutoLink="true"/>
-				<Link VarA="PlcTask Inputs^GVL_Devices.fb_AT1K0_GAS_VRC_11.i_xOpnLS" VarB="Channel 2^Input" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^GVL_Devices.fb_AT1K0_GAS_VRC_11.i_xClsLS" VarB="Channel 2^Input" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^GVL_Devices.fb_AT1K0_GAS_VRC_11.i_xOpnLS" VarB="Channel 1^Input" AutoLink="true"/>
 			</OwnerB>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_03_00^=+-ES3064_03_04">
 				<Link VarA="PlcTask Inputs^GVL_Devices.fb_AT1K0_GAS_PTM_10.i_iCurrentMon" VarB="AI Standard Channel 2^fb_AT1K0_GAS_PTM_10.i_iCurrentMon"/>
