@@ -203,6 +203,10 @@ fb_AT1K0_GAS_VVC_80 : FB_VVC;
 
 fb_AT1K0_GAS_VRC_11 : FB_VRC_EBD;
 
+{attribute 'pytmc' := ' pv: AT1K0:GAS:GPI:12 '}
+{attribute 'TcLinkTo' := 	'.i_iPRESS_R	:=	TIIB[=+-ES3064_01_09]^AI Standard Channel 4^Value'}
+fb_AT1K0_GAS_GPI_12 : FB_MKS317;
+
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>
