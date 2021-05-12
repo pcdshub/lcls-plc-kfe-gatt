@@ -2801,6 +2801,13 @@ External Setpoint Generation:
 					<Type>UINT</Type>
 				</Var>
 				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_GPI_12.i_iPRESS_R</Name>
+					<Comment>
+						<![CDATA[ input Pressure // Link to analog Input]]>
+					</Comment>
+					<Type>INT</Type>
+				</Var>
+				<Var>
 					<Name>GVL_PMPS.Req_Trans</Name>
 					<Type GUID="{D01709AA-9B4A-464A-B4D1-4BF476CFE7DE}">ST_PMPS_Attenuator_IO</Type>
 				</Var>
@@ -4564,6 +4571,7 @@ IO]]>
 			</OwnerB>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_01_00^=+-ES3064_01_09">
 				<Link VarA="PlcTask Inputs^GVL_Devices.fb_AT1K0_GAS_GCC_80.i_iPRESS_R" VarB="AI Standard Channel 1^fb_AT1K0_GAS_GCC_80.i_iPRESS_R"/>
+				<Link VarA="PlcTask Inputs^GVL_Devices.fb_AT1K0_GAS_GPI_12.i_iPRESS_R" VarB="AI Standard Channel 4^Value" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^GVL_Devices.fb_AT1K0_GAS_GPI_80.i_iPRESS_R" VarB="AI Standard Channel 3^fb_AT1K0_GAS_GPI_80.i_iPRESS_R"/>
 			</OwnerB>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_01_00^=+-ES3064_01_10">
