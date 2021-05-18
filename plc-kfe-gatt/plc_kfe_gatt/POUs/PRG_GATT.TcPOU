@@ -68,7 +68,7 @@ fb_AT1K0_GAS_VRC_30(i_xExtILK_OK := F_TurboGateValve_ILK(fb_AT1K0_GAS_PTM_30.iq_
 fb_AT1K0_GAS_VRC_40(i_xExtILK_OK := F_TurboGateValve_ILK(fb_AT1K0_GAS_PTM_40.iq_stPtm,fb_AT1K0_GAS_GPI_40.PG)AND fb_AT1K0_GAS_PTM_40.iq_stPtm.eState = pumpRUNNING, i_xOverrideMode := xSystemOverrideMode);
 
 // Auto open the VRC when pressure if ok
-rTrig_11.CLK := ( fb_AT1K0_GAS_GPI_11.PG.xPRESS_OK AND fb_AT1K0_GAS_GPI_11.PG.rPRESS < 0.001);
+rTrig_11(CLK := ( fb_AT1K0_GAS_GPI_11.PG.xPRESS_OK AND fb_AT1K0_GAS_GPI_11.PG.rPRESS < 0.01));
 IF (rTrig_11.Q) THEN
 	fb_AT1K0_GAS_VRC_11.M_Set_OPN_SW (TRUE);
 END_IF

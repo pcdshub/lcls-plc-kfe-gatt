@@ -143,9 +143,13 @@
       <DefaultResolution>PMPS, * (SLAC - LCLS)</DefaultResolution>
       <Namespace>PMPS</Namespace>
       <Parameters>
-        <Parameter xmlns="">
+        <Parameter>
           <Key>MAX_FAST_FAULTS</Key>
           <Value>75</Value>
+        </Parameter>
+        <Parameter>
+          <Key>TRANS_MARGIN</Key>
+          <Value>500</Value>
         </Parameter>
       </Parameters>
     </PlaceholderReference>
@@ -191,16 +195,16 @@
       <Resolution>LCLS General, 2.4.2 (SLAC)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="LCLS Vacuum">
-      <Resolution>LCLS Vacuum, 1.4.2 (SLAC - LCLS)</Resolution>
+      <Resolution>LCLS Vacuum, 1.6.0 (SLAC - LCLS)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="lcls-twincat-motion">
-      <Resolution>lcls-twincat-motion, 1.4.0 (SLAC)</Resolution>
+      <Resolution>lcls-twincat-motion, 1.5.1 (SLAC)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="LCLSVacuumSerialDriverLib">
       <Resolution>LCLSVacuumSerialDriverLib, 1.1.5 (SLAC - LCLS)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="PMPS">
-      <Resolution>PMPS, 0.18.0 (SLAC - LCLS)</Resolution>
+      <Resolution>PMPS, 0.0.0 (SLAC - LCLS)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="SysFile">
       <Resolution>SysFile, 3.5.9.0 (System)</Resolution>

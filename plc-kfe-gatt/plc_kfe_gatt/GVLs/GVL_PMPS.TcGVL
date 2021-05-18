@@ -8,13 +8,13 @@
     pv: PLC:KFE:GATT:FFO:01
     '}
     {attribute 'TcLinkTo' := '.q_xFastFaultOut:=TIIB[=+-ES2202_00_07]^Channel 1^Output'}
-    g_FastFaultOutput1  :   FB_HardwareFFOutput;
+    g_FastFaultOutput1  :   FB_HardwareFFOutput :=(i_sNetID:='172.21.92.73.1.1');
 	
 	{attribute 'pytmc' := '
     pv: PLC:KFE:GATT:FFO:02
     '}
     {attribute 'TcLinkTo' := '.q_xFastFaultOut:=TIIB[=+-ES2202_00_07]^Channel 2^Output'}
-    g_FastFaultOutput2  :   FB_HardwareFFOutput;
+    g_FastFaultOutput2  :   FB_HardwareFFOutput :=(i_sNetID:='172.21.92.73.1.1');
 	
 	{attribute 'pytmc' := ' 
      pv: PLC:KFE:GATT:FF_RESET;
@@ -43,7 +43,7 @@
     {attribute 'TcLinkTo' := ':=TIIB[PMPS_PRE]^IO Inputs^Requested Transmission'}
 	Req_Trans AT%I*: ST_PMPS_Attenuator_IO;
 
-	 {attribute 'TcLinkTo' := ':=TIIB[PMPS_PRE]^IO Outputs^Current_Transmission'}
+	 {attribute 'TcLinkTo' := ':=TIIB[PMPS_PRE]^IO Outputs^Current Transmission'}
 	Cur_Trans AT%Q*: ST_PMPS_Attenuator_IO;
 	{attribute 'pytmc' := '
     pv: AT1K0:GAS:PhotonEnergy
