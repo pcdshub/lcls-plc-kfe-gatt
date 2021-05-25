@@ -85,6 +85,9 @@ VAR
 	tExceed: TON;
 	tExceedTime: Time := T#5mS;
 	
+	tMoving: TON;
+	tMovingTime: Time := T#1S;
+	
 	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:TransPerc '}
 	rTransPerc : REAL; 
 	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:PressPerc '}
@@ -93,7 +96,7 @@ VAR
 	//FFO
 		TRANS_FFO    :    FB_FastFault :=(
         i_DevName := 'AT1K0-GAS',
-        i_Desc := 'Fault occurs when the current transmission exceeds the requested transmission by 5%',
+        i_Desc := 'Fault occurs when the current transmission exceeds the requested transmission by 20%',
         i_TypeCode := 16#AFF);
 END_VAR
 ]]></Declaration>
@@ -163,7 +166,9 @@ IF(rtNewTrans.Q) THEN
 	bChangeAperture:=TRUE;
 	bChangeGas := TRUE;
 	fbLogger(sMsg:='AT1K0 new transmission request.', eSevr:=TcEventSeverity.Info);
-	stStatus.AtTarget := 0;
+	IF NOT (tSettle.IN) THEN 
+		stStatus.AtTarget := 0;
+	END_IF
 	stStatus.Moving := 1;
 END_IF
 // change setpoint
@@ -273,11 +278,11 @@ bError := fbCTRL_PID.bError OR fbCTRL_LIN_INTERPOLATION.bError;]]></ST>
     </Action>
     <Action Name="ACT_FFO" Id="{ecde1749-3bc9-4b1d-a490-cdf34d3ee006}">
       <Implementation>
-        <ST><![CDATA[TRANS_FFO.i_xOK := (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*5/100))) AND NOT tExceed.Q;
+        <ST><![CDATA[TRANS_FFO.i_xOK := (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*20/100))) AND NOT tExceed.Q;
 
 //auto reset true	
 (*FAST FAULT*)
-TRANS_FFO(i_xOK := ,
+TRANS_FFO(i_xOK := ,//NOT tExceed.Q,
     i_xReset :=  ,
 	i_xAutoReset := TRUE,
     io_fbFFHWO := GVL_PMPS.g_FastFaultOutput1);]]></ST>
@@ -454,18 +459,18 @@ IF (rtAction.Q) THEN  fbLogger(sMsg:='AT1K0-MAA current aperture size mismatch, 
     <Action Name="ACT_STATE" Id="{7ea5bee8-6577-4f4e-9199-ba70a29710d8}">
       <Implementation>
         <ST><![CDATA[IF tExceed.Q THEN
-	 eState := E_State.error;
-	 stStatus.AtTarget := 0;
-	ELSIF tSettle.Q THEN
-		// ok
-		eState := E_State.ok;
-		// At Target
-		stStatus.AtTarget := 1;
-		stStatus.Moving := 0;
-	ELSIF (rCalculatedTransmissionValue < (TransmissionValue - (TransmissionValue*10/100))) THEN
-		//warning
-		eState := E_State.warning;
-	ELSE eState := E_State.unknown;
+	eState := E_State.error;
+	stStatus.AtTarget := 0;
+ELSIF tSettle.Q THEN
+	// ok
+	eState := E_State.ok;
+	// At Target
+	stStatus.AtTarget := 1;
+	stStatus.Moving := 0;
+ELSIF (rCalculatedTransmissionValue < (TransmissionValue - (TransmissionValue*20/100))) THEN
+	//warning
+	eState := E_State.warning;
+ELSE eState := E_State.unknown;
 END_IF
 // State ok when the Transmission is within the acceptable range and the MAA are not in errors
 stStatus.OK := (*TRANS_FFO.i_xOK AND*) US_MAA_OK AND DS_MAA_OK AND US_Turbo_Valves_Open 
@@ -480,6 +485,7 @@ bStatus.4 := stStatus.OK;
 bStatus.5 := stStatus.Toggle;
 bStatus.6 := stStatus.Include;
 
+stStatus.Moving := NOT tMoving.Q;
 xAtTarget :=  stStatus.AtTarget;
 xMoving :=  stStatus.Moving;
 xOK :=  stStatus.OK;
@@ -487,11 +493,13 @@ xOK :=  stStatus.OK;
 IF (TransmissionValue >0) THEN rTransPerc:= rCalculatedTransmissionValue*100/TransmissionValue; END_IF
 IF (fSetpointValue >0) THEN rPressPerc:= GCM_82.rPRESS*100/fSetpointValue; END_IF
 
-tSettle(IN:= (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*5/100))) AND (rCalculatedTransmissionValue >= (TransmissionValue - (TransmissionValue*10/100))),
+tSettle(IN:= (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*20/100))) AND (rCalculatedTransmissionValue >= (TransmissionValue - (TransmissionValue*20/100))),
 	PT := tSettleTime);
 	
+tMoving(IN:= (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*5/100))) AND (rCalculatedTransmissionValue >= (TransmissionValue - (TransmissionValue*10/100))),
+	PT := tMovingTime);
 	
-tExceed(IN:= (rCalculatedTransmissionValue > (TransmissionValue + (TransmissionValue*5/100))),
+tExceed(IN:= (rCalculatedTransmissionValue > (TransmissionValue + (TransmissionValue*20/100))),
 	PT := tExceedTime);]]></ST>
       </Implementation>
     </Action>
