@@ -4368,6 +4368,14 @@ IO]]>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
+					<Name>GVL_PMPS.g_FastFaultOutput1.q_xFastFaultOut</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_PMPS.g_FastFaultOutput2.q_xFastFaultOut</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
 					<Name>GVL_PMPS.Cur_Trans</Name>
 					<Type GUID="{7E016B85-166E-4B4F-AAC4-ECA8DDD44F13}">ST_PMPS_Attenuator_IO</Type>
 				</Var>
@@ -4459,14 +4467,6 @@ IO]]>
 					</Comment>
 					<Type>BOOL</Type>
 				</Var>
-				<Var>
-					<Name>GVL_PMPS.g_FastFaultOutput1.q_xFastFaultOut</Name>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_PMPS.g_FastFaultOutput2.q_xFastFaultOut</Name>
-					<Type>BOOL</Type>
-				</Var>
 			</Vars>
 			<Vars VarGrpType="8">
 				<Name>PlcTask Retains</Name>
@@ -4517,7 +4517,6 @@ IO]]>
 				<Link VarA="PlcTask Inputs^GVL_GATT.fbEcatDiagWrapper.nEcMasterDevState" VarB="Inputs^DevState"/>
 				<Link VarA="PlcTask Inputs^GVL_GATT.fbEcatDiagWrapper.nEcMasterDeviceId" VarB="InfoData^DevId"/>
 				<Link VarA="PlcTask Inputs^GVL_GATT.fbEcatDiagWrapper.nEcMasterSlaveCount" VarB="Inputs^SlaveCount"/>
-				<Link VarA="PlcTask Inputs^GVL_GATT.fbEcatDiagWrapper.wFrmXWcState" VarB="Inputs^Frm1WcState"/>
 			</OwnerB>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_01_00^=+-EL2798_01_03">
 				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_GCC_10.q_xHV_DIS" VarB="Channel 1^fb_AT1K0_GAS_GCC_10.q_xHV_DIS"/>
@@ -4752,7 +4751,6 @@ IO]]>
 				<Link VarA="PlcTask Inputs^DIAGNOSTICS.DRL_04.SC" VarB="DOX Synchron info data Channel 2^Info data 1" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^DIAGNOSTICS.DRL_04.SV" VarB="DOX Synchron info data Channel 1^Info data 2" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^DIAGNOSTICS.DRL_04.TEMP" VarB="DOX Synchron info data Channel 1^Info data 1" AutoLink="true"/>
-				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_VVC_140.q_xOPN_DO" VarB="DOX Control Channel 1^Control^Output" AutoLink="true"/>
 				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_VVC_80.q_xOPN_DO" VarB="DOX Control Channel 2^Control^Output" AutoLink="true"/>
 			</OwnerB>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_04_00^=+-EL3174_04_17">
@@ -4849,10 +4847,13 @@ IO]]>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_05_00^=+-ES2004_05_02">
 				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_VRC_70.q_xOPN_DO" VarB="Channel 1^fb_AT1K0_GAS_VRC_70.q_xOPN_DO"/>
 				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_VRC_80.q_xOPN_DO" VarB="Channel 2^fb_AT1K0_GAS_VRC_80.q_xOPN_DO"/>
+				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_VVC_110.q_xOPN_DO" VarB="Channel 3^Output"/>
+				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_VVC_120.q_xOPN_DO" VarB="Channel 4^Output"/>
 			</OwnerB>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_05_00^=+-ES2004_05_04">
 				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_VRC_100.q_xOPN_DO" VarB="Channel 2^fb_AT1K0_GAS_VRC_100.q_xOPN_DO"/>
 				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_VRC_90.q_xOPN_DO" VarB="Channel 1^fb_AT1K0_GAS_VRC_90.q_xOPN_DO"/>
+				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_VVC_140.q_xOPN_DO" VarB="Channel 3^Output"/>
 			</OwnerB>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_05_00^=+-ES2004_05_05">
 				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_VRC_110.q_xOPN_DO" VarB="Channel 1^fb_AT1K0_GAS_VRC_110.q_xOPN_DO"/>
@@ -4866,8 +4867,6 @@ IO]]>
 				<Link VarA="PlcTask Inputs^DIAGNOSTICS.DRL_06.SC" VarB="DOX Synchron info data Channel 2^Info data 1" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^DIAGNOSTICS.DRL_06.SV" VarB="DOX Synchron info data Channel 1^Info data 2" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^DIAGNOSTICS.DRL_06.TEMP" VarB="DOX Synchron info data Channel 1^Info data 1" AutoLink="true"/>
-				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_VVC_110.q_xOPN_DO" VarB="DOX Control Channel 1^Control^Output" AutoLink="true"/>
-				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_VVC_120.q_xOPN_DO" VarB="DOX Control Channel 2^Control^Output" AutoLink="true"/>
 			</OwnerB>
 			<OwnerB Name="TIID^=+-CX2020/EtherCAT1^=+-EK1100_06_00^=+-EL2794_06_22">
 				<Link VarA="PlcTask Outputs^GVL_Devices.fb_AT1K0_GAS_PMF_100.q_xBPStart" VarB="Channel 4^fb_AT1K0_GAS_PMF_100.q_xBPStart"/>

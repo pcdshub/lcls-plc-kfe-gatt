@@ -38,7 +38,7 @@ IF ( SelectedGas = E_GasType.Argon) THEN
 	ELSE 
 		rCalculatedTransmissionValue := EXP(-fbCTRL_LIN_INTERPOLATION_N2.fOut*(GCM_82.rPRESS/iTorr)*rR_N2*rGasCellLength);
 END_IF
-Cur_Trans.nTran:= TO_UINT(rCalculatedTransmissionValue*PMPS_GVL.TRANS_SCALING_FACTOR);
+Cur_Trans.nTran:= TO_REAL(rCalculatedTransmissionValue*PMPS_GVL.TRANS_SCALING_FACTOR);
 
 (*Calculate Pressure setpoint from requested transmission value*)
 IF NOT (PMPS_GVL.TRANS_SCALING_FACTOR = 0) THEN

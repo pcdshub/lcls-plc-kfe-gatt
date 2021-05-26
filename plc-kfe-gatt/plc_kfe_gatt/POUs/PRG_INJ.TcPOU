@@ -83,7 +83,7 @@ VAR
 	tSettleTime: Time := T#5S;
 	
 	tExceed: TON;
-	tExceedTime: Time := T#5mS;
+	tExceedTime: Time := T#500mS;
 	
 	tMoving: TON;
 	tMovingTime: Time := T#1S;
@@ -278,7 +278,7 @@ bError := fbCTRL_PID.bError OR fbCTRL_LIN_INTERPOLATION.bError;]]></ST>
     </Action>
     <Action Name="ACT_FFO" Id="{ecde1749-3bc9-4b1d-a490-cdf34d3ee006}">
       <Implementation>
-        <ST><![CDATA[TRANS_FFO.i_xOK := (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*20/100))) AND NOT tExceed.Q;
+        <ST><![CDATA[TRANS_FFO.i_xOK := (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*20/100))) OR NOT tExceed.Q;
 
 //auto reset true	
 (*FAST FAULT*)

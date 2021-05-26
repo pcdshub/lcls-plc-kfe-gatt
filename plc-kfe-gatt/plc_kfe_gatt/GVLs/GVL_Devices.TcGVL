@@ -181,13 +181,16 @@ fb_AT1K0_GAS_PMF_140 : FB_EbaraEVA;
 
 //Roughing DC Valves
 {attribute 'pytmc' := ' pv: AT1K0:GAS:VCP:110 '}
-{attribute 'TcLinkTo' := 	'.q_xOPN_DO	:=	TIIB[=+-EL2212_06_25]^DOX Control Channel 1^Control^Output'}
+//{attribute 'TcLinkTo' := 	'.q_xOPN_DO	:=	TIIB[=+-EL2212_06_25]^DOX Control Channel 1^Control^Output'}
+{attribute 'TcLinkTo' := 	'.q_xOPN_DO	:=	TIIB[=+-ES2004_05_02]^Channel 3^Output'}
 fb_AT1K0_GAS_VVC_110 : FB_VVC;
 {attribute 'pytmc' := ' pv: AT1K0:GAS:VCP:120 '}
-{attribute 'TcLinkTo' := 	'.q_xOPN_DO	:=	TIIB[=+-EL2212_06_25]^DOX Control Channel 2^Control^Output'}
+//{attribute 'TcLinkTo' := 	'.q_xOPN_DO	:=	TIIB[=+-EL2212_06_25]^DOX Control Channel 2^Control^Output'}
+{attribute 'TcLinkTo' := 	'.q_xOPN_DO	:=	TIIB[=+-ES2004_05_02]^Channel 4^Output'}
 fb_AT1K0_GAS_VVC_120 : FB_VVC;
 {attribute 'pytmc' := ' pv: AT1K0:GAS:VCP:140 '}
-{attribute 'TcLinkTo' := 	'.q_xOPN_DO	:=	TIIB[=+-EL2212_04_18]^DOX Control Channel 1^Control^Output'}
+//{attribute 'TcLinkTo' := 	'.q_xOPN_DO	:=	TIIB[=+-EL2212_04_18]^DOX Control Channel 1^Control^Output'}
+{attribute 'TcLinkTo' := 	'.q_xOPN_DO	:=	TIIB[=+-ES2004_05_04]^Channel 3^Output'}
 fb_AT1K0_GAS_VVC_140 : FB_VVC;
 
 //PTM 80 VRC back stream valve
