@@ -93,6 +93,9 @@ VAR
 	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:PressPerc '}
 	rPressPerc : REAL; 
 	
+	rPressThresholdHigh : REAL:=2.455e-1;
+	rPressThresholdLow : REAL :=7.733e-2;
+	
 	//FFO
 		TRANS_FFO    :    FB_FastFault :=(
         i_DevName := 'AT1K0-GAS',
@@ -131,10 +134,17 @@ IF (fSetpointValue <= 0.0001) AND (fb_AT1K0_GAS_GCC_80.IG.rPRESS >0) THEN GCM_82
 		ELSIF ( GCM_81.PG.rPRESS < 0.25 ) THEN GCM_82 := GCM_81.PG;
 			ElSE GCM_82 := GCM_80.PG;
 END_IF*)
-
+(* MG: removed August shutdown 2021
 IF (fb_AT1K0_GAS_GCC_80.IG.rPRESS <=0.0009) AND (fb_AT1K0_GAS_GCC_80.IG.rPRESS >0) THEN GCM_82 := fb_AT1K0_GAS_GCC_80.IG;
 	ELSIF ( GCM_81.PG.rPRESS < 0.25 ) THEN GCM_82 := GCM_81.PG;
 			ElSE GCM_82 := GCM_80.PG;
+END_IF*)
+
+//MG: Added to avoid sudden switching
+IF (fb_AT1K0_GAS_GCC_80.IG.rPRESS <=0.0009) AND (fb_AT1K0_GAS_GCC_80.IG.rPRESS >0) THEN GCM_82 := fb_AT1K0_GAS_GCC_80.IG;
+	ELSIF (GCM_80.PG.rPRESS <= rPressThresholdLow ) THEN GCM_82 := GCM_81.PG;
+		ELSIF (GCM_81.PG.rPRESS >= rPressThresholdHigh ) THEN GCM_82 := GCM_80.PG;
+			ElSIF (GCM_82.rPRESS = fb_AT1K0_GAS_GCC_80.IG.rPRESS) THEN GCM_82 := GCM_81.PG ;
 END_IF
 
 (*Automation of other devices*)
