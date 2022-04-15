@@ -114,6 +114,10 @@
     <Compile Include="POUs\Test\FB_ILK_TEST.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Test\FB_VCN_Lin.TcPOU">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
     <Compile Include="POUs\Transmission\F_COEF_AR.TcPOU">
       <SubType>Code</SubType>
     </Compile>

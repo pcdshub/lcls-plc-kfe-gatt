@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <POU Name="FB_VCN_Lin" Id="{b91718c1-ee94-477e-afdc-a1b96008e0fd}" SpecialFunc="None">
+    <Declaration><![CDATA[(* This function implements the Basic functions for the Pfeiffer EVR 116 needle valve*)
+FUNCTION_BLOCK FB_VCN_Lin EXTENDS FB_Valve
+VAR_INPUT
+	i_xExtIlkOK	:	BOOL; //External Interlock, SET to TRUE if not used
+	i_ReqPos	:	REAL; //Requested position
+	i_xPurge	: BOOL:= FALSE;// When purge is set the maximum threshold is ignored, has to be set evey cycle.
+END_VAR
+VAR_OUTPUT
+	{attribute 'pytmc' := '
+    pv:
+	'}
+	iq_stVCN	:	ST_VCN; //Needle valve structure
+END_VAR
+VAR CONSTANT
+	rOpenVoltage	:	REAL := 9.1; // From the EVR 116 manual, A Voltage of 9V it is completely Open
+	rCloseVoltage	:	REAL := 0.4;// a voltage <0.5 V the valve is closed	
+END_VAR
+VAR
+	// Requested voltage
+	{attribute 'pytmc' := '
+	pv: POS_AO;
+	io: i ;
+	'}
+	rReqVoltage: REAL := 0;
+	//iResolution: INT :=16;
+	// 
+	(*IO*)
+	q_iRawPosition AT%Q* :INT;
+	
+	//CONTROL
+	stCTRL_LIN_INTERPOLATION_PARAMS		: ST_CTRL_LIN_INTERPOLATION_PARAMS;
+	fbCTRL_LIN_INTERPOLATION					: FB_CTRL_LIN_INTERPOLATION;
+	arrTable : ARRAY[1..10,1..2] OF FLOAT;
+	arrTable_RBV : ARRAY[1..10,1..2] OF FLOAT;
+	//Readdback
+	stCTRL_LIN_INTERPOLATION_PARAMS_RBV	: ST_CTRL_LIN_INTERPOLATION_PARAMS;
+	fbCTRL_LIN_INTERPOLATION_RBV					: FB_CTRL_LIN_INTERPOLATION;
+	eMode           : E_CTRL_MODE;
+	iCounter:INT;
+	bInit :BOOL :=TRUE;
+END_VAR
+VAR PERSISTENT
+    rUpperLimit	:	REAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* Needle valve control FB
+A. Wallace 2016-7-21
+
+This FB should be used as a low level control block.
+
+It provides:
+
+Valve position ceiling
+Interlock
+Scaling
+
+It is not intended for:
+Closed-loop control
+
+It could be used for:
+Valve position/flow linearization
+
+Note: Raw position calc is based on 0.5 to 9V span, 32767 bits
+*)
+
+
+iq_stVCN.rUpperLimit :=  LIMIT(0, iq_stVCN.rUpperLimit, 100);
+
+// Interlocking
+iq_stVCN.xIlkOK := i_xExtIlkOK;
+(*Checking which Control mode is selected*)
+IF iq_stVCN.xIlkOK THEN
+	IF iq_stVCN.eValveControl = OpenValve THEN
+		iq_stVCN.rReqPosition := iq_stVCN.rUpperLimit;(*Percentage*)
+	ELSIF iq_stVCN.eValveControl = CloseValve THEN
+		iq_stVCN.rReqPosition := 0; (*Percentage*)
+	ELSIF (iq_stVCN.eValveControl = ManualControl) (*AND (iq_stVCN.xOPN_SW)*) THEN
+		iq_stVCN.rReqPosition := LIMIT(0, iq_stVCN.rReqPosition, iq_stVCN.rUpperLimit);
+	ELSIF iq_stVCN.eValveControl = PressureControl THEN
+		IF (i_xPurge) THEN
+		iq_stVCN.rReqPosition := LIMIT(0, i_ReqPos, 100); 
+		ELSE iq_stVCN.rReqPosition := LIMIT(0, i_ReqPos, iq_stVCN.rUpperLimit); 
+		END_IF
+	END_IF
+ELSE
+	iq_stVCN.rReqPosition := 0;
+	iq_stVCN.eValveControl := CloseValve;
+END_IF
+
+
+//Raw position calc
+iq_stvcn.q_iRawPosition := REAL_TO_INT( 32767/10 * rReqVoltage);	
+
+(*SOft IO Mapping*)
+ACT_IO();
+
+(*Load or save the persistent variables*)
+ACT_Persistent();
+
+ACT_INIT();]]></ST>
+    </Implementation>
+    <Action Name="ACT_INIT" Id="{1d9002ba-b23e-4d54-8d6d-336d54524696}">
+      <Implementation>
+        <ST><![CDATA[{attribute no_check}
+IF bInit THEN
+	
+
+	(* init array with the interpolation points  *)
+	(* 	fIn					 |		fOut		*)
+	arrTable[1,1] := 0;			arrTable[1,2] := 0;
+	arrTable[2,1] := 15;		arrTable[2,2] := 1.4;
+	arrTable[3,1] := 19;		arrTable[3,2] := 1.75;
+	arrTable[4,1] :=  25;	    arrTable[4,2] := 2.25;
+	arrTable[5,1] :=  31;	    arrTable[5,2] := 2.8;
+	arrTable[6,1] := 39;		arrTable[6,2] := 3.55;
+	arrTable[7,1] := 49;		arrTable[7,2] := 4.45;
+	arrTable[8,1] := 62;	    arrTable[8,2] := 5.65;
+	arrTable[9,1] := 78;	    arrTable[9,2] := 7.1;
+	arrTable[10,1] := 100;		arrTable[10,2] := 9.1;
+	
+	
+	(* init parameter struct *)
+	stCTRL_LIN_INTERPOLATION_PARAMS.tCtrlCycleTime					:= T#10ms;
+	stCTRL_LIN_INTERPOLATION_PARAMS.tTaskCycleTime					:= T#10ms;
+	stCTRL_LIN_INTERPOLATION_PARAMS.nDataTable_NumberOfRows		:= INT_TO_UINT(10);
+
+	(* set the addresses *)
+	stCTRL_LIN_INTERPOLATION_PARAMS.pDataTable_ADR			:= ADR(arrTable);
+	stCTRL_LIN_INTERPOLATION_PARAMS.nDataTable_SIZEOF		:= SIZEOF(arrTable);
+
+	(* set the mode to ACTIVE --> normal operation *)
+	eMode							:= eCTRL_MODE_ACTIVE;
+	
+	
+	(* init array with the interpolation points  *)
+	(* 	fIn					 |		fOut		*)
+	 FOR iCounter:=1 TO 10 BY 1 DO
+		arrTable_RBV[iCounter,1] := arrTable[iCounter,2];
+		arrTable_RBV[iCounter,2] := arrTable[iCounter,1];		
+	 END_FOR;
+
+	
+	(* init parameter struct *)
+	stCTRL_LIN_INTERPOLATION_PARAMS_RBV.tCtrlCycleTime					:= T#10ms;
+	stCTRL_LIN_INTERPOLATION_PARAMS_RBV.tTaskCycleTime					:= T#10ms;
+	stCTRL_LIN_INTERPOLATION_PARAMS_RBV.nDataTable_NumberOfRows		:= INT_TO_UINT(10);
+
+	(* set the addresses *)
+	stCTRL_LIN_INTERPOLATION_PARAMS_RBV.pDataTable_ADR			:= ADR(arrTable_RBV);
+	stCTRL_LIN_INTERPOLATION_PARAMS_RBV.nDataTable_SIZEOF		:= SIZEOF(arrTable_RBV);
+	
+	(* reset the init flag *)
+	bInit							:= FALSE;
+	
+END_IF;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_IO" Id="{897ec2aa-1321-4251-b360-05c31f40b449}">
+      <Implementation>
+        <ST><![CDATA[(*outputs*)
+q_iRawPosition := iq_stVCN.q_iRawPosition;
+(*inputs*)
+iq_stVCN.i_iPosition := iq_stvcn.q_iRawPosition;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_LIN_INTERPOLATION" Id="{0b65bc54-4c43-4084-a5e7-a506a9ecaf33}">
+      <Implementation>
+        <ST><![CDATA[{attribute 'no_check'}
+fbCTRL_LIN_INTERPOLATION(
+	fIn:=  iq_stVCN.rReqPosition , 
+	fManValue:= 0, 
+	bExtrapolate:= , 
+	eMode:= eMode, 
+	fOut=> , 
+	bInIsGreaterThanMaxElement=> , 
+	bInIsLessThanMinElement=> , 
+	eState=> , 
+	eErrorId=> , 
+	bError=> , 
+	stParams:= stCTRL_LIN_INTERPOLATION_PARAMS );
+	
+// Requested Voltage calculation
+//rReqVoltage := iq_stVCN.rReqPosition * (rOpenVoltage-rCloseVoltage)/100 + rCloseVoltage;
+rReqVoltage := LREAL_TO_REAL(LIMIT(rCloseVoltage, fbCTRL_LIN_INTERPOLATION.fOut, rOpenVoltage)); //The requested voltage should remain within this range
+	
+fbCTRL_LIN_INTERPOLATION_RBV(
+	fIn:= rReqVoltage , 
+	fManValue:= 0, 
+	bExtrapolate:= , 
+	eMode:= eMode, 
+	fOut=>  , 
+	bInIsGreaterThanMaxElement=> , 
+	bInIsLessThanMinElement=> , 
+	eState=> , 
+	eErrorId=> , 
+	bError=> , 
+	stParams:= stCTRL_LIN_INTERPOLATION_PARAMS_RBV );
+// iq_stVCN.rReqPosition := LREAL_TO_REAL(fbCTRL_LIN_INTERPOLATION_RBV.fOut);	
+	
+
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_Logger" Id="{27c2c208-aab6-43da-87a4-9a73b02208f3}">
+      <Implementation>
+        <ST><![CDATA[// ILK logger
+
+IF NOT (iq_stVCN.xIlkOK ) AND NOT(ePrevState = CloseValve) THEN
+ 		fbLogger(sMsg:='Lost interlock ok bit while valve was open.', eSevr:=TcEventSeverity.Critical);  	
+END_IF
+
+
+//Control STATE Logger  
+IF ePrevState <> iq_stVCN.eValveControl THEN
+	  CASE iq_stVCN.eValveControl OF
+		ManualControl:
+			fbLogger(sMsg:='Valve in manual control mode', eSevr:=TcEventSeverity.Warning);
+		OpenValve:
+			fbLogger(sMsg:='Valve Open.', eSevr:=TcEventSeverity.Info);
+		PressureControl:
+			fbLogger(sMsg:='Valve in pressure control mode.', eSevr:=TcEventSeverity.Info);
+		CloseValve:
+			fbLogger(sMsg:='Valve closed.', eSevr:=TcEventSeverity.Info);
+	  END_CASE
+	  ePrevState := iq_stVCN.eValveControl;  
+  END_IF
+ 
+
+// Log valve open
+tAction(CLK:= (iq_stVCN.eValveControl = OpenValve) );
+IF tAction.Q THEN fbLogger(sMsg:='Valve commanded to fully open', eSevr:=TcEventSeverity.Info); END_IF
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_Persistent" Id="{d12819a7-3f5a-4ad6-9299-03ebd62d9161}">
+      <Implementation>
+        <ST><![CDATA[(*On first PLC pass, load the persistent value into the structrue variable*)
+IF (bRestorePersistentData) THEN
+	bRestorePersistentData	:= FALSE;
+	IF (rUpperLimit <> 0) THEN
+		iq_stVCN.rUpperLimit := rUpperLimit;
+	END_IF;
+	
+END_IF
+(*Check if a new value has been written in the structure variable copy it to the persistent variable*)
+IF NOT (iq_stVCN.rUpperLimit = rUpperLimit) THEN
+	rUpperLimit := iq_stVCN.rUpperLimit;
+	//fbWritePersistentData(NETID:='', PORT:=851, START:=TRUE, TMOUT:=T#1s );
+ELSE
+     // fbWritePersistentData( START:=FALSE);
+END_IF;]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="M_SetThrottle" Id="{6aa2c134-f3ab-4cc1-9ed9-8718a4b7a174}">
+      <Declaration><![CDATA[METHOD M_SetThrottle : BOOL
+VAR_INPUT
+	rUpperLimit	:	REAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+iq_stVCN.rUpperLimit := LIMIT(0, rUpperLimit, 100);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_ValveControl" Id="{cbcd5e0b-59b7-45f1-86d7-5c7278df4f56}">
+      <Declaration><![CDATA[METHOD M_ValveControl : BOOL
+VAR_INPUT
+	state:E_VCN; // Close, Open, Pressure, Manual
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[iq_stVCN.eValveControl := state;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
