@@ -130,7 +130,8 @@ fbStates(
     stAprt2:=stAprt2,
     stAprt3:=stAprt3,
     stAprt4:=stAprt4,
-	enumSet:= enumSet);
+	enumSet:= enumSet,
+    bBPOKAutoReset := TRUE);
 
 fbStates_X(
 	fbArbiter:=fbArbiter,

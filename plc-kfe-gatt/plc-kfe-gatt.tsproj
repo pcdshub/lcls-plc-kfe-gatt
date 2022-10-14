@@ -1368,7 +1368,7 @@ External Setpoint Generation:
 						<OtherSettings AllowMotionCmdToSlave="true"/>
 					</AxisPara>
 					<Encoder Name="Enc" EncType="7">
-						<EncPara ScaleFactorNumerator="0.0001220703125" Offset="2.0229" Inverse="true" MaxCount="#x0000ffff" ReferenceSystem="1">
+						<EncPara ScaleFactorNumerator="0.000117010498" Offset="1.88" Inverse="true" MaxCount="#x0000ffff" ReferenceSystem="1">
 							<SoftEndMinControl Enable="true" Range="-2"/>
 							<SoftEndMaxControl Enable="true" Range="2"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
@@ -1839,9 +1839,10 @@ External Setpoint Generation:
 					</AxisPara>
 					<Encoder Name="Enc" EncType="7">
 						<EncPara ScaleFactorNumerator="7.6080322266e-05" Offset="-0.496" MaxCount="#x0000ffff" ReferenceSystem="1">
-							<SoftEndMinControl Enable="true" Range="-1.99"/>
-							<SoftEndMaxControl Enable="true" Range="1.99"/>
+							<SoftEndMinControl Enable="true" Range="-1.59"/>
+							<SoftEndMaxControl Enable="true" Range="1.59"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
+							<ParameterChanged>13</ParameterChanged>
 						</EncPara>
 						<Vars VarGrpType="1">
 							<Name>Inputs</Name>
@@ -2311,8 +2312,8 @@ External Setpoint Generation:
 					</AxisPara>
 					<Encoder Name="Enc" EncType="7">
 						<EncPara ScaleFactorNumerator="0.0001220703125" Offset="-2.029" MaxCount="#x0000ffff" ReferenceSystem="1">
-							<SoftEndMinControl Enable="true" Range="-2"/>
-							<SoftEndMaxControl Enable="true" Range="2"/>
+							<SoftEndMinControl Enable="true" Range="-1.6"/>
+							<SoftEndMaxControl Enable="true" Range="1.6"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
 						</EncPara>
 						<Vars VarGrpType="1">
@@ -2782,7 +2783,7 @@ External Setpoint Generation:
 						<OtherSettings AllowMotionCmdToSlave="true"/>
 					</AxisPara>
 					<Encoder Name="Enc" EncType="7">
-						<EncPara ScaleFactorNumerator="0.0001220703125" Offset="-2.0268" MaxCount="#x0000ffff" ReferenceSystem="1">
+						<EncPara ScaleFactorNumerator="0.0001203979492" Offset="-1.9692" MaxCount="#x0000ffff" ReferenceSystem="1">
 							<SoftEndMinControl Enable="true" Range="-2"/>
 							<SoftEndMaxControl Enable="true" Range="2"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
@@ -2944,7 +2945,7 @@ Drive Status 4 (manually linked):
 					</Drive>
 					<Controller Name="Ctrl" CtrType="1">
 						<CtrPara PriorControlFactor="1">
-							<PosDiffControl Range="0.1"/>
+							<PosDiffControl Range="0.2"/>
 							<Observer BandWidth="20"/>
 						</CtrPara>
 					</Controller>

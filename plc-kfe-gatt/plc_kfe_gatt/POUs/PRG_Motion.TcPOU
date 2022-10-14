@@ -54,7 +54,7 @@ IF (bInit) THEN
 	// Aperture 4
 	fbMAA_1_States.stAprt4.fPosition := -48.7;
 	// X Cen
-	fbMAA_1_States.stXCen.fPosition := 0;// -2.083;
+	fbMAA_1_States.stXCen.fPosition := 0;//1.5;// 0;// -2.083;
 	 
 		
 	//MAA 2 Y
@@ -69,7 +69,7 @@ IF (bInit) THEN
 	// Aperture 4
 	fbMAA_2_States.stAprt4.fPosition := -48.96;
 	// X Cen
-	fbMAA_2_States.stXCen.fPosition :=0;//-0.77;
+	fbMAA_2_States.stXCen.fPosition :=0.475;//0;//-0.77;
 	
 		
 	//MAA 3 Y
@@ -84,7 +84,7 @@ IF (bInit) THEN
 	// Aperture 4
 	fbMAA_3_States.stAprt4.fPosition := -48.95;
 	// X Cen
-	fbMAA_3_States.stXCen.fPosition :=0;//2.031;
+	fbMAA_3_States.stXCen.fPosition :=0.4064;//0;//2.031;
 		
 		
 	//MAA 4 Y
@@ -99,7 +99,7 @@ IF (bInit) THEN
 	// Aperture 4
 	fbMAA_4_States.stAprt4.fPosition := -49.06;
 	// X Cen
-	fbMAA_4_States.stXCen.fPosition :=0;//2.0345;		
+	fbMAA_4_States.stXCen.fPosition :=0;//-0.9861;//0;//2.0345;		
 
 END_IF
 
@@ -134,10 +134,12 @@ fbMAA_4_States(
 	
 
 (*Set global OK bit*)
-US_MAA_OK := (fbMAA_1_States.fbStates.enumGet = fbMAA_2_States.fbStates.enumGet) AND (fbMAA_2_States.fbStates.enumGet = fbMAA_3_States.fbStates.enumGet)AND( fbMAA_3_States.fbStates.enumGet = fbMAA_4_States.fbStates.enumGet) AND NOT (fbMAA_1_States.fbStates.bError) AND NOT (fbMAA_2_States.fbStates.bError);
+//change here line 99
+US_MAA_OK := (*(fbMAA_1_States.fbStates.enumGet = fbMAA_2_States.fbStates.enumGet) AND *)(fbMAA_2_States.fbStates.enumGet = fbMAA_3_States.fbStates.enumGet)AND( fbMAA_3_States.fbStates.enumGet = fbMAA_4_States.fbStates.enumGet) AND NOT (fbMAA_1_States.fbStates.bError) AND NOT (fbMAA_2_States.fbStates.bError);
 DS_MAA_OK := (fbMAA_3_States.fbStates.enumGet = fbMAA_4_States.fbStates.enumGet) AND NOT (fbMAA_3_States.fbStates.bError) AND NOT (fbMAA_4_States.fbStates.bError);
 
-IF (US_MAA_OK AND DS_MAA_OK) THEN 	eSelectedAprt:=fbMAA_1_States.fbStates.enumGet;
+//change here line103 and 119
+IF (US_MAA_OK AND DS_MAA_OK) THEN 	eSelectedAprt:=fbMAA_4_States.fbStates.enumGet;//was fbMAA_1
 ELSE  eSelectedAprt:= E_MAA_States.Unknown; END_IF;
 ////////////////////
 //Set the right state i.e. apperture based on the current beam size/
@@ -153,7 +155,7 @@ ELSE  eSelectedAprt:= E_MAA_States.Unknown; END_IF;
 	END_IF
 (*Aperture state selection*)
 IF (xPMPSMode) AND (bChangeAperture)  AND (eSelectedAprt <> eSetAprt) THEN
-	fbMAA_1_States.enumSet := eSetAprt;
+	fbMAA_1_States.enumSet := eSetAprt; 
 	fbMAA_2_States.enumSet := eSetAprt;
 	fbMAA_3_States.enumSet := eSetAprt;
 	fbMAA_4_States.enumSet := eSetAprt;
