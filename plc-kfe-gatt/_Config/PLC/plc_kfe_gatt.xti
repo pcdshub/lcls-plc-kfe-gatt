@@ -3760,10 +3760,6 @@ External Setpoint Generation:
 					</SubVar>
 				</Var>
 				<Var>
-					<Name>GVL_PMPS.bStatus</Name>
-					<Type>BYTE</Type>
-				</Var>
-				<Var>
 					<Name>GVL_Devices.VCN_70.q_iRawPosition</Name>
 					<Comment>
 						<![CDATA[iResolution: INT :=16;
@@ -4378,6 +4374,10 @@ IO]]>
 				<Var>
 					<Name>GVL_PMPS.Cur_Trans</Name>
 					<Type GUID="{7E016B85-166E-4B4F-AAC4-ECA8DDD44F13}">ST_PMPS_Attenuator_IO</Type>
+				</Var>
+				<Var>
+					<Name>GVL_PMPS.bStatus</Name>
+					<Type>BYTE</Type>
 				</Var>
 				<Var>
 					<Name>Main.M1.Axis.PlcToNc</Name>

@@ -1327,8 +1327,8 @@ External Setpoint Generation:
 				<Target BkhfOrder="VE2485258">
 					<ManualSelect>{520DE751-9DB6-47CB-8240-BD5C466E7E64}</ManualSelect>
 					<ManualSelect>{3EBB9639-5FF3-42B6-8847-35C70DC013C8}</ManualSelect>
-					<ManualSelect>{BCA6EE0A-9CE1-4D3F-98CA-413ABC0D94FD}</ManualSelect>
 					<ManualSelect>{8C57D0A8-BD63-4554-BAE1-E9C797EF0D0E}</ManualSelect>
+					<ManualSelect>{BCA6EE0A-9CE1-4D3F-98CA-413ABC0D94FD}</ManualSelect>
 					<ManualSelect>{E008E3C8-6BD9-491C-B673-DC45CC7AA4F1}</ManualSelect>
 					<ManualSelect>{777F1598-583B-4503-99BB-7C02E0ABD97E}</ManualSelect>
 					<TargetSelect TargetId="2">{3EBB9639-5FF3-42B6-8847-35C70DC013C8}</TargetSelect>
@@ -1368,7 +1368,7 @@ External Setpoint Generation:
 						<OtherSettings AllowMotionCmdToSlave="true"/>
 					</AxisPara>
 					<Encoder Name="Enc" EncType="7">
-						<EncPara ScaleFactorNumerator="0.0001220703125" Offset="2.0229" Inverse="true" MaxCount="#x0000ffff" ReferenceSystem="1">
+						<EncPara ScaleFactorNumerator="0.000117010498" Offset="1.88" Inverse="true" MaxCount="#x0000ffff" ReferenceSystem="1">
 							<SoftEndMinControl Enable="true" Range="-2"/>
 							<SoftEndMaxControl Enable="true" Range="2"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
@@ -1675,7 +1675,7 @@ External Setpoint Generation:
 					</Encoder>
 					<Drive Name="Drive" DrvType="24">
 						<DrvPara>
-							<Analog VeloReferenz="50" TorqueScale="10" ScaleFactorActTorque="0.1"/>
+							<Analog VeloReferenz="40" TorqueScale="10" ScaleFactorActTorque="0.1"/>
 							<TimeComp TaskDelayCycles="1"/>
 						</DrvPara>
 						<Vars VarGrpType="1">
@@ -1839,9 +1839,10 @@ External Setpoint Generation:
 					</AxisPara>
 					<Encoder Name="Enc" EncType="7">
 						<EncPara ScaleFactorNumerator="7.6080322266e-05" Offset="-0.496" MaxCount="#x0000ffff" ReferenceSystem="1">
-							<SoftEndMinControl Enable="true" Range="-1.99"/>
-							<SoftEndMaxControl Enable="true" Range="1.99"/>
+							<SoftEndMinControl Enable="true" Range="-1.59"/>
+							<SoftEndMaxControl Enable="true" Range="1.59"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
+							<ParameterChanged>13</ParameterChanged>
 						</EncPara>
 						<Vars VarGrpType="1">
 							<Name>Inputs</Name>
@@ -2311,8 +2312,8 @@ External Setpoint Generation:
 					</AxisPara>
 					<Encoder Name="Enc" EncType="7">
 						<EncPara ScaleFactorNumerator="0.0001220703125" Offset="-2.029" MaxCount="#x0000ffff" ReferenceSystem="1">
-							<SoftEndMinControl Enable="true" Range="-2"/>
-							<SoftEndMaxControl Enable="true" Range="2"/>
+							<SoftEndMinControl Enable="true" Range="-1.6"/>
+							<SoftEndMaxControl Enable="true" Range="1.6"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
 						</EncPara>
 						<Vars VarGrpType="1">
@@ -2782,7 +2783,7 @@ External Setpoint Generation:
 						<OtherSettings AllowMotionCmdToSlave="true"/>
 					</AxisPara>
 					<Encoder Name="Enc" EncType="7">
-						<EncPara ScaleFactorNumerator="0.0001220703125" Offset="-2.0268" MaxCount="#x0000ffff" ReferenceSystem="1">
+						<EncPara ScaleFactorNumerator="0.0001203979492" Offset="-1.9692" MaxCount="#x0000ffff" ReferenceSystem="1">
 							<SoftEndMinControl Enable="true" Range="-2"/>
 							<SoftEndMaxControl Enable="true" Range="2"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
@@ -2944,7 +2945,7 @@ Drive Status 4 (manually linked):
 					</Drive>
 					<Controller Name="Ctrl" CtrType="1">
 						<CtrPara PriorControlFactor="1">
-							<PosDiffControl Range="0.1"/>
+							<PosDiffControl Range="0.2"/>
 							<Observer BandWidth="20"/>
 						</CtrPara>
 					</Controller>
