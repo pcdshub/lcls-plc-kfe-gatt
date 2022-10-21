@@ -141,7 +141,8 @@ fbStates_X(
 	tArbiterTimeout := tArbiterTimeout,
     stMotionStage:=stXStage,
 	bEnable:=TRUE,
-    stXCen:=stXCen);
+    stXCen:=stXCen,
+	bBPOKAutoReset := TRUE);
 
 
 (*FAST FAULT*)
