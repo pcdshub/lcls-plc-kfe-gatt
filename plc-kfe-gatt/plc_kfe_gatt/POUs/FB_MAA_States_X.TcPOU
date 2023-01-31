@@ -54,16 +54,5 @@ enumSet := setState;
 
 ]]></ST>
     </Implementation>
-    <LineIds Name="FB_MAA_States_X">
-      <LineId Id="3" Count="1" />
-      <LineId Id="264" Count="4" />
-      <LineId Id="261" Count="1" />
-      <LineId Id="256" Count="0" />
-      <LineId Id="26" Count="0" />
-      <LineId Id="244" Count="0" />
-      <LineId Id="251" Count="3" />
-      <LineId Id="245" Count="1" />
-      <LineId Id="242" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

@@ -43,7 +43,7 @@ IF (bInit) THEN
 
 	/// PMPS 
 	//MAA 1 Y
-	fbMAA_1_States.nTransitionAssertionID := 43536;// nTransitionAssertionRootID+10;
+	//fbMAA_1_States.nTransitionAssertionID := 43536;// nTransitionAssertionRootID+10;
 	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
 	// Aperture 1
 	fbMAA_1_States.stAprt1.fPosition :=  -0.78;//-1.4;
@@ -58,7 +58,7 @@ IF (bInit) THEN
 	 
 		
 	//MAA 2 Y
-	fbMAA_2_States.nTransitionAssertionID := 43552;//nTransitionAssertionRootID+20;
+	//fbMAA_2_States.nTransitionAssertionID := 43552;//nTransitionAssertionRootID+20;
 	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
 	// Aperture 1
 	fbMAA_2_States.stAprt1.fPosition :=  -1;//-1.4;
@@ -73,7 +73,7 @@ IF (bInit) THEN
 	
 		
 	//MAA 3 Y
-	fbMAA_3_States.nTransitionAssertionID := 43568;//nTransitionAssertionRootID+30;
+	//fbMAA_3_States.nTransitionAssertionID := 43568;//nTransitionAssertionRootID+30;
 	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
 	// Aperture 1
 	fbMAA_3_States.stAprt1.fPosition :=  -0.35;//-1.15;
@@ -88,7 +88,7 @@ IF (bInit) THEN
 		
 		
 	//MAA 4 Y
-	fbMAA_4_States.nTransitionAssertionID := 43584;//nTransitionAssertionRootID+40;
+	//fbMAA_4_States.nTransitionAssertionID := 43584;//nTransitionAssertionRootID+40;
 	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
 	// Aperture 1
 	fbMAA_4_States.stAprt1.fPosition :=  0;//-1;
@@ -108,12 +108,16 @@ fbMAA_1_States(
 	 fbArbiter := GVL_PMPS.fbArbiter1,
 	 i_DevName:= 'AT1K0:GAS_MAA:01',
     fbFFHWO :=  GVL_PMPS.g_FastFaultOutput1,
+	sPmpsDeviceName:='AT1K0:GAS_MAA:01',
+    sTransitionKey:='AT1K0:GAS_MAA:01-TRANSITION',
     stYStage := Main.M2,
     stXStage := Main.M1);
 
 fbMAA_2_States(
 	fbArbiter := GVL_PMPS.fbArbiter1,
 	i_DevName:= 'AT1K0:GAS_MAA:02',
+	sPmpsDeviceName:='AT1K0:GAS_MAA:02',
+    sTransitionKey:='AT1K0:GAS_MAA:02-TRANSITION',
     fbFFHWO := GVL_PMPS.g_FastFaultOutput1,
     stYStage := Main.M4,
     stXStage := Main.M3); 
@@ -121,6 +125,8 @@ fbMAA_2_States(
 fbMAA_3_States(
 	fbArbiter := GVL_PMPS.fbArbiter1,
 	i_DevName:= 'AT1K0:GAS_MAA:03',
+	sPmpsDeviceName:='AT1K0:GAS_MAA:03',
+    sTransitionKey:='AT1K0:GAS_MAA:03-TRANSITION',
     fbFFHWO := GVL_PMPS.g_FastFaultOutput1,
     stYStage := Main.M6,
     stXStage := Main.M5); 
@@ -128,14 +134,15 @@ fbMAA_3_States(
 fbMAA_4_States(
 	fbArbiter := GVL_PMPS.fbArbiter1,
 	i_DevName:= 'AT1K0:GAS_MAA:04',
+	sPmpsDeviceName:='AT1K0:GAS_MAA:04',
+    sTransitionKey:='AT1K0:GAS_MAA:04-TRANSITION',
     fbFFHWO := GVL_PMPS.g_FastFaultOutput1,
     stYStage := Main.M8,
     stXStage := Main.M7);
 	
 
 (*Set global OK bit*)
-//change here line 99
-US_MAA_OK := (*(fbMAA_1_States.fbStates.enumGet = fbMAA_2_States.fbStates.enumGet) AND *)(fbMAA_2_States.fbStates.enumGet = fbMAA_3_States.fbStates.enumGet)AND( fbMAA_3_States.fbStates.enumGet = fbMAA_4_States.fbStates.enumGet) AND NOT (fbMAA_1_States.fbStates.bError) AND NOT (fbMAA_2_States.fbStates.bError);
+US_MAA_OK := (fbMAA_1_States.fbStates.enumGet = fbMAA_2_States.fbStates.enumGet) AND (fbMAA_2_States.fbStates.enumGet = fbMAA_3_States.fbStates.enumGet)AND( fbMAA_3_States.fbStates.enumGet = fbMAA_4_States.fbStates.enumGet) AND NOT (fbMAA_1_States.fbStates.bError) AND NOT (fbMAA_2_States.fbStates.bError);
 DS_MAA_OK := (fbMAA_3_States.fbStates.enumGet = fbMAA_4_States.fbStates.enumGet) AND NOT (fbMAA_3_States.fbStates.bError) AND NOT (fbMAA_4_States.fbStates.bError);
 
 //change here line103 and 119

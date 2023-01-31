@@ -1321,7 +1321,7 @@ External Setpoint Generation:
 			</Relations>
 		</DataType>
 	</DataTypes>
-	<Project ProjectGUID="{30A44762-4C98-4749-A1A0-BD1DF2B3200B}" TargetNetId="172.21.92.57.1.1" ShowHideConfigurations="#x306">
+	<Project ProjectGUID="{30A44762-4C98-4749-A1A0-BD1DF2B3200B}" TargetNetId="172.21.92.57.1.1" Utf8Encoding="true" ShowHideConfigurations="#x306">
 		<System>
 			<Licenses IgnoreProjectLicenses="true" CacheOrCheckLicensesOnStartup="true">
 				<Target BkhfOrder="VE2485258">
@@ -1842,7 +1842,6 @@ External Setpoint Generation:
 							<SoftEndMinControl Enable="true" Range="-1.59"/>
 							<SoftEndMaxControl Enable="true" Range="1.59"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
-							<ParameterChanged>13</ParameterChanged>
 						</EncPara>
 						<Vars VarGrpType="1">
 							<Name>Inputs</Name>

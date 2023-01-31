@@ -32,6 +32,8 @@ VAR_INPUT
 	    field: FRST 13mm;
     '}
 	 enumSet: E_MAA_states;
+	sPmpsDeviceName: STRING;
+    sTransitionKey: STRING;
 END_VAR
 VAR_OUTPUT	
 	{attribute 'pytmc' := '
@@ -52,10 +54,12 @@ VAR
 	fbXStage: FB_MotionStage;
 	
 	
-	fSize1: REAL:=3.0; //mm
-	fSize2: REAL:=7.0; //mm
-	fSize3: REAL:=8.5; //mm
-	fSize4: REAL:=9.0; //mm
+//	fSize1: REAL:=3.0; //mm
+//	fSize2: REAL:=7.0; //mm
+//	fSize3: REAL:=8.5; //mm
+//	fSize4: REAL:=9.0; //mm
+	
+
 	
 	bInit:BOOL := TRUE;
 	tArbiterTimeout: TIME:= T#10S;
@@ -77,38 +81,43 @@ END_VAR
 	bInit:=FALSE;
 	
 	// States settings
-	stAprt1.nRequestAssertionID := nTransitionAssertionID+1;
-	stAprt1.bUseRawCounts := FALSE;
-	stAprt1.stBeamParams := PMPS_GVL.cstFullBeam;
-	stAprt1.stBeamParams.astApertures[1].Height := fSize1;
-	stAprt1.stBeamParams.astApertures[1].Width := fSize1;
+	//stAprt1.nRequestAssertionID := nTransitionAssertionID+1;
+	//stAprt1.stBeamParams := PMPS_GVL.cstFullBeam;
+	//stAprt1.stBeamParams.astApertures[1].Height := fSize1;
+	//stAprt1.stBeamParams.astApertures[1].Width := fSize1;
+	stAprt1.bUseRawCounts := FALSE;	
 	stAprt1.bValid := TRUE;
+	stAprt1.stPMPS.sPmpsState := CONCAT(sPmpsDeviceName,'-APERTURE1');
 	
-	stAprt2.nRequestAssertionID := nTransitionAssertionID+2;
+	//stAprt2.nRequestAssertionID := nTransitionAssertionID+2;
+	//stAprt2.stBeamParams := PMPS_GVL.cstFullBeam;
+	//stAprt2.stBeamParams.astApertures[1].Height := fSize2;
+	//stAprt2.stBeamParams.astApertures[1].Width :=fSize2;
 	stAprt2.bUseRawCounts := FALSE;
-	stAprt2.stBeamParams := PMPS_GVL.cstFullBeam;
-	stAprt2.stBeamParams.astApertures[1].Height := fSize2;
-	stAprt2.stBeamParams.astApertures[1].Width :=fSize2;
 	stAprt2.bValid := TRUE;
+	stAprt2.stPMPS.sPmpsState := CONCAT(sPmpsDeviceName,'-APERTURE2');
 	
-	stAprt3.nRequestAssertionID := nTransitionAssertionID+3;
+	//stAprt3.nRequestAssertionID := nTransitionAssertionID+3;
+	//stAprt3.stBeamParams := PMPS_GVL.cstFullBeam;
+	//stAprt3.stBeamParams.astApertures[1].Height := fSize3;
+	//stAprt3.stBeamParams.astApertures[1].Width := fSize3;
 	stAprt3.bUseRawCounts := FALSE;
-	stAprt3.stBeamParams := PMPS_GVL.cstFullBeam;
-	stAprt3.stBeamParams.astApertures[1].Height := fSize3;
-	stAprt3.stBeamParams.astApertures[1].Width := fSize3;
 	stAprt3.bValid := TRUE;
+	stAprt3.stPMPS.sPmpsState := CONCAT(sPmpsDeviceName,'-APERTURE3');
 	
-	stAprt4.nRequestAssertionID := nTransitionAssertionID+4;
+	//stAprt4.nRequestAssertionID := nTransitionAssertionID+4;
+	//stAprt4.stBeamParams := PMPS_GVL.cstFullBeam;
+	//stAprt4.stBeamParams.astApertures[1].Height := fSize4;
+	//stAprt4.stBeamParams.astApertures[1].Width := fSize4;
 	stAprt4.bUseRawCounts := FALSE;
-	stAprt4.stBeamParams := PMPS_GVL.cstFullBeam;
-	stAprt4.stBeamParams.astApertures[1].Height := fSize4;
-	stAprt4.stBeamParams.astApertures[1].Width := fSize4;
 	stAprt4.bValid := TRUE;
+	stAprt4.stPMPS.sPmpsState := CONCAT(sPmpsDeviceName,'-APERTURE4');
 	
-	stXCen.nRequestAssertionID := nTransitionAssertionID+6;
+	//stXCen.nRequestAssertionID := nTransitionAssertionID+6;
+	//stXCen.stBeamParams := PMPS_GVL.cstFullBeam;
 	stXCen.bUseRawCounts := FALSE;
-	stXCen.stBeamParams := PMPS_GVL.cstFullBeam;
 	stXCen.bValid := TRUE;
+	stXCen.stPMPS.sPmpsState := CONCAT(sPmpsDeviceName,'-XCENTER');
 	
 	FFO.i_DevName := i_DevName;
 
@@ -121,8 +130,8 @@ fbXStage(stMotionStage:=stXStage);
 fbStates(
 	fbArbiter:=fbArbiter,
     fbFFHWO:=fbFFHWO,
-    nTransitionAssertionID:=nTransitionAssertionID,
-	stTransitionBeam:= PMPS_GVL.cst0RateBeam,
+    //nTransitionAssertionID:=nTransitionAssertionID,
+	//stTransitionBeam:= PMPS_GVL.cst0RateBeam,
 	bArbiterEnabled := bArbiterEnabled,
 	tArbiterTimeout :=tArbiterTimeout,
     stMotionStage:=stYStage,
@@ -132,17 +141,19 @@ fbStates(
     stAprt3:=stAprt3,
     stAprt4:=stAprt4,
 	enumSet:= enumSet,
+	sPmpsDeviceName:=sPmpsDeviceName,
+    sTransitionKey:=CONCAT(sTransitionKey,'_Y'),
     bBPOKAutoReset := TRUE);
 
 fbStates_X(
 	fbArbiter:=fbArbiter,
     fbFFHWO:=fbFFHWO,
-    nTransitionAssertionID:=nTransitionAssertionID+5,
-	stTransitionBeam:= PMPS_GVL.cst0RateBeam,
 	tArbiterTimeout := tArbiterTimeout,
     stMotionStage:=stXStage,
 	bEnable:=TRUE,
     stXCen:=stXCen,
+	sPmpsDeviceName:=sPmpsDeviceName,
+    sTransitionKey:=CONCAT(sTransitionKey,'_X'),
 	bBPOKAutoReset := TRUE);
 
 
