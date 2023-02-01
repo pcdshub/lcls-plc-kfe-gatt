@@ -9,6 +9,6 @@ PROJECT_PATH := ../../plc-kfe-gatt/plc-kfe-gatt.tsproj
 PLC := plc_kfe_gatt
 
 PYTMC_OPTS := 
-PREFIX := PREFIX
+PREFIX := PLC:KFE:GATT
 
 include $(IOC_TOP)/iocBoot/templates/Makefile.base
