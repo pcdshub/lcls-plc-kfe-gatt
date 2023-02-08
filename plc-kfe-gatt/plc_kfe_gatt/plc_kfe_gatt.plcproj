@@ -140,9 +140,9 @@
       <DefaultResolution>LCLS Vacuum, * (SLAC - LCLS)</DefaultResolution>
       <Namespace>LCLS_Vacuum</Namespace>
     </PlaceholderReference>
-    <PlaceholderReference Include="lcls-twincat-motion-zlentz">
-      <DefaultResolution>lcls-twincat-motion-zlentz, * (SLAC)</DefaultResolution>
-      <Namespace>lcls_twincat_motion_zlentz</Namespace>
+    <PlaceholderReference Include="lcls-twincat-motion">
+      <DefaultResolution>lcls-twincat-motion, * (SLAC)</DefaultResolution>
+      <Namespace>lcls_twincat_motion</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="PMPS">
       <DefaultResolution>PMPS, * (SLAC - LCLS)</DefaultResolution>
@@ -202,14 +202,17 @@
     <PlaceholderResolution Include="LCLS Vacuum">
       <Resolution>LCLS Vacuum, 2.0.0 (SLAC - LCLS)</Resolution>
     </PlaceholderResolution>
-    <PlaceholderResolution Include="lcls-twincat-motion-zlentz">
-      <Resolution>lcls-twincat-motion-zlentz, 0.0.0 (SLAC)</Resolution>
+    <PlaceholderResolution Include="lcls-twincat-motion">
+      <Resolution>lcls-twincat-motion, 2.0.1 (SLAC)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="LCLSVacuumSerialDriverLib">
       <Resolution>LCLSVacuumSerialDriverLib, 1.1.5 (SLAC - LCLS)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="PMPS">
       <Resolution>PMPS, 3.0.13 (SLAC - LCLS)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SysDir">
+      <Resolution>SysDir, 3.5.8.0 (System)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="SysFile">
       <Resolution>SysFile, 3.5.9.0 (System)</Resolution>
