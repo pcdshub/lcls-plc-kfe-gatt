@@ -48,8 +48,8 @@
 	{attribute 'pytmc' := '
     pv: AT1K0:GAS:PhotonEnergy
     '}
-    {attribute 'TcLinkTo' := ':=TIIB[PMPS_PRE]^IO Inputs^rPhotonEnergy'}
-	rPhotonEnergy AT%I*: REAL;
+
+	rPhotonEnergy : REAL;
 	
 	stStatus: ST_AttenuatorStatus;
 	{attribute 'TcLinkTo' := ':=TIIB[PMPS_PRE]^IO Outputs^bGattStatus'}

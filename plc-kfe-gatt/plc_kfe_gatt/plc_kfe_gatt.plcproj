@@ -13,6 +13,7 @@
     <Implicit_KindOfTask>{7ac3aa93-89d0-4838-815e-5b421dfccc5a}</Implicit_KindOfTask>
     <Implicit_Jitter_Distribution>{856bc68a-ad12-473d-83fd-31087e4ac990}</Implicit_Jitter_Distribution>
     <LibraryReferences>{0ce2f30c-6227-450e-8d33-b07ee3e7eea3}</LibraryReferences>
+    <CompilerDefines>K</CompilerDefines>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DUTs\E_State.TcDUT">
@@ -196,19 +197,22 @@
   </ItemGroup>
   <ItemGroup>
     <PlaceholderResolution Include="LCLS General">
-      <Resolution>LCLS General, 2.6.0 (SLAC)</Resolution>
+      <Resolution>LCLS General, 2.7.0 (SLAC)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="LCLS Vacuum">
       <Resolution>LCLS Vacuum, 2.0.0 (SLAC - LCLS)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="lcls-twincat-motion">
-      <Resolution>lcls-twincat-motion, 1.7.0 (SLAC)</Resolution>
+      <Resolution>lcls-twincat-motion, 2.0.1 (SLAC)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="LCLSVacuumSerialDriverLib">
       <Resolution>LCLSVacuumSerialDriverLib, 1.1.5 (SLAC - LCLS)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="PMPS">
-      <Resolution>PMPS, 2.0.0 (SLAC - LCLS)</Resolution>
+      <Resolution>PMPS, 3.0.13 (SLAC - LCLS)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SysDir">
+      <Resolution>SysDir, 3.5.8.0 (System)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="SysFile">
       <Resolution>SysFile, 3.5.9.0 (System)</Resolution>
