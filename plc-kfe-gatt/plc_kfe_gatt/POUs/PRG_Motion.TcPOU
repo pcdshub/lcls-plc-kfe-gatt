@@ -99,7 +99,7 @@ IF (bInit) THEN
 	// Aperture 4
 	fbMAA_4_States.stAprt4.fPosition := -49.06;
 	// X Cen
-	fbMAA_4_States.stXCen.fPosition :=1.25;//0;//-0.9861;//0;//2.0345;		
+	fbMAA_4_States.stXCen.fPosition :=1.0;//0;//-0.9861;//0;//2.0345;		
 
 END_IF
 
