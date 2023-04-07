@@ -10,7 +10,7 @@ VAR
  nReqRM:UDINT;
  bRemove:bool;
  rtRemove: R_TRIG;
- 
+
  //Testing
  ID1:DWORD:=43536;
  ID2:DWORD:=43552;;
@@ -34,7 +34,7 @@ VAR
  bAp2XS:BOOL;
  bAp3XS:BOOL;
  bAp4XS:BOOL;
- 
+
  bAp21:BOOL;
  bAp22:BOOL;
  bAp23:BOOL;
@@ -47,7 +47,7 @@ VAR
  bAp42:BOOL;
  bAp43:BOOL;
  bAp44:BOOL;
- 
+
  iAp:INT;
 END_VAR
 ]]></Declaration>
@@ -109,8 +109,8 @@ bAp4XS:= fbArbiter1.CheckRequestInPool(ID4+6);
 
 rtRemove(CLK:= bRemove);
 if (rtRemove.Q) THEN
- 	GVL_PMPS.fbArbiter1.RemoveRequest(nReqRM);
-	//GVL_ILK.fbArbiter2.RemoveRequest(nReqRM);  
+     GVL_PMPS.fbArbiter1.RemoveRequest(nReqRM);
+    //GVL_ILK.fbArbiter2.RemoveRequest(nReqRM);
 END_IF
 
 ]]></ST>

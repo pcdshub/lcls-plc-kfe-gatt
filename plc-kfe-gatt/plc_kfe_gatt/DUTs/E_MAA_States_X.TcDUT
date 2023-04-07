@@ -4,7 +4,7 @@
     <Declaration><![CDATA[TYPE E_MAA_States_X :
 (
     Unknown := 0,
-	Centered:=1
+    Centered:=1
 );
 END_TYPE
 ]]></Declaration>

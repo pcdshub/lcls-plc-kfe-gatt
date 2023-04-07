@@ -3,12 +3,12 @@
   <DUT Name="ST_DRL" Id="{ea1c37a5-3218-45cd-b52c-e55d00229cb4}">
     <Declaration><![CDATA[TYPE ST_DRL :
 STRUCT
-	{attribute 'pytmc' := ' pv: TEMP '}
-	TEMP AT%I*: UINT;
-	{attribute 'pytmc' := ' pv: SV '}
-	SV  AT%I*: UINT;
-	{attribute 'pytmc' := ' pv: SC '}
-	SC  AT%I*: UINT;
+    {attribute 'pytmc' := ' pv: TEMP '}
+    TEMP AT%I*: UINT;
+    {attribute 'pytmc' := ' pv: SV '}
+    SV  AT%I*: UINT;
+    {attribute 'pytmc' := ' pv: SC '}
+    SC  AT%I*: UINT;
 END_STRUCT
 END_TYPE
 ]]></Declaration>

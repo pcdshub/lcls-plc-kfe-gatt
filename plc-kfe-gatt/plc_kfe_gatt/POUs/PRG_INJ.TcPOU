@@ -3,101 +3,101 @@
   <POU Name="PRG_INJ" Id="{8b858f89-a705-4da6-a8c0-4cd0b412d38f}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_INJ
 VAR
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:SP;
-	field: HOPR 1000;
-	field: LOPR 0;
-	field: PREC 2;
-	field: EGU "TORR";
-	'}
-	fSetpointValue :REAL; 
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:ON;
-	 field: ZNAM STOP; 
-	 field: ONAM START; 
-	 io: io;
-	'}
-	bGo: BOOL:=FALSE; 
- 	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:RESET;
-	 field: ZNAM FALSE; 
-	 field: ONAM TRUE; 
-	 io: io;
-	 '}
-	bReset : BOOL; 
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:ERROR;
-    field: ZNAM FALSE; 
-	 field: ONAM TRUE; 
-	 io: io;
-	 '}
-	bError : BOOL; 
-	// different gains for different apertures
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp1 '}
-	fKp1 : REAL:= 0.4;//0.7; 
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp2 '}
-	fKp2 : REAL:= 0.7; 
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp3 '}
-	fKp3 : REAL:= 2; 
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp4 '}
-	fKp4 : REAL:= 1; 
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Tn1 '}
-	fTn1 : REAL:= 0.5; 
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Tn2 '}
-	fTn2 : REAL:= 0.5; 
-	arrTable	: ARRAY[1..15,1..2] OF FLOAT;
-	arrTableAprt1	: ARRAY[1..15,1..2] OF FLOAT;
-	arrTableAprt2	: ARRAY[1..15,1..2] OF FLOAT;
-	arrTableAprt3	: ARRAY[1..15,1..2] OF FLOAT;
-	arrTableAprt4	: ARRAY[1..15,1..2] OF FLOAT;
-	fManValue											: FLOAT;
-	bExtrapolate										: BOOL;
-	eMode							: E_CTRL_MODE;
-	stCTRL_PID_PARAMS		: ST_CTRL_PID_PARAMS;
-	bSync							: BOOL;
-	bHold							: BOOL;
-	eErrorId						: E_CTRL_ERRORCODES;
-	bARWactive					: BOOL;
-	(* controller *)
-	fbCTRL_PID					: FB_CTRL_PID;
-	bInit							: BOOL	:= TRUE;
-	fbCTRL_LIN_INTERPOLATION					: FB_CTRL_LIN_INTERPOLATION;
-	//stCTRL_LIN_INTERPOLATION_PARAMS		: ST_CTRL_LIN_INTERPOLATION_PARAMS;
-	stCTRL_LIN_INTERPOLATION_PARAMS	: ST_CTRL_LIN_INTERPOLATION_PARAMS;
-	fbCTRL_DEADBAND						: FB_CTRL_DEADBAND;
-	stCTRL_DEADBAND_PARAMS			: ST_CTRL_DEADBAND_PARAMS;
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:SP;
+    field: HOPR 1000;
+    field: LOPR 0;
+    field: PREC 2;
+    field: EGU "TORR";
+    '}
+    fSetpointValue :REAL;
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:ON;
+     field: ZNAM STOP;
+     field: ONAM START;
+     io: io;
+    '}
+    bGo: BOOL:=FALSE;
+     {attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:RESET;
+     field: ZNAM FALSE;
+     field: ONAM TRUE;
+     io: io;
+     '}
+    bReset : BOOL;
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:ERROR;
+    field: ZNAM FALSE;
+     field: ONAM TRUE;
+     io: io;
+     '}
+    bError : BOOL;
+    // different gains for different apertures
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp1 '}
+    fKp1 : REAL:= 0.4;//0.7;
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp2 '}
+    fKp2 : REAL:= 0.7;
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp3 '}
+    fKp3 : REAL:= 2;
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Kp4 '}
+    fKp4 : REAL:= 1;
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Tn1 '}
+    fTn1 : REAL:= 0.5;
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:Tn2 '}
+    fTn2 : REAL:= 0.5;
+    arrTable	: ARRAY[1..15,1..2] OF FLOAT;
+    arrTableAprt1	: ARRAY[1..15,1..2] OF FLOAT;
+    arrTableAprt2	: ARRAY[1..15,1..2] OF FLOAT;
+    arrTableAprt3	: ARRAY[1..15,1..2] OF FLOAT;
+    arrTableAprt4	: ARRAY[1..15,1..2] OF FLOAT;
+    fManValue											: FLOAT;
+    bExtrapolate										: BOOL;
+    eMode							: E_CTRL_MODE;
+    stCTRL_PID_PARAMS		: ST_CTRL_PID_PARAMS;
+    bSync							: BOOL;
+    bHold							: BOOL;
+    eErrorId						: E_CTRL_ERRORCODES;
+    bARWactive					: BOOL;
+    (* controller *)
+    fbCTRL_PID					: FB_CTRL_PID;
+    bInit							: BOOL	:= TRUE;
+    fbCTRL_LIN_INTERPOLATION					: FB_CTRL_LIN_INTERPOLATION;
+    //stCTRL_LIN_INTERPOLATION_PARAMS		: ST_CTRL_LIN_INTERPOLATION_PARAMS;
+    stCTRL_LIN_INTERPOLATION_PARAMS	: ST_CTRL_LIN_INTERPOLATION_PARAMS;
+    fbCTRL_DEADBAND						: FB_CTRL_DEADBAND;
+    stCTRL_DEADBAND_PARAMS			: ST_CTRL_DEADBAND_PARAMS;
 
-	pid_on :TON;
-	wait : time := T#10S;
-	FTrig: F_TRIG;
-	fTrig_PMPS: F_TRIG;
-	rTrig_PMPS: R_TRIG;	
-	
-	rtAction : R_TRIG;
-	rtTrans: R_TRIG;
-	
-	rLimit1 : REAL:= 78;
-	rLimit2 : REAL:= 78;
-	rLimit3 : REAL:= 78;
-	rLimit4 : REAL:= 62; 
-	rLimit:REAL:=78;
-	rDelta:REAL:=5;
-	
-	tSettle: TON;
-	tSettleTime: Time := T#5S;
-	
-	tExceed: TON;
-	tExceedTime: Time := T#500mS;
-	
-	tMoving: TON;
-	tMovingTime: Time := T#1S;
-	
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:TransPerc '}
-	rTransPerc : REAL; 
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:PressPerc '}
-	rPressPerc : REAL; 
-	
-	rPressThresholdHigh : REAL:=2.455e-1;
-	rPressThresholdLow : REAL :=7.733e-2;
-	iGauge:INT:=0;
-	//FFO
-		TRANS_FFO    :    FB_FastFault :=(
+    pid_on :TON;
+    wait : time := T#10S;
+    FTrig: F_TRIG;
+    fTrig_PMPS: F_TRIG;
+    rTrig_PMPS: R_TRIG;
+
+    rtAction : R_TRIG;
+    rtTrans: R_TRIG;
+
+    rLimit1 : REAL:= 78;
+    rLimit2 : REAL:= 78;
+    rLimit3 : REAL:= 78;
+    rLimit4 : REAL:= 62;
+    rLimit:REAL:=78;
+    rDelta:REAL:=5;
+
+    tSettle: TON;
+    tSettleTime: Time := T#5S;
+
+    tExceed: TON;
+    tExceedTime: Time := T#500mS;
+
+    tMoving: TON;
+    tMovingTime: Time := T#1S;
+
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:TransPerc '}
+    rTransPerc : REAL;
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:CNTRL:PressPerc '}
+    rPressPerc : REAL;
+
+    rPressThresholdHigh : REAL:=2.455e-1;
+    rPressThresholdLow : REAL :=7.733e-2;
+    iGauge:INT:=0;
+    //FFO
+        TRANS_FFO    :    FB_FastFault :=(
         i_DevName := 'AT1K0-GAS',
         i_Desc := 'Fault occurs when the current transmission exceeds the requested transmission by 20%',
         i_TypeCode := 16#AFF);
@@ -110,13 +110,13 @@ END_VAR
 //Devices and Interlock
 // Valves
 VCN_70(i_xExtIlkOK := (US_MAA_OK AND US_Turbo_Valves_Open AND US_Turbo_Running)
-						AND (DS_MAA_OK AND DS_Turbo_Valves_Open AND DS_Turbo_Running), 
-						i_ReqPos:=);
+                        AND (DS_MAA_OK AND DS_Turbo_Valves_Open AND DS_Turbo_Running),
+                        i_ReqPos:=);
 
-VVC_71(i_xExtILK_OK:= VVC_72.M_IsClosed() AND (((*US_MAA_OK AND*) (*US_Roughing_Valves_Open AND*) US_Turbo_Valves_Open AND US_Turbo_Running) 
-						AND ((*DS_MAA_OK AND *)(*DS_Roughing_Valves_Open AND*) DS_Turbo_Valves_Open AND DS_Turbo_Running)), i_xOverrideMode:= , iq_stValve=> );
-VVC_72(i_xExtILK_OK:= VVC_71.M_IsClosed() AND (((*US_MAA_OK AND *) (*US_Roughing_Valves_Open AND *)US_Turbo_Valves_Open AND US_Turbo_Running) 
-						AND ((*DS_MAA_OK AND *)(*DS_Roughing_Valves_Open AND *)DS_Turbo_Valves_Open AND DS_Turbo_Running)), i_xOverrideMode:= , iq_stValve=> );
+VVC_71(i_xExtILK_OK:= VVC_72.M_IsClosed() AND (((*US_MAA_OK AND*) (*US_Roughing_Valves_Open AND*) US_Turbo_Valves_Open AND US_Turbo_Running)
+                        AND ((*DS_MAA_OK AND *)(*DS_Roughing_Valves_Open AND*) DS_Turbo_Valves_Open AND DS_Turbo_Running)), i_xOverrideMode:= , iq_stValve=> );
+VVC_72(i_xExtILK_OK:= VVC_71.M_IsClosed() AND (((*US_MAA_OK AND *) (*US_Roughing_Valves_Open AND *)US_Turbo_Valves_Open AND US_Turbo_Running)
+                        AND ((*DS_MAA_OK AND *)(*DS_Roughing_Valves_Open AND *)DS_Turbo_Valves_Open AND DS_Turbo_Running)), i_xOverrideMode:= , iq_stValve=> );
 
 //Gauges
 GCM_70.M_SetBits(30518);
@@ -130,28 +130,28 @@ GCM_81(PG=> , i_rFULL_SCALE:= 0.25);
 (*Assign reading to psuedo gauge*)
 (*
 IF (fSetpointValue <= 0.0001) AND (fb_AT1K0_GAS_GCC_80.IG.rPRESS >0) THEN GCM_82 := fb_AT1K0_GAS_GCC_80.IG;
-	ELSIF (fSetpointValue < 0.0029) AND (fb_AT1K0_GAS_GPI_80.PG.rPRESS > 0.0001) THEN GCM_82 := fb_AT1K0_GAS_GPI_80.PG;
-		ELSIF ( GCM_81.PG.rPRESS < 0.25 ) THEN GCM_82 := GCM_81.PG;
-			ElSE GCM_82 := GCM_80.PG;
+    ELSIF (fSetpointValue < 0.0029) AND (fb_AT1K0_GAS_GPI_80.PG.rPRESS > 0.0001) THEN GCM_82 := fb_AT1K0_GAS_GPI_80.PG;
+        ELSIF ( GCM_81.PG.rPRESS < 0.25 ) THEN GCM_82 := GCM_81.PG;
+            ElSE GCM_82 := GCM_80.PG;
 END_IF*)
 (* MG: removed August shutdown 2021
 IF (fb_AT1K0_GAS_GCC_80.IG.rPRESS <=0.0009) AND (fb_AT1K0_GAS_GCC_80.IG.rPRESS >0) THEN GCM_82 := fb_AT1K0_GAS_GCC_80.IG;
-	ELSIF ( GCM_81.PG.rPRESS < 0.25 ) THEN GCM_82 := GCM_81.PG;
-			ElSE GCM_82 := GCM_80.PG;
+    ELSIF ( GCM_81.PG.rPRESS < 0.25 ) THEN GCM_82 := GCM_81.PG;
+            ElSE GCM_82 := GCM_80.PG;
 END_IF*)
 
 //MG: Added to avoid sudden switching
 IF (fb_AT1K0_GAS_GCC_80.IG.rPRESS <=0.0009) AND (fb_AT1K0_GAS_GCC_80.IG.rPRESS >0) THEN iGauge := 0;//GCM_82 := fb_AT1K0_GAS_GCC_80.IG;
-	ELSIF (GCM_80.PG.rPRESS <= rPressThresholdLow ) THEN iGauge := 1;//GCM_82 := GCM_81.PG;
-		ELSIF (GCM_81.PG.rPRESS >= rPressThresholdHigh ) THEN iGauge := 2;//GCM_82 := GCM_80.PG;
-			//ElSIF (GCM_82.rPRESS = fb_AT1K0_GAS_GCC_80.IG.rPRESS) THEN iGauge := 0;//GCM_82 := GCM_81.PG ;
+    ELSIF (GCM_80.PG.rPRESS <= rPressThresholdLow ) THEN iGauge := 1;//GCM_82 := GCM_81.PG;
+        ELSIF (GCM_81.PG.rPRESS >= rPressThresholdHigh ) THEN iGauge := 2;//GCM_82 := GCM_80.PG;
+            //ElSIF (GCM_82.rPRESS = fb_AT1K0_GAS_GCC_80.IG.rPRESS) THEN iGauge := 0;//GCM_82 := GCM_81.PG ;
 END_IF
 
 CASE iGauge OF
-	0: GCM_82 := fb_AT1K0_GAS_GCC_80.IG;
-	1: GCM_82 := GCM_81.PG ;
-	2: GCM_82 := GCM_80.PG;
-	ELSE GCM_82 := GCM_80.PG;
+    0: GCM_82 := fb_AT1K0_GAS_GCC_80.IG;
+    1: GCM_82 := GCM_81.PG ;
+    2: GCM_82 := GCM_80.PG;
+    ELSE GCM_82 := GCM_80.PG;
 END_CASE
 
 
@@ -160,19 +160,19 @@ END_CASE
 (*When to Open the VRC Valves to the MAA chambers*)
 (*When PID is ON*)
 IF (bGo) THEN
-	(*VRC US*)
-	IF ( fb_AT1K0_GAS_GPI_40.PG .rPRESS >= rVRC_US_SP ) THEN
-		IF (fb_AT1K0_GAS_VRC_50.M_IsOpen()) THEN fb_AT1K0_GAS_VRC_60.M_Set_OPN_SW (TRUE);
-			ELSE fb_AT1K0_GAS_VRC_50.M_Set_OPN_SW (TRUE);
-		END_IF
-	END_IF
-	
-	(*VRC DS*)
-	IF ( fb_AT1K0_GAS_GPI_110.PG .rPRESS >= rVRC_DS_SP ) THEN
-		IF (fb_AT1K0_GAS_VRC_100.M_IsOpen()) THEN fb_AT1K0_GAS_VRC_90.M_Set_OPN_SW (TRUE);
-			ELSE fb_AT1K0_GAS_VRC_100.M_Set_OPN_SW (TRUE);
-		END_IF
-	END_IF	
+    (*VRC US*)
+    IF ( fb_AT1K0_GAS_GPI_40.PG .rPRESS >= rVRC_US_SP ) THEN
+        IF (fb_AT1K0_GAS_VRC_50.M_IsOpen()) THEN fb_AT1K0_GAS_VRC_60.M_Set_OPN_SW (TRUE);
+            ELSE fb_AT1K0_GAS_VRC_50.M_Set_OPN_SW (TRUE);
+        END_IF
+    END_IF
+
+    (*VRC DS*)
+    IF ( fb_AT1K0_GAS_GPI_110.PG .rPRESS >= rVRC_DS_SP ) THEN
+        IF (fb_AT1K0_GAS_VRC_100.M_IsOpen()) THEN fb_AT1K0_GAS_VRC_90.M_Set_OPN_SW (TRUE);
+            ELSE fb_AT1K0_GAS_VRC_100.M_Set_OPN_SW (TRUE);
+        END_IF
+    END_IF
 END_IF
 
 //Try to switch on the GCC in the Gas cell for accurate transmission calculation
@@ -181,24 +181,24 @@ IF  NOT(fb_AT1K0_GAS_GCC_80.IG.i_xHV_ON) AND (fb_AT1K0_GAS_GPI_80.PG.rPRESS <= 1
 (* On change transmission reset *)
 rtNewTrans(CLK:=  (OldTransmissionValue <> TransmissionValue) OR (fTrig_PMPS.Q) OR (rTrig_PMPS.Q));
 IF(rtNewTrans.Q) THEN
-	OldTransmissionValue := TransmissionValue;
-	bChangeAperture:=TRUE;
-	bChangeGas := TRUE;
-	fbLogger(sMsg:='AT1K0 new transmission request.', eSevr:=TcEventSeverity.Info);
-	IF NOT (tSettle.IN) THEN 
-		stStatus.AtTarget := 0;
-	END_IF
-	stStatus.Moving := 1;
+    OldTransmissionValue := TransmissionValue;
+    bChangeAperture:=TRUE;
+    bChangeGas := TRUE;
+    fbLogger(sMsg:='AT1K0 new transmission request.', eSevr:=TcEventSeverity.Info);
+    IF NOT (tSettle.IN) THEN
+        stStatus.AtTarget := 0;
+    END_IF
+    stStatus.Moving := 1;
 END_IF
 // change setpoint
 // As calculated by the PRG_INJ
 IF NOT (xPressureControlMode) THEN
-	fSetpointValue := rRequiredPressureSP;
+    fSetpointValue := rRequiredPressureSP;
 END_IF
 
 (*Setpoint Validation*)
 fSetpointValue:= LIMIT(0,fSetpointValue,10);
-	
+
 
 ACT_init();
 ACT_Cntrl();
@@ -212,85 +212,85 @@ ACT_STATE();]]></ST>
 // Turn the PID on rising edge of the PMPSMode and off at falling edge
 fTrig_PMPS(CLK:= xPMPSMode);
 rTrig_PMPS(CLK:= xPMPSMode);
-IF (xPMPSMode) THEN bGo := TRUE; xPressureControlMode:=FALSE; END_IF	
+IF (xPMPSMode) THEN bGo := TRUE; xPressureControlMode:=FALSE; END_IF
 IF (fTrig_PMPS.Q) THEN
-	 bGo := FALSE; 
-	 bChangeAperture:=FALSE;
-	 bChangeGas := FALSE;
-	 rTransmissionSP:=1;
+     bGo := FALSE;
+     bChangeAperture:=FALSE;
+     bChangeGas := FALSE;
+     rTransmissionSP:=1;
 END_IF
 //IF (rTrig_PMPS.Q) THEN bGo := TRUE; END_IF
 
 if (bGo) THEN
-	//VCN_70.i_ReqPos:= LREAL_TO_REAL(fbCTRL_LIN_INTERPOLATION.fOut + fbCTRL_PID.fOut);
-	VCN_70.i_ReqPos:= LREAL_TO_REAL(fbCTRL_LIN_INTERPOLATION.fOut + fbCTRL_PID.fOut);
-	IF (bReset) THEN
-	(* set the mode to RESET*)
-	eMode							:= eCTRL_MODE_RESET   ;
-	VCN_70.M_ValveControl(CloseValve);
-	//bReset := False;
-	ELSE
-		(* set the mode to ACTIVE --> normal operation *)
-	eMode							:= eCTRL_MODE_ACTIVE   ;
- 	VCN_70.M_ValveControl(PressureControl);
-	END_IF
+    //VCN_70.i_ReqPos:= LREAL_TO_REAL(fbCTRL_LIN_INTERPOLATION.fOut + fbCTRL_PID.fOut);
+    VCN_70.i_ReqPos:= LREAL_TO_REAL(fbCTRL_LIN_INTERPOLATION.fOut + fbCTRL_PID.fOut);
+    IF (bReset) THEN
+    (* set the mode to RESET*)
+    eMode							:= eCTRL_MODE_RESET   ;
+    VCN_70.M_ValveControl(CloseValve);
+    //bReset := False;
+    ELSE
+        (* set the mode to ACTIVE --> normal operation *)
+    eMode							:= eCTRL_MODE_ACTIVE   ;
+     VCN_70.M_ValveControl(PressureControl);
+    END_IF
 END_IF
 FTRIG(CLK := bGo);
 IF(FTrig.Q)THEN
-		eMode							:= eCTRL_MODE_PASSIVE;
-		VCN_70.M_ValveControl(CloseValve);
-		fSetpointValue :=0;
+        eMode							:= eCTRL_MODE_PASSIVE;
+        VCN_70.M_ValveControl(CloseValve);
+        fSetpointValue :=0;
 END_IF
 (*Interlock setpoint reset*)
-if (VVC_71.M_IsClosed() AND VVC_72.M_IsClosed() ) THEN 
-		//eMode	:= eCTRL_MODE_PASSIVE;
-		fSetpointValue :=0; 
-END_IF 
+if (VVC_71.M_IsClosed() AND VVC_72.M_IsClosed() ) THEN
+        //eMode	:= eCTRL_MODE_PASSIVE;
+        fSetpointValue :=0;
+END_IF
 
 (*Switch PID Mode to passive if VCN is interlocked*)
-IF NOT (VCN_70.i_xExtIlkOK) THEN 
-		eMode	:= eCTRL_MODE_PASSIVE;
-END_IF 
+IF NOT (VCN_70.i_xExtIlkOK) THEN
+        eMode	:= eCTRL_MODE_PASSIVE;
+END_IF
 
 fbCTRL_LIN_INTERPOLATION(
-	fIn:= fSetpointValue , 
-	fManValue:= fManValue , 
-	bExtrapolate:= bExtrapolate, 
-	eMode:= eMode, 
-	stParams:= stCTRL_LIN_INTERPOLATION_PARAMS,
-	fOut=> , 
-	bInIsGreaterThanMaxElement=> , 
-	bInIsLessThanMinElement=> , 
-	eState=> , 
-	eErrorId=> , 
-	bError=> );
+    fIn:= fSetpointValue ,
+    fManValue:= fManValue ,
+    bExtrapolate:= bExtrapolate,
+    eMode:= eMode,
+    stParams:= stCTRL_LIN_INTERPOLATION_PARAMS,
+    fOut=> ,
+    bInIsGreaterThanMaxElement=> ,
+    bInIsLessThanMinElement=> ,
+    eState=> ,
+    eErrorId=> ,
+    bError=> );
 
 
 (* call controller *)
 fbCTRL_PID(		fSetpointValue		:= fSetpointValue,//TransmissionValue,//fSetpointValue,
-					fActualValue		:= GCM_82.rPRESS,//rCalculatedTransmissionValue,//GCM_82.rPRESS ,
-					fManSyncValue	:= ,
-					bSync				:= bSync,
-					eMode				:= eMode,
-					bHold				:= bHold,
-					stParams			:= stCTRL_PID_PARAMS,
-					fOut				=> ,
-					bARWactive		=> bARWactive,
-					eErrorId			=> eErrorId,
-					bError				=> 
-				);
+                    fActualValue		:= GCM_82.rPRESS,//rCalculatedTransmissionValue,//GCM_82.rPRESS ,
+                    fManSyncValue	:= ,
+                    bSync				:= bSync,
+                    eMode				:= eMode,
+                    bHold				:= bHold,
+                    stParams			:= stCTRL_PID_PARAMS,
+                    fOut				=> ,
+                    bARWactive		=> bARWactive,
+                    eErrorId			=> eErrorId,
+                    bError				=>
+                );
 
-	
+
 (*deadband/clipper *)
 
 (* call function block *)
 stCTRL_DEADBAND_PARAMS.fThreshold	:=  fSetpointValue*0.0016 ;
 (*fbCTRL_DEADBAND	(	fIn					:= ,
-					stParams			:= stCTRL_DEADBAND_PARAMS,
-					bInIsUnderThreshold => ,
-					eErrorId			=> ,
-					bError				=> 
-				);*)
+                    stParams			:= stCTRL_DEADBAND_PARAMS,
+                    bInIsUnderThreshold => ,
+                    eErrorId			=> ,
+                    bError				=>
+                );*)
 
 bError := fbCTRL_PID.bError OR fbCTRL_LIN_INTERPOLATION.bError;]]></ST>
       </Implementation>
@@ -299,11 +299,11 @@ bError := fbCTRL_PID.bError OR fbCTRL_LIN_INTERPOLATION.bError;]]></ST>
       <Implementation>
         <ST><![CDATA[TRANS_FFO.i_xOK := (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*20/100))) OR NOT tExceed.Q;
 
-//auto reset true	
+//auto reset true
 (*FAST FAULT*)
 TRANS_FFO(i_xOK := ,//NOT tExceed.Q,
     i_xReset :=  ,
-	i_xAutoReset := TRUE,
+    i_xAutoReset := TRUE,
     io_fbFFHWO := GVL_PMPS.g_FastFaultOutput1);]]></ST>
       </Implementation>
     </Action>
@@ -313,155 +313,155 @@ TRANS_FFO(i_xOK := ,//NOT tExceed.Q,
 (*Iniitialization*)
 IF bInit
 THEN
-	(* Feed forward table records 9 disticnt positions of the needle valves, breaking the *)
-	(* the needle valve profile into disticnt nearly linear segments*)
-	(* init array with the interpolation points  *)
-	(* 	fIn					 |		fOut		*)
-	arrTable[1,1] := 0;		arrTable[1,2] := 12;
-	arrTable[2,1] := 0.000001;	arrTable[2,2] := 15;
-	arrTable[3,1] := 0.000024;	arrTable[3,2] := 19;
-	arrTable[4,1] :=  0.0001;	arrTable[4,2] := 25;
-	arrTable[5,1] :=  0.001;	arrTable[5,2] := 28;
-	arrTable[6,1] := 0.0082;	arrTable[6,2] := 31;
-	arrTable[7,1] := 0.04;		arrTable[7,2] := 34;
-	arrTable[8,1] := 0.062;	arrTable[8,2] := 39;
-	arrTable[9,1] := 0.09;		arrTable[9,2] := 44;
-	arrTable[10,1] := 0.112;		arrTable[10,2] := 49;
-	arrTable[11,1] := 0.6;			arrTable[11,2] := 55;
-	arrTable[12,1] := 1.34;		arrTable[12,2] := 62;
-	arrTable[13,1] := 4;			arrTable[13,2] := 70;
-	arrTable[14,1] := 7.27;		arrTable[14,2] := 78;
-	arrTable[15,1] := 20;			arrTable[15,2] := 100;
-	
-	(* init array with the interpolation points  *)
-	(* 	fIn					 |		fOut		*)
-	arrTableAprt1[1,1] := 0;		arrTableAprt1[1,2] := 12;
-	arrTableAprt1[2,1] := 0.000001;	arrTableAprt1[2,2] := 15;
-	arrTableAprt1[3,1] := 0.000024;	arrTableAprt1[3,2] := 19;
-	arrTableAprt1[4,1] :=  0.0001;	arrTableAprt1[4,2] := 25;
-	arrTableAprt1[5,1] :=  0.001;	arrTableAprt1[5,2] := 28;
-	arrTableAprt1[6,1] := 0.0082;	arrTableAprt1[6,2] := 31;
-	arrTableAprt1[7,1] := 0.04;		arrTableAprt1[7,2] := 34;
-	arrTableAprt1[8,1] := 0.062;	arrTableAprt1[8,2] := 39;
-	arrTableAprt1[9,1] := 0.09;		arrTableAprt1[9,2] := 44;
-	arrTableAprt1[10,1] := 0.112;		arrTableAprt1[10,2] := 49;
-	arrTableAprt1[11,1] := 0.6;			arrTableAprt1[11,2] := 55;
-	arrTableAprt1[12,1] := 1.34;		arrTableAprt1[12,2] := 62;
-	arrTableAprt1[13,1] := 4;			arrTableAprt1[13,2] := 70;
-	arrTableAprt1[14,1] := 7.27;		arrTableAprt1[14,2] := 78;
-	arrTableAprt1[15,1] := 20;			arrTableAprt1[15,2] := 100;
-	
-	(* init array with the interpolation points  *)
-	(* 	fIn					 |		fOut		*)
-	arrTableAprt2[1,1] := 0;		    arrTableAprt2[1,2] := 12;
-	arrTableAprt2[2,1] := 0.000001;		arrTableAprt2[2,2] := 15;
-	arrTableAprt2[3,1] := 0.000024;		arrTableAprt2[3,2] := 19;
-	arrTableAprt2[4,1] :=  0.000072;	arrTableAprt2[4,2] := 25;
-	arrTableAprt2[5,1] :=  0.0059;	    arrTableAprt2[5,2] := 28;
-	arrTableAprt2[6,1] := 0.0059;		arrTableAprt2[6,2] := 31;
-	arrTableAprt2[7,1] := 0.0099;		arrTableAprt2[7,2] := 34;
-	arrTableAprt2[8,1] := 0.034;		arrTableAprt2[8,2] := 39;
-	arrTableAprt2[9,1] := 0.051;		arrTableAprt2[9,2] := 44;
-	arrTableAprt2[10,1] := 0.074;		arrTableAprt2[10,2] := 49;
-	arrTableAprt2[11,1] := 0.2;			arrTableAprt2[11,2] := 55;
-	arrTableAprt2[12,1] := 0.598;		arrTableAprt2[12,2] := 62;
-	arrTableAprt2[13,1] := 1;			arrTableAprt2[13,2] := 70;
-	arrTableAprt2[14,1] := 3.34;		arrTableAprt2[14,2] := 78;
-	arrTableAprt2[15,1] := 20;			arrTableAprt2[15,2] := 100;
-	(* init array with the interpolation points  *)
-	(* 	fIn					 |		fOut		*)
-	arrTableAprt3[1,1] := 0;		    arrTableAprt3[1,2] := 12;
-	arrTableAprt3[2,1] := 0.000001;	 	arrTableAprt3[2,2] := 15;
-	arrTableAprt3[3,1] := 0.000024;		arrTableAprt3[3,2] := 19;
-	arrTableAprt3[4,1] :=  0.000062;	arrTableAprt3[4,2] := 25;
-	arrTableAprt3[5,1] :=  0.001;	    arrTableAprt3[5,2] := 28;
-	arrTableAprt3[6,1] := 0.005;		arrTableAprt3[6,2] := 31;
-	arrTableAprt3[7,1] := 0.01;			arrTableAprt3[7,2] := 34;
-	arrTableAprt3[8,1] := 0.029;		arrTableAprt3[8,2] := 39;
-	arrTableAprt3[9,1] := 0.036;		arrTableAprt3[9,2] := 44;
-	arrTableAprt3[10,1] := 0.058;		arrTableAprt3[10,2] := 49;
-	arrTableAprt3[11,1] := 0.2;			arrTableAprt3[11,2] := 55;
-	arrTableAprt3[12,1] := 0.363;		arrTableAprt3[12,2] := 62;
-	arrTableAprt3[13,1] := 1;			arrTableAprt3[13,2] := 70;
-	arrTableAprt3[14,1] := 1.95;		arrTableAprt3[14,2] := 78;
-	arrTableAprt3[15,1] := 20;			arrTableAprt3[15,2] := 100;
-	
-	(* init array with the interpolation points  *)
-	(* 	fIn					 |		fOut		*)
-	arrTableAprt4[1,1] := 0;		    arrTableAprt4[1,2] := 10;
-	arrTableAprt4[2,1] := 0.000001;		arrTableAprt4[2,2] := 12;
-	arrTableAprt4[3,1] := 0.000024;		arrTableAprt4[3,2] := 17;
-	arrTableAprt4[4,1] :=  0.000071;	arrTableAprt4[4,2] := 23;
-	arrTableAprt4[5,1] :=  0.00036;	    arrTableAprt4[5,2] := 26;
-	arrTableAprt4[6,1] :=  0.005;	    arrTableAprt4[6,2] := 29;
-	arrTableAprt4[7,1] := 0.0073;		arrTableAprt4[7,2] := 32;
-	arrTableAprt4[8,1] := 0.028;		arrTableAprt4[8,2] := 37;
-	arrTableAprt4[9,1] := 0.04;			arrTableAprt4[9,2] := 42;
-	arrTableAprt4[10,1] := 0.0535;		arrTableAprt4[10,2] := 47;
-	arrTableAprt4[11,1] := 0.083;		arrTableAprt4[11,2] := 53;
-	arrTableAprt4[12,1] := 0.3;			arrTableAprt4[12,2] := 60;
-	arrTableAprt4[13,1] := 1;			arrTableAprt4[13,2] := 68;
-	arrTableAprt4[14,1] := 1.95;		arrTableAprt4[14,2] := 76;
-	arrTableAprt4[15,1] := 20;			arrTableAprt4[15,2] := 98;
+    (* Feed forward table records 9 disticnt positions of the needle valves, breaking the *)
+    (* the needle valve profile into disticnt nearly linear segments*)
+    (* init array with the interpolation points  *)
+    (* 	fIn					 |		fOut		*)
+    arrTable[1,1] := 0;		arrTable[1,2] := 12;
+    arrTable[2,1] := 0.000001;	arrTable[2,2] := 15;
+    arrTable[3,1] := 0.000024;	arrTable[3,2] := 19;
+    arrTable[4,1] :=  0.0001;	arrTable[4,2] := 25;
+    arrTable[5,1] :=  0.001;	arrTable[5,2] := 28;
+    arrTable[6,1] := 0.0082;	arrTable[6,2] := 31;
+    arrTable[7,1] := 0.04;		arrTable[7,2] := 34;
+    arrTable[8,1] := 0.062;	arrTable[8,2] := 39;
+    arrTable[9,1] := 0.09;		arrTable[9,2] := 44;
+    arrTable[10,1] := 0.112;		arrTable[10,2] := 49;
+    arrTable[11,1] := 0.6;			arrTable[11,2] := 55;
+    arrTable[12,1] := 1.34;		arrTable[12,2] := 62;
+    arrTable[13,1] := 4;			arrTable[13,2] := 70;
+    arrTable[14,1] := 7.27;		arrTable[14,2] := 78;
+    arrTable[15,1] := 20;			arrTable[15,2] := 100;
+
+    (* init array with the interpolation points  *)
+    (* 	fIn					 |		fOut		*)
+    arrTableAprt1[1,1] := 0;		arrTableAprt1[1,2] := 12;
+    arrTableAprt1[2,1] := 0.000001;	arrTableAprt1[2,2] := 15;
+    arrTableAprt1[3,1] := 0.000024;	arrTableAprt1[3,2] := 19;
+    arrTableAprt1[4,1] :=  0.0001;	arrTableAprt1[4,2] := 25;
+    arrTableAprt1[5,1] :=  0.001;	arrTableAprt1[5,2] := 28;
+    arrTableAprt1[6,1] := 0.0082;	arrTableAprt1[6,2] := 31;
+    arrTableAprt1[7,1] := 0.04;		arrTableAprt1[7,2] := 34;
+    arrTableAprt1[8,1] := 0.062;	arrTableAprt1[8,2] := 39;
+    arrTableAprt1[9,1] := 0.09;		arrTableAprt1[9,2] := 44;
+    arrTableAprt1[10,1] := 0.112;		arrTableAprt1[10,2] := 49;
+    arrTableAprt1[11,1] := 0.6;			arrTableAprt1[11,2] := 55;
+    arrTableAprt1[12,1] := 1.34;		arrTableAprt1[12,2] := 62;
+    arrTableAprt1[13,1] := 4;			arrTableAprt1[13,2] := 70;
+    arrTableAprt1[14,1] := 7.27;		arrTableAprt1[14,2] := 78;
+    arrTableAprt1[15,1] := 20;			arrTableAprt1[15,2] := 100;
+
+    (* init array with the interpolation points  *)
+    (* 	fIn					 |		fOut		*)
+    arrTableAprt2[1,1] := 0;		    arrTableAprt2[1,2] := 12;
+    arrTableAprt2[2,1] := 0.000001;		arrTableAprt2[2,2] := 15;
+    arrTableAprt2[3,1] := 0.000024;		arrTableAprt2[3,2] := 19;
+    arrTableAprt2[4,1] :=  0.000072;	arrTableAprt2[4,2] := 25;
+    arrTableAprt2[5,1] :=  0.0059;	    arrTableAprt2[5,2] := 28;
+    arrTableAprt2[6,1] := 0.0059;		arrTableAprt2[6,2] := 31;
+    arrTableAprt2[7,1] := 0.0099;		arrTableAprt2[7,2] := 34;
+    arrTableAprt2[8,1] := 0.034;		arrTableAprt2[8,2] := 39;
+    arrTableAprt2[9,1] := 0.051;		arrTableAprt2[9,2] := 44;
+    arrTableAprt2[10,1] := 0.074;		arrTableAprt2[10,2] := 49;
+    arrTableAprt2[11,1] := 0.2;			arrTableAprt2[11,2] := 55;
+    arrTableAprt2[12,1] := 0.598;		arrTableAprt2[12,2] := 62;
+    arrTableAprt2[13,1] := 1;			arrTableAprt2[13,2] := 70;
+    arrTableAprt2[14,1] := 3.34;		arrTableAprt2[14,2] := 78;
+    arrTableAprt2[15,1] := 20;			arrTableAprt2[15,2] := 100;
+    (* init array with the interpolation points  *)
+    (* 	fIn					 |		fOut		*)
+    arrTableAprt3[1,1] := 0;		    arrTableAprt3[1,2] := 12;
+    arrTableAprt3[2,1] := 0.000001;	 	arrTableAprt3[2,2] := 15;
+    arrTableAprt3[3,1] := 0.000024;		arrTableAprt3[3,2] := 19;
+    arrTableAprt3[4,1] :=  0.000062;	arrTableAprt3[4,2] := 25;
+    arrTableAprt3[5,1] :=  0.001;	    arrTableAprt3[5,2] := 28;
+    arrTableAprt3[6,1] := 0.005;		arrTableAprt3[6,2] := 31;
+    arrTableAprt3[7,1] := 0.01;			arrTableAprt3[7,2] := 34;
+    arrTableAprt3[8,1] := 0.029;		arrTableAprt3[8,2] := 39;
+    arrTableAprt3[9,1] := 0.036;		arrTableAprt3[9,2] := 44;
+    arrTableAprt3[10,1] := 0.058;		arrTableAprt3[10,2] := 49;
+    arrTableAprt3[11,1] := 0.2;			arrTableAprt3[11,2] := 55;
+    arrTableAprt3[12,1] := 0.363;		arrTableAprt3[12,2] := 62;
+    arrTableAprt3[13,1] := 1;			arrTableAprt3[13,2] := 70;
+    arrTableAprt3[14,1] := 1.95;		arrTableAprt3[14,2] := 78;
+    arrTableAprt3[15,1] := 20;			arrTableAprt3[15,2] := 100;
+
+    (* init array with the interpolation points  *)
+    (* 	fIn					 |		fOut		*)
+    arrTableAprt4[1,1] := 0;		    arrTableAprt4[1,2] := 10;
+    arrTableAprt4[2,1] := 0.000001;		arrTableAprt4[2,2] := 12;
+    arrTableAprt4[3,1] := 0.000024;		arrTableAprt4[3,2] := 17;
+    arrTableAprt4[4,1] :=  0.000071;	arrTableAprt4[4,2] := 23;
+    arrTableAprt4[5,1] :=  0.00036;	    arrTableAprt4[5,2] := 26;
+    arrTableAprt4[6,1] :=  0.005;	    arrTableAprt4[6,2] := 29;
+    arrTableAprt4[7,1] := 0.0073;		arrTableAprt4[7,2] := 32;
+    arrTableAprt4[8,1] := 0.028;		arrTableAprt4[8,2] := 37;
+    arrTableAprt4[9,1] := 0.04;			arrTableAprt4[9,2] := 42;
+    arrTableAprt4[10,1] := 0.0535;		arrTableAprt4[10,2] := 47;
+    arrTableAprt4[11,1] := 0.083;		arrTableAprt4[11,2] := 53;
+    arrTableAprt4[12,1] := 0.3;			arrTableAprt4[12,2] := 60;
+    arrTableAprt4[13,1] := 1;			arrTableAprt4[13,2] := 68;
+    arrTableAprt4[14,1] := 1.95;		arrTableAprt4[14,2] := 76;
+    arrTableAprt4[15,1] := 20;			arrTableAprt4[15,2] := 98;
 
 
 
-	(* init parameter struct *)
-	stCTRL_LIN_INTERPOLATION_PARAMS.tCtrlCycleTime					:= T#10ms;
-	stCTRL_LIN_INTERPOLATION_PARAMS.tTaskCycleTime					:= T#10ms;
-	stCTRL_LIN_INTERPOLATION_PARAMS.nDataTable_NumberOfRows		:= INT_TO_UINT(15);	
+    (* init parameter struct *)
+    stCTRL_LIN_INTERPOLATION_PARAMS.tCtrlCycleTime					:= T#10ms;
+    stCTRL_LIN_INTERPOLATION_PARAMS.tTaskCycleTime					:= T#10ms;
+    stCTRL_LIN_INTERPOLATION_PARAMS.nDataTable_NumberOfRows		:= INT_TO_UINT(15);
 
-	(*FBCNTRL*)
-	(* init parameter struct *)
-	stCTRL_PID_PARAMS.tCtrlCycleTime		:= T#250ms;
-	stCTRL_PID_PARAMS.tTaskCycleTime		:= T#10ms;
-	stCTRL_PID_PARAMS.fKp					:= fKp1;			(* proportional gain Kp				*)
-	stCTRL_PID_PARAMS.tTn					:= T#500ms;		(*  Tn									*)
-	stCTRL_PID_PARAMS.tTv					:= T#200ms;	(*  Tv									*)
-	stCTRL_PID_PARAMS.tTd					:= T#500ms;	(*  Td				200					*)
-	stCTRL_PID_PARAMS.fOutMaxLimit			:=  25;			(* maximum output limit				*)
-	stCTRL_PID_PARAMS.fOutMinLimit			:=  -100;			(* minimum output limit				*)
+    (*FBCNTRL*)
+    (* init parameter struct *)
+    stCTRL_PID_PARAMS.tCtrlCycleTime		:= T#250ms;
+    stCTRL_PID_PARAMS.tTaskCycleTime		:= T#10ms;
+    stCTRL_PID_PARAMS.fKp					:= fKp1;			(* proportional gain Kp				*)
+    stCTRL_PID_PARAMS.tTn					:= T#500ms;		(*  Tn									*)
+    stCTRL_PID_PARAMS.tTv					:= T#200ms;	(*  Tv									*)
+    stCTRL_PID_PARAMS.tTd					:= T#500ms;	(*  Td				200					*)
+    stCTRL_PID_PARAMS.fOutMaxLimit			:=  25;			(* maximum output limit				*)
+    stCTRL_PID_PARAMS.fOutMinLimit			:=  -100;			(* minimum output limit				*)
 
-	(* set the mode to ACTIVE --> normal operation *)
-	eMode							:= eCTRL_MODE_PASSIVE   ;					
-	
-	(*set the upper limit on the VCN*)
-	VCN_70.M_SetThrottle(rLimit);
-	
-	(* reset the init flag *)
-	bInit							:= FALSE;
+    (* set the mode to ACTIVE --> normal operation *)
+    eMode							:= eCTRL_MODE_PASSIVE   ;
+
+    (*set the upper limit on the VCN*)
+    VCN_70.M_SetThrottle(rLimit);
+
+    (* reset the init flag *)
+    bInit							:= FALSE;
 END_IF
 (* set the addresses *)
 (* Gain selection *)
 (* VCN limit *)
 IF (bGo) THEN
-	CASE eSelectedAprt of
-		 E_MAA_States.Aprt1:
-			arrTable := arrTableAprt1;
-			stCTRL_PID_PARAMS.fKp	:= fKp1;
-			//rLimit:= rLimit1;
-			//VCN_70.M_SetThrottle(78);
-		 E_MAA_States.Aprt2:
-			arrTable := arrTableAprt2;
-			stCTRL_PID_PARAMS.fKp	:= fKp2;
-			//rLimit:= rLimit2;
-			//VCN_70.M_SetThrottle(78);
-		 E_MAA_States.Aprt3:
-			arrTable := arrTableAprt3;
-			stCTRL_PID_PARAMS.fKp	:= fKp3;
-			//rLimit:= rLimit3;
-			//VCN_70.M_SetThrottle(78);
-		 E_MAA_States.Aprt4:
-			arrTable := arrTableAprt4;
-			stCTRL_PID_PARAMS.fKp	:= fKp4;
-			//rLimit:= rLimit4;
-			//VCN_70.M_SetThrottle(78);
-	END_CASE
+    CASE eSelectedAprt of
+         E_MAA_States.Aprt1:
+            arrTable := arrTableAprt1;
+            stCTRL_PID_PARAMS.fKp	:= fKp1;
+            //rLimit:= rLimit1;
+            //VCN_70.M_SetThrottle(78);
+         E_MAA_States.Aprt2:
+            arrTable := arrTableAprt2;
+            stCTRL_PID_PARAMS.fKp	:= fKp2;
+            //rLimit:= rLimit2;
+            //VCN_70.M_SetThrottle(78);
+         E_MAA_States.Aprt3:
+            arrTable := arrTableAprt3;
+            stCTRL_PID_PARAMS.fKp	:= fKp3;
+            //rLimit:= rLimit3;
+            //VCN_70.M_SetThrottle(78);
+         E_MAA_States.Aprt4:
+            arrTable := arrTableAprt4;
+            stCTRL_PID_PARAMS.fKp	:= fKp4;
+            //rLimit:= rLimit4;
+            //VCN_70.M_SetThrottle(78);
+    END_CASE
 END_IF
 
 stCTRL_LIN_INTERPOLATION_PARAMS.pDataTable_ADR			:= ADR(arrTable);
 stCTRL_LIN_INTERPOLATION_PARAMS.nDataTable_SIZEOF	:= SIZEOF(arrTable);
-	
+
 ]]></ST>
       </Implementation>
     </Action>
@@ -478,22 +478,22 @@ IF (rtAction.Q) THEN  fbLogger(sMsg:='AT1K0-MAA current aperture size mismatch, 
     <Action Name="ACT_STATE" Id="{7ea5bee8-6577-4f4e-9199-ba70a29710d8}">
       <Implementation>
         <ST><![CDATA[IF tExceed.Q THEN
-	eState := E_State.error;
-	stStatus.AtTarget := 0;
+    eState := E_State.error;
+    stStatus.AtTarget := 0;
 ELSIF tSettle.Q THEN
-	// ok
-	eState := E_State.ok;
-	// At Target
-	stStatus.AtTarget := 1;
-	stStatus.Moving := 0;
+    // ok
+    eState := E_State.ok;
+    // At Target
+    stStatus.AtTarget := 1;
+    stStatus.Moving := 0;
 ELSIF (rCalculatedTransmissionValue < (TransmissionValue - (TransmissionValue*20/100))) THEN
-	//warning
-	eState := E_State.warning;
+    //warning
+    eState := E_State.warning;
 ELSE eState := E_State.unknown;
 END_IF
 // State ok when the Transmission is within the acceptable range and the MAA are not in errors
-stStatus.OK := (*TRANS_FFO.i_xOK AND*) US_MAA_OK AND DS_MAA_OK AND US_Turbo_Valves_Open 
-					AND DS_Turbo_Valves_Open AND US_Turbo_Running AND DS_Turbo_Running;  ;
+stStatus.OK := (*TRANS_FFO.i_xOK AND*) US_MAA_OK AND DS_MAA_OK AND US_Turbo_Valves_Open
+                    AND DS_Turbo_Valves_Open AND US_Turbo_Running AND DS_Turbo_Running;  ;
 
 
 bStatus.0 := stStatus.AtTarget;
@@ -513,13 +513,13 @@ IF (TransmissionValue >0) THEN rTransPerc:= rCalculatedTransmissionValue*100/Tra
 IF (fSetpointValue >0) THEN rPressPerc:= GCM_82.rPRESS*100/fSetpointValue; END_IF
 
 tSettle(IN:= (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*20/100))) AND (rCalculatedTransmissionValue >= (TransmissionValue - (TransmissionValue*20/100))),
-	PT := tSettleTime);
-	
+    PT := tSettleTime);
+
 tMoving(IN:= (rCalculatedTransmissionValue <= (TransmissionValue + (TransmissionValue*5/100))) AND (rCalculatedTransmissionValue >= (TransmissionValue - (TransmissionValue*10/100))),
-	PT := tMovingTime);
-	
+    PT := tMovingTime);
+
 tExceed(IN:= (rCalculatedTransmissionValue > (TransmissionValue + (TransmissionValue*20/100))),
-	PT := tExceedTime);]]></ST>
+    PT := tExceedTime);]]></ST>
       </Implementation>
     </Action>
   </POU>

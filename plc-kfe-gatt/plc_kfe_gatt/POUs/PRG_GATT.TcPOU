@@ -3,13 +3,13 @@
   <POU Name="PRG_GATT" Id="{50aa43bc-3918-43e1-8f45-cf2080d5644d}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_GATT
 VAR
-	timer:TON;
-	vvcTimer:TON;
-	PG: ST_VG;
-	rPRESS : REAL := 0.001;
-	rPRESS_11 : REAL := 1;
-	fb_ADS_WATCHDOG:FB_ADS_WATCHDOG;
-	rTrig_11: R_TRIG;
+    timer:TON;
+    vvcTimer:TON;
+    PG: ST_VG;
+    rPRESS : REAL := 0.001;
+    rPRESS_11 : REAL := 1;
+    fb_ADS_WATCHDOG:FB_ADS_WATCHDOG;
+    rTrig_11: R_TRIG;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -70,7 +70,7 @@ fb_AT1K0_GAS_VRC_40(i_xExtILK_OK := F_TurboGateValve_ILK(fb_AT1K0_GAS_PTM_40.iq_
 // Auto open the VRC when pressure if ok
 rTrig_11(CLK := ( fb_AT1K0_GAS_GPI_11.PG.xPRESS_OK AND fb_AT1K0_GAS_GPI_11.PG.rPRESS < 0.01));
 IF (rTrig_11.Q) THEN
-	fb_AT1K0_GAS_VRC_11.M_Set_OPN_SW (TRUE);
+    fb_AT1K0_GAS_VRC_11.M_Set_OPN_SW (TRUE);
 END_IF
 fb_AT1K0_GAS_VRC_11(i_xExtILK_OK := (fb_AT1K0_GAS_GPI_11.PG.xPRESS_OK AND fb_AT1K0_GAS_GPI_11.PG.rPRESS < rPRESS_11) , i_xOverrideMode := xSystemOverrideMode);
 //EBD
@@ -103,22 +103,22 @@ fb_AT1K0_GAS_PTM_40(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_40.iq_s
 //FEE Side
 fb_AT1K0_GAS_PTM_110(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_110.iq_stPtm, fb_AT1K0_GAS_GPI_111.PG,fb_AT1K0_GAS_GPI_110.PG,fb_AT1K0_GAS_PMF_110.stPump));
 fb_AT1K0_GAS_PTM_120(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_120.iq_stPtm, fb_AT1K0_GAS_GPI_121.PG, fb_AT1K0_GAS_GPI_120.PG,fb_AT1K0_GAS_PMF_120.stPump));
-fb_AT1K0_GAS_PTM_130(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_130.iq_stPtm, fb_AT1K0_GAS_GPI_121.PG,fb_AT1K0_GAS_GPI_130.PG,fb_AT1K0_GAS_PMF_120.stPump)); 
+fb_AT1K0_GAS_PTM_130(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_130.iq_stPtm, fb_AT1K0_GAS_GPI_121.PG,fb_AT1K0_GAS_GPI_130.PG,fb_AT1K0_GAS_PMF_120.stPump));
 fb_AT1K0_GAS_PTM_140(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_140.iq_stPtm, fb_AT1K0_GAS_GPI_141.PG,fb_AT1K0_GAS_GPI_140.PG,fb_AT1K0_GAS_PMF_140.stPump));
 
 // Injector side
 fb_AT1K0_GAS_VVC_80.i_xExtILK_OK:= (fb_AT1K0_GAS_GPI_111.PG.rPRESS <= fb_AT1K0_GAS_PTM_80.iq_stPtm.rBackingPressureSP) AND NOT (fb_AT1K0_GAS_PTM_80.iq_stPtm.eState = pumpFAULT)  AND  (fb_AT1K0_GAS_PTM_80.iq_stPtm.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PTM_80.iq_stPtm.eState = pumpSTARTING )AND  (fb_AT1K0_GAS_PMF_110.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_110.stPump.eState = pumpSTARTING );
 fb_AT1K0_GAS_VVC_80(i_xOverrideMode:= xSystemOverrideMode , iq_stValve=> );
 IF (fb_AT1K0_GAS_PTM_80.iq_stPtm.eState = pumpRUNNING) AND fb_AT1K0_GAS_VVC_80.M_IsClosed() THEN
-	 if (timer.Q) THEN fb_AT1K0_GAS_PTM_80.i_xExtILKOk := fb_AT1K0_GAS_VVC_80.M_IsOpen() AND F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_80.iq_stPtm, fb_AT1K0_GAS_GPI_111.PG,fb_AT1K0_GAS_GPI_80.PG,fb_AT1K0_GAS_PMF_110.stPump);//fb_AT1K0_GAS_PTM_80.i_xExtILKOk := FALSE;
+     if (timer.Q) THEN fb_AT1K0_GAS_PTM_80.i_xExtILKOk := fb_AT1K0_GAS_VVC_80.M_IsOpen() AND F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_80.iq_stPtm, fb_AT1K0_GAS_GPI_111.PG,fb_AT1K0_GAS_GPI_80.PG,fb_AT1K0_GAS_PMF_110.stPump);//fb_AT1K0_GAS_PTM_80.i_xExtILKOk := FALSE;
  END_IF;
 ELSE
-	fb_AT1K0_GAS_PTM_80.i_xExtILKOk :=  F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_80.iq_stPtm, fb_AT1K0_GAS_GPI_111.PG,fb_AT1K0_GAS_GPI_80.PG,fb_AT1K0_GAS_PMF_110.stPump);
+    fb_AT1K0_GAS_PTM_80.i_xExtILKOk :=  F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_80.iq_stPtm, fb_AT1K0_GAS_GPI_111.PG,fb_AT1K0_GAS_GPI_80.PG,fb_AT1K0_GAS_PMF_110.stPump);
 END_IF
 fb_AT1K0_GAS_PTM_80();
 timer(IN:= (fb_AT1K0_GAS_PTM_80.iq_stPtm.eState = pumpRUNNING), PT:=T#1S);
 
-	
+
 
 
 //Rouging pumps
