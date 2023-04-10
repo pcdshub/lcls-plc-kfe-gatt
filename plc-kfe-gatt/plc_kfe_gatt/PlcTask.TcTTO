@@ -7,9 +7,6 @@
     <PouCall>
       <Name>PRG_1_PlcTask</Name>
     </PouCall>
-    <PouCall>
-      <Name>PRG_VGP</Name>
-    </PouCall>
     <TaskFBGuid>{6a088be4-a192-4262-af4f-9aa652adb0d1}</TaskFBGuid>
     <Fb_init>{4d40ffe7-74eb-4bb3-8716-0a7f48a4919f}</Fb_init>
     <Fb_exit>{397c32ce-958c-4ffe-b269-ea89224dba45}</Fb_exit>
