@@ -2,8 +2,8 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <GVL Name="GVL_MOT" Id="{0bf73307-23cf-49fa-b7ca-fc54da613ef3}">
     <Declaration><![CDATA[VAR_GLOBAL
-	
-	
+
+
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

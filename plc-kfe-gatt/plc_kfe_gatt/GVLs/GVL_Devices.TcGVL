@@ -5,35 +5,35 @@
 (*AT1K0*)
 /// Injector
 //Valves
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:VCN:70 '}
-	VCN_70 : FB_VCN;
-	
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:VVC:71 '}
-	VVC_71 : FB_VVC;
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:VCN:70 '}
+    VCN_70 : FB_VCN;
 
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:VVC:72 '}
-	VVC_72 : FB_VVC;
-	
-		
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:VGP:80 '}
-	VGP_80 : FB_VGP;
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:VVC:71 '}
+    VVC_71 : FB_VVC;
 
-//Gauges	
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:GCM:70 '}
-	GCM_70: FB_GCM;
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:GCM:80 '}
-	GCM_80: FB_GCM;
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:GCM:81 '}
-	GCM_81: FB_GCM;
-	(*Pseudo gauge device Structure to combine the readings of two GCM gauges*)
-	{attribute 'pytmc' :=' pv: AT1K0:GAS:GCM:82  '}
-	GCM_82 : ST_VG;
-	
-	
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:VVC:72 '}
+    VVC_72 : FB_VVC;
+
+
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:VGP:80 '}
+    VGP_80 : FB_VGP;
+
+//Gauges
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:GCM:70 '}
+    GCM_70: FB_GCM;
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:GCM:80 '}
+    GCM_80: FB_GCM;
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:GCM:81 '}
+    GCM_81: FB_GCM;
+    (*Pseudo gauge device Structure to combine the readings of two GCM gauges*)
+    {attribute 'pytmc' :=' pv: AT1K0:GAS:GCM:82  '}
+    GCM_82 : ST_VG;
+
+
 /////////////////////////////
-	
-		
-	//////////////////////////////////
+
+
+    //////////////////////////////////
 // MKS275 Gauges
 
 {attribute 'pytmc' := ' pv: AT1K0:GAS:GPI:111 '}
@@ -200,8 +200,8 @@ fb_AT1K0_GAS_VVC_80 : FB_VVC;
 //NEW added Valve instead of the manual valve at the roughing line in the EBD
 {attribute 'pytmc' := ' pv: AT1K0:GAS:VRC:11 '}
 {attribute 'TcLinkTo' := 	'.q_xOPN_DO	:=	TIIB[=+-ES2008_02_14]^Channel 1^Output;
-							.i_xClsLS	:=	TIIB[=+-ES1004_03_21]^Channel 2^Input;
-							.i_xOpnLS	:=	TIIB[=+-ES1004_03_21]^Channel 1^Input'}
+                            .i_xClsLS	:=	TIIB[=+-ES1004_03_21]^Channel 2^Input;
+                            .i_xOpnLS	:=	TIIB[=+-ES1004_03_21]^Channel 1^Input'}
 
 
 fb_AT1K0_GAS_VRC_11 : FB_VRC_EBD;

@@ -3,29 +3,29 @@
   <POU Name="PRG_Transmission" Id="{2428fd4d-fa49-4f27-94e9-279dc4e10d20}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_Transmission
 VAR
-	arr_COEF_Table_Ar			: ARRAY[1..50,1..2] OF FLOAT;
-	arr_COEF_Table_N2			: ARRAY[1..40,1..2] OF FLOAT;
-	
-	
-	fbCTRL_LIN_INTERPOLATION_Ar					: FB_CTRL_LIN_INTERPOLATION;
-	stCTRL_LIN_INTERPOLATION_PARAMS_Ar	: ST_CTRL_LIN_INTERPOLATION_PARAMS;
-	fbCTRL_LIN_INTERPOLATION_N2					: FB_CTRL_LIN_INTERPOLATION;
-	stCTRL_LIN_INTERPOLATION_PARAMS_N2	: ST_CTRL_LIN_INTERPOLATION_PARAMS;
-	eMode							: E_CTRL_MODE;
-	bInit: BOOL :=TRUE;
-		
-	
-		
-	FFO    :    FB_FastFault :=(
-	i_DevName := 'AT1K0-GAS',
-	i_Desc := 'Fault occurs when the PMPS mode is switched off',
-	i_TypeCode := 16#AAFF);
+    arr_COEF_Table_Ar			: ARRAY[1..50,1..2] OF FLOAT;
+    arr_COEF_Table_N2			: ARRAY[1..40,1..2] OF FLOAT;
+
+
+    fbCTRL_LIN_INTERPOLATION_Ar					: FB_CTRL_LIN_INTERPOLATION;
+    stCTRL_LIN_INTERPOLATION_PARAMS_Ar	: ST_CTRL_LIN_INTERPOLATION_PARAMS;
+    fbCTRL_LIN_INTERPOLATION_N2					: FB_CTRL_LIN_INTERPOLATION;
+    stCTRL_LIN_INTERPOLATION_PARAMS_N2	: ST_CTRL_LIN_INTERPOLATION_PARAMS;
+    eMode							: E_CTRL_MODE;
+    bInit: BOOL :=TRUE;
+
+
+
+    FFO    :    FB_FastFault :=(
+    i_DevName := 'AT1K0-GAS',
+    i_Desc := 'Fault occurs when the PMPS mode is switched off',
+    i_TypeCode := 16#AAFF);
 END_VAR
 VAR CONSTANT
-	rGasCellLength : REAL:= 1450.696;
-	iTorr: INT :=750;
-	rR_Ar:REAL := 1.66e-3;
-	rR_N2:REAL := 1.16e-3;
+    rGasCellLength : REAL:= 1450.696;
+    iTorr: INT :=750;
+    rR_Ar:REAL := 1.66e-3;
+    rR_N2:REAL := 1.16e-3;
 END_VAR
 
 ]]></Declaration>
@@ -34,23 +34,23 @@ END_VAR
 
 (*Calculate current transmission value*)
 IF ( SelectedGas = E_GasType.Argon) THEN
-		rCalculatedTransmissionValue := EXP(-fbCTRL_LIN_INTERPOLATION_Ar.fOut*(GCM_82.rPRESS/iTorr)*rR_Ar*rGasCellLength);
-	ELSE 
-		rCalculatedTransmissionValue := EXP(-fbCTRL_LIN_INTERPOLATION_N2.fOut*(GCM_82.rPRESS/iTorr)*rR_N2*rGasCellLength);
+        rCalculatedTransmissionValue := EXP(-fbCTRL_LIN_INTERPOLATION_Ar.fOut*(GCM_82.rPRESS/iTorr)*rR_Ar*rGasCellLength);
+    ELSE
+        rCalculatedTransmissionValue := EXP(-fbCTRL_LIN_INTERPOLATION_N2.fOut*(GCM_82.rPRESS/iTorr)*rR_N2*rGasCellLength);
 END_IF
 Cur_Trans.nTran:= TO_REAL(rCalculatedTransmissionValue*PMPS_GVL.TRANS_SCALING_FACTOR);
 
 (*Calculate Pressure setpoint from requested transmission value*)
 IF NOT (PMPS_GVL.TRANS_SCALING_FACTOR = 0) THEN
-	rRequestedTransmission := (TO_REAL(Req_Trans.nTran)/PMPS_GVL.TRANS_SCALING_FACTOR);
+    rRequestedTransmission := (TO_REAL(Req_Trans.nTran)/PMPS_GVL.TRANS_SCALING_FACTOR);
 END_IF
 
 (*Transmission Request selection*)
 IF (xPMPSMode) THEN
-	xPressureControlMode := FALSE;
-	IF NOT (PMPS_GVL.TRANS_SCALING_FACTOR = 0) THEN TransmissionValue := (TO_REAL(Req_Trans.nTran)/PMPS_GVL.TRANS_SCALING_FACTOR); END_IF
-	rTransmissionSP :=  LIMIT(0.00000000001,TransmissionValue,1);
-	ELSE TransmissionValue := LIMIT(0.00000000001,rTransmissionSP,1);
+    xPressureControlMode := FALSE;
+    IF NOT (PMPS_GVL.TRANS_SCALING_FACTOR = 0) THEN TransmissionValue := (TO_REAL(Req_Trans.nTran)/PMPS_GVL.TRANS_SCALING_FACTOR); END_IF
+    rTransmissionSP :=  LIMIT(0.00000000001,TransmissionValue,1);
+    ELSE TransmissionValue := LIMIT(0.00000000001,rTransmissionSP,1);
 END_IF
 // Set Status to the arbiter
 stStatus.PMPSMode:= xPMPSMode;
@@ -58,21 +58,21 @@ stStatus.LocalMode := NOT(xPMPSMode);
 
 
 IF ( SelectedGas = E_GasType.Argon) THEN
-	   if (fbCTRL_LIN_INTERPOLATION_Ar.fOut <>0) THEN
-		rRequiredPressureSP := (-LN(TransmissionValue)/(fbCTRL_LIN_INTERPOLATION_Ar.fOut*rR_Ar*rGasCellLength))*iTorr;
-		END_IF
-	ELSE 
-		IF (fbCTRL_LIN_INTERPOLATION_N2.fOut <>0) THEN
-			rRequiredPressureSP := (-LN(TransmissionValue)/(fbCTRL_LIN_INTERPOLATION_N2.fOut*rR_N2*rGasCellLength))*iTorr;
-		END_IF
-		
+       if (fbCTRL_LIN_INTERPOLATION_Ar.fOut <>0) THEN
+        rRequiredPressureSP := (-LN(TransmissionValue)/(fbCTRL_LIN_INTERPOLATION_Ar.fOut*rR_Ar*rGasCellLength))*iTorr;
+        END_IF
+    ELSE
+        IF (fbCTRL_LIN_INTERPOLATION_N2.fOut <>0) THEN
+            rRequiredPressureSP := (-LN(TransmissionValue)/(fbCTRL_LIN_INTERPOLATION_N2.fOut*rR_N2*rGasCellLength))*iTorr;
+        END_IF
+
 END_IF
 
 
 (*FAST FAULT*)
 FFO(i_xOK := xPMPSMode,
     i_xReset := ,
-	i_xAutoReset := TRUE,
+    i_xAutoReset := TRUE,
     io_fbFFHWO := GVL_PMPS.g_FastFaultOutput1);
 
 
@@ -82,158 +82,158 @@ FFO(i_xOK := xPMPSMode,
       <Implementation>
         <ST><![CDATA[IF bInit
 THEN
-	
-	
-	(* init array with the interpolation points  *)
-	(* 	fIn		(eV)			 |		fOut (mass coefficient)		*)	
-	
-	(*X-Ray Mass Attenuation Coefficients for N2*)
-	arr_COEF_Table_N2[1,1]:=201.37;    arr_COEF_Table_N2[1,2]:=7840.7;
-	arr_COEF_Table_N2[2,1]:=215.2655;    arr_COEF_Table_N2[2,2]:=6694.2;
-	arr_COEF_Table_N2[3,1]:=230.1188;    arr_COEF_Table_N2[3,2]:=5711.5;
-	arr_COEF_Table_N2[4,1]:=245.997;    arr_COEF_Table_N2[4,2]:=4870.1;
-	arr_COEF_Table_N2[5,1]:=262.9708;    arr_COEF_Table_N2[5,2]:=4150.6;
-	arr_COEF_Table_N2[6,1]:=281.1158;    arr_COEF_Table_N2[6,2]:=3535.8;
-	arr_COEF_Table_N2[7,1]:=300.5128;    arr_COEF_Table_N2[7,2]:=3011;
-	arr_COEF_Table_N2[8,1]:=321.2482;    arr_COEF_Table_N2[8,2]:=2563.3;
-	arr_COEF_Table_N2[9,1]:=343.4143;    arr_COEF_Table_N2[9,2]:=2181.6;
-	arr_COEF_Table_N2[10,1]:=367.1099;    arr_COEF_Table_N2[10,2]:=1856.4;
-	arr_COEF_Table_N2[11,1]:=392.4405;    arr_COEF_Table_N2[11,2]:=1579.5;
-	arr_COEF_Table_N2[12,1]:=393.568;    arr_COEF_Table_N2[12,2]:=1568.6;
-	arr_COEF_Table_N2[13,1]:=399.592;    arr_COEF_Table_N2[13,2]:=1511.9;
-	arr_COEF_Table_N2[14,1]:=401.1984;    arr_COEF_Table_N2[14,2]:=1497.3;
-	arr_COEF_Table_N2[15,1]:=403.608;    arr_COEF_Table_N2[15,2]:=30009;
-	arr_COEF_Table_N2[16,1]:=409.632;    arr_COEF_Table_N2[16,2]:=29063;
-	arr_COEF_Table_N2[17,1]:=419.5189;    arr_COEF_Table_N2[17,2]:=27603;
-	arr_COEF_Table_N2[18,1]:=448.4657;    arr_COEF_Table_N2[18,2]:=23892;
-	arr_COEF_Table_N2[19,1]:=479.4098;    arr_COEF_Table_N2[19,2]:=20593;
-	arr_COEF_Table_N2[20,1]:=512.4891;    arr_COEF_Table_N2[20,2]:=17652;
-	arr_COEF_Table_N2[21,1]:=547.8508;    arr_COEF_Table_N2[21,2]:=15059;
-	arr_COEF_Table_N2[22,1]:=585.6525;    arr_COEF_Table_N2[22,2]:=12797;
-	arr_COEF_Table_N2[23,1]:=626.0625;    arr_COEF_Table_N2[23,2]:=10838;
-	arr_COEF_Table_N2[24,1]:=669.2609;    arr_COEF_Table_N2[24,2]:=9153.6;
-	arr_COEF_Table_N2[25,1]:=715.4399;    arr_COEF_Table_N2[25,2]:=7711.4;
-	arr_COEF_Table_N2[26,1]:=764.8052;    arr_COEF_Table_N2[26,2]:=6482.3;
-	arr_COEF_Table_N2[27,1]:=817.5768;    arr_COEF_Table_N2[27,2]:=5438.6;
-	arr_COEF_Table_N2[28,1]:=873.9896;    arr_COEF_Table_N2[28,2]:=4555.2;
-	arr_COEF_Table_N2[29,1]:=934.2948;    arr_COEF_Table_N2[29,2]:=3809.4;
-	arr_COEF_Table_N2[30,1]:=998.7612;    arr_COEF_Table_N2[30,2]:=3181.2;
-	arr_COEF_Table_N2[31,1]:=1067.676;    arr_COEF_Table_N2[31,2]:=2651;
-	arr_COEF_Table_N2[32,1]:=1141.345;    arr_COEF_Table_N2[32,2]:=2206.1;
-	arr_COEF_Table_N2[33,1]:=1220.098;    arr_COEF_Table_N2[33,2]:=1833.6;
-	arr_COEF_Table_N2[34,1]:=1304.285;    arr_COEF_Table_N2[34,2]:=1522.5;
-	arr_COEF_Table_N2[35,1]:=1394.281;    arr_COEF_Table_N2[35,2]:=1263.2;
-	arr_COEF_Table_N2[36,1]:=1490.486;    arr_COEF_Table_N2[36,2]:=1047.3;
-	arr_COEF_Table_N2[37,1]:=1593.329;    arr_COEF_Table_N2[37,2]:=867.89;
-	arr_COEF_Table_N2[38,1]:=1703.269;    arr_COEF_Table_N2[38,2]:=715.55;
-	arr_COEF_Table_N2[39,1]:=1820.795;    arr_COEF_Table_N2[39,2]:=589.6;
-	arr_COEF_Table_N2[40,1]:=1946.43;    arr_COEF_Table_N2[40,2]:=485.83;
-	
-	(* init parameter struct *)
-	stCTRL_LIN_INTERPOLATION_PARAMS_N2.tCtrlCycleTime					:= T#10ms;
-	stCTRL_LIN_INTERPOLATION_PARAMS_N2.tTaskCycleTime					:= T#10ms;
-	stCTRL_LIN_INTERPOLATION_PARAMS_N2.nDataTable_NumberOfRows		:= INT_TO_UINT(40);
 
-	(* set the addresses *)
-	stCTRL_LIN_INTERPOLATION_PARAMS_N2.pDataTable_ADR			:= ADR(arr_COEF_Table_N2);
-	stCTRL_LIN_INTERPOLATION_PARAMS_N2.nDataTable_SIZEOF		:= SIZEOF(arr_COEF_Table_N2);
 
-	(*X-Ray Mass Attenuation Coefficients for Ar*)
-	arr_COEF_Table_Ar[1,1]:=201.3709;    arr_COEF_Table_Ar[1,2]:=6332.4;
-	arr_COEF_Table_Ar[2,1]:=215.2655;    arr_COEF_Table_Ar[2,2]:=5911.6;
-	arr_COEF_Table_Ar[3,1]:=230.1188;    arr_COEF_Table_Ar[3,2]:=5492.2;
-	arr_COEF_Table_Ar[4,1]:=240.296;    arr_COEF_Table_Ar[4,2]:=5153.8;
-	arr_COEF_Table_Ar[5,1]:=242.354;    arr_COEF_Table_Ar[5,2]:=5083;
-	arr_COEF_Table_Ar[6,1]:=243.974;    arr_COEF_Table_Ar[6,2]:=5028;
-	arr_COEF_Table_Ar[7,1]:=244.9548;    arr_COEF_Table_Ar[7,2]:=4995;
-	arr_COEF_Table_Ar[8,1]:=245.997;    arr_COEF_Table_Ar[8,2]:=50587;
-	arr_COEF_Table_Ar[9,1]:=246.0635;    arr_COEF_Table_Ar[9,2]:=50556;
-	arr_COEF_Table_Ar[10,1]:=246.426;    arr_COEF_Table_Ar[10,2]:=50385;
-	arr_COEF_Table_Ar[11,1]:=247.0527;    arr_COEF_Table_Ar[11,2]:=50090;
-	arr_COEF_Table_Ar[12,1]:=248.5365;    arr_COEF_Table_Ar[12,2]:=71652;
-	arr_COEF_Table_Ar[13,1]:=250.104;    arr_COEF_Table_Ar[13,2]:=70616;
-	arr_COEF_Table_Ar[14,1]:=252.246;    arr_COEF_Table_Ar[14,2]:=69234;
-	arr_COEF_Table_Ar[15,1]:=262.9708;    arr_COEF_Table_Ar[15,2]:=62861;
-	arr_COEF_Table_Ar[16,1]:=281.1158;    arr_COEF_Table_Ar[16,2]:=53865;
-	arr_COEF_Table_Ar[17,1]:=300.5128;    arr_COEF_Table_Ar[17,2]:=46248;
-	arr_COEF_Table_Ar[18,1]:=313.6;    arr_COEF_Table_Ar[18,2]:=41979;
-	arr_COEF_Table_Ar[19,1]:=318.4;    arr_COEF_Table_Ar[19,2]:=40556;
-	arr_COEF_Table_Ar[20,1]:=319.68;    arr_COEF_Table_Ar[20,2]:=40189;
-	arr_COEF_Table_Ar[21,1]:=321.2482;    arr_COEF_Table_Ar[21,2]:=44258;
-	arr_COEF_Table_Ar[22,1]:=321.6;    arr_COEF_Table_Ar[22,2]:=44155;
-	arr_COEF_Table_Ar[23,1]:=326.4;    arr_COEF_Table_Ar[23,2]:=42786;
-	arr_COEF_Table_Ar[24,1]:=343.4143;    arr_COEF_Table_Ar[24,2]:=38407;
-	arr_COEF_Table_Ar[25,1]:=367.1099;    arr_COEF_Table_Ar[25,2]:=33319;
-	arr_COEF_Table_Ar[26,1]:=392.4405;    arr_COEF_Table_Ar[26,2]:=28856;
-	arr_COEF_Table_Ar[27,1]:=419.5189;    arr_COEF_Table_Ar[27,2]:=24938;
-	arr_COEF_Table_Ar[28,1]:=448.4657;    arr_COEF_Table_Ar[28,2]:=21501;
-	arr_COEF_Table_Ar[29,1]:=479.4098;    arr_COEF_Table_Ar[29,2]:=18493;
-	arr_COEF_Table_Ar[30,1]:=512.4891;    arr_COEF_Table_Ar[30,2]:=15863;
-	arr_COEF_Table_Ar[31,1]:=547.8508;    arr_COEF_Table_Ar[31,2]:=13574;
-	arr_COEF_Table_Ar[32,1]:=585.6525;    arr_COEF_Table_Ar[32,2]:=11589;
-	arr_COEF_Table_Ar[33,1]:=626.0625;    arr_COEF_Table_Ar[33,2]:=9873.1;
-	arr_COEF_Table_Ar[34,1]:=669.2609;    arr_COEF_Table_Ar[34,2]:=8394.2;
-	arr_COEF_Table_Ar[35,1]:=715.4399;    arr_COEF_Table_Ar[35,2]:=7123.6;
-	arr_COEF_Table_Ar[36,1]:=764.8052;    arr_COEF_Table_Ar[36,2]:=6035.4;
-	arr_COEF_Table_Ar[37,1]:=817.5768;    arr_COEF_Table_Ar[37,2]:=5105.8;
-	arr_COEF_Table_Ar[38,1]:=873.9896;    arr_COEF_Table_Ar[38,2]:=4313.6;
-	arr_COEF_Table_Ar[39,1]:=934.2948;    arr_COEF_Table_Ar[39,2]:=3639.9;
-	arr_COEF_Table_Ar[40,1]:=998.7612;    arr_COEF_Table_Ar[40,2]:=3068.4;
-	arr_COEF_Table_Ar[41,1]:=1067.676;    arr_COEF_Table_Ar[41,2]:=2558;
-	arr_COEF_Table_Ar[42,1]:=1141.345;    arr_COEF_Table_Ar[42,2]:=2133.7;
-	arr_COEF_Table_Ar[43,1]:=1220.098;    arr_COEF_Table_Ar[43,2]:=1781.3;
-	arr_COEF_Table_Ar[44,1]:=1304.285;    arr_COEF_Table_Ar[44,2]:=1486.6;
-	arr_COEF_Table_Ar[45,1]:=1394.281;    arr_COEF_Table_Ar[45,2]:=1238;
-	arr_COEF_Table_Ar[46,1]:=1490.486;    arr_COEF_Table_Ar[46,2]:=1031.9;
-	arr_COEF_Table_Ar[47,1]:=1593.329;    arr_COEF_Table_Ar[47,2]:=861.03;
-	arr_COEF_Table_Ar[48,1]:=1703.269;    arr_COEF_Table_Ar[48,2]:=719.19;
-	arr_COEF_Table_Ar[49,1]:=1820.795;    arr_COEF_Table_Ar[49,2]:=601.34;
-	arr_COEF_Table_Ar[50,1]:=1946.43;    arr_COEF_Table_Ar[50,2]:=503.35;
-	
-	(* init parameter struct *)
-	stCTRL_LIN_INTERPOLATION_PARAMS_Ar.tCtrlCycleTime					:= T#10ms;
-	stCTRL_LIN_INTERPOLATION_PARAMS_Ar.tTaskCycleTime					:= T#10ms;
-	stCTRL_LIN_INTERPOLATION_PARAMS_Ar.nDataTable_NumberOfRows		:= INT_TO_UINT(50);
+    (* init array with the interpolation points  *)
+    (* 	fIn		(eV)			 |		fOut (mass coefficient)		*)
 
-	(* set the addresses *)
-	stCTRL_LIN_INTERPOLATION_PARAMS_Ar.pDataTable_ADR			:= ADR(arr_COEF_Table_Ar);
-	stCTRL_LIN_INTERPOLATION_PARAMS_Ar.nDataTable_SIZEOF		:= SIZEOF(arr_COEF_Table_Ar);
+    (*X-Ray Mass Attenuation Coefficients for N2*)
+    arr_COEF_Table_N2[1,1]:=201.37;    arr_COEF_Table_N2[1,2]:=7840.7;
+    arr_COEF_Table_N2[2,1]:=215.2655;    arr_COEF_Table_N2[2,2]:=6694.2;
+    arr_COEF_Table_N2[3,1]:=230.1188;    arr_COEF_Table_N2[3,2]:=5711.5;
+    arr_COEF_Table_N2[4,1]:=245.997;    arr_COEF_Table_N2[4,2]:=4870.1;
+    arr_COEF_Table_N2[5,1]:=262.9708;    arr_COEF_Table_N2[5,2]:=4150.6;
+    arr_COEF_Table_N2[6,1]:=281.1158;    arr_COEF_Table_N2[6,2]:=3535.8;
+    arr_COEF_Table_N2[7,1]:=300.5128;    arr_COEF_Table_N2[7,2]:=3011;
+    arr_COEF_Table_N2[8,1]:=321.2482;    arr_COEF_Table_N2[8,2]:=2563.3;
+    arr_COEF_Table_N2[9,1]:=343.4143;    arr_COEF_Table_N2[9,2]:=2181.6;
+    arr_COEF_Table_N2[10,1]:=367.1099;    arr_COEF_Table_N2[10,2]:=1856.4;
+    arr_COEF_Table_N2[11,1]:=392.4405;    arr_COEF_Table_N2[11,2]:=1579.5;
+    arr_COEF_Table_N2[12,1]:=393.568;    arr_COEF_Table_N2[12,2]:=1568.6;
+    arr_COEF_Table_N2[13,1]:=399.592;    arr_COEF_Table_N2[13,2]:=1511.9;
+    arr_COEF_Table_N2[14,1]:=401.1984;    arr_COEF_Table_N2[14,2]:=1497.3;
+    arr_COEF_Table_N2[15,1]:=403.608;    arr_COEF_Table_N2[15,2]:=30009;
+    arr_COEF_Table_N2[16,1]:=409.632;    arr_COEF_Table_N2[16,2]:=29063;
+    arr_COEF_Table_N2[17,1]:=419.5189;    arr_COEF_Table_N2[17,2]:=27603;
+    arr_COEF_Table_N2[18,1]:=448.4657;    arr_COEF_Table_N2[18,2]:=23892;
+    arr_COEF_Table_N2[19,1]:=479.4098;    arr_COEF_Table_N2[19,2]:=20593;
+    arr_COEF_Table_N2[20,1]:=512.4891;    arr_COEF_Table_N2[20,2]:=17652;
+    arr_COEF_Table_N2[21,1]:=547.8508;    arr_COEF_Table_N2[21,2]:=15059;
+    arr_COEF_Table_N2[22,1]:=585.6525;    arr_COEF_Table_N2[22,2]:=12797;
+    arr_COEF_Table_N2[23,1]:=626.0625;    arr_COEF_Table_N2[23,2]:=10838;
+    arr_COEF_Table_N2[24,1]:=669.2609;    arr_COEF_Table_N2[24,2]:=9153.6;
+    arr_COEF_Table_N2[25,1]:=715.4399;    arr_COEF_Table_N2[25,2]:=7711.4;
+    arr_COEF_Table_N2[26,1]:=764.8052;    arr_COEF_Table_N2[26,2]:=6482.3;
+    arr_COEF_Table_N2[27,1]:=817.5768;    arr_COEF_Table_N2[27,2]:=5438.6;
+    arr_COEF_Table_N2[28,1]:=873.9896;    arr_COEF_Table_N2[28,2]:=4555.2;
+    arr_COEF_Table_N2[29,1]:=934.2948;    arr_COEF_Table_N2[29,2]:=3809.4;
+    arr_COEF_Table_N2[30,1]:=998.7612;    arr_COEF_Table_N2[30,2]:=3181.2;
+    arr_COEF_Table_N2[31,1]:=1067.676;    arr_COEF_Table_N2[31,2]:=2651;
+    arr_COEF_Table_N2[32,1]:=1141.345;    arr_COEF_Table_N2[32,2]:=2206.1;
+    arr_COEF_Table_N2[33,1]:=1220.098;    arr_COEF_Table_N2[33,2]:=1833.6;
+    arr_COEF_Table_N2[34,1]:=1304.285;    arr_COEF_Table_N2[34,2]:=1522.5;
+    arr_COEF_Table_N2[35,1]:=1394.281;    arr_COEF_Table_N2[35,2]:=1263.2;
+    arr_COEF_Table_N2[36,1]:=1490.486;    arr_COEF_Table_N2[36,2]:=1047.3;
+    arr_COEF_Table_N2[37,1]:=1593.329;    arr_COEF_Table_N2[37,2]:=867.89;
+    arr_COEF_Table_N2[38,1]:=1703.269;    arr_COEF_Table_N2[38,2]:=715.55;
+    arr_COEF_Table_N2[39,1]:=1820.795;    arr_COEF_Table_N2[39,2]:=589.6;
+    arr_COEF_Table_N2[40,1]:=1946.43;    arr_COEF_Table_N2[40,2]:=485.83;
 
-	(* set the mode to ACTIVE --> normal operation *)
-	eMode							:= eCTRL_MODE_ACTIVE;
-	
-	(* reset the init flag *)
-	bInit							:= FALSE;
+    (* init parameter struct *)
+    stCTRL_LIN_INTERPOLATION_PARAMS_N2.tCtrlCycleTime					:= T#10ms;
+    stCTRL_LIN_INTERPOLATION_PARAMS_N2.tTaskCycleTime					:= T#10ms;
+    stCTRL_LIN_INTERPOLATION_PARAMS_N2.nDataTable_NumberOfRows		:= INT_TO_UINT(40);
+
+    (* set the addresses *)
+    stCTRL_LIN_INTERPOLATION_PARAMS_N2.pDataTable_ADR			:= ADR(arr_COEF_Table_N2);
+    stCTRL_LIN_INTERPOLATION_PARAMS_N2.nDataTable_SIZEOF		:= SIZEOF(arr_COEF_Table_N2);
+
+    (*X-Ray Mass Attenuation Coefficients for Ar*)
+    arr_COEF_Table_Ar[1,1]:=201.3709;    arr_COEF_Table_Ar[1,2]:=6332.4;
+    arr_COEF_Table_Ar[2,1]:=215.2655;    arr_COEF_Table_Ar[2,2]:=5911.6;
+    arr_COEF_Table_Ar[3,1]:=230.1188;    arr_COEF_Table_Ar[3,2]:=5492.2;
+    arr_COEF_Table_Ar[4,1]:=240.296;    arr_COEF_Table_Ar[4,2]:=5153.8;
+    arr_COEF_Table_Ar[5,1]:=242.354;    arr_COEF_Table_Ar[5,2]:=5083;
+    arr_COEF_Table_Ar[6,1]:=243.974;    arr_COEF_Table_Ar[6,2]:=5028;
+    arr_COEF_Table_Ar[7,1]:=244.9548;    arr_COEF_Table_Ar[7,2]:=4995;
+    arr_COEF_Table_Ar[8,1]:=245.997;    arr_COEF_Table_Ar[8,2]:=50587;
+    arr_COEF_Table_Ar[9,1]:=246.0635;    arr_COEF_Table_Ar[9,2]:=50556;
+    arr_COEF_Table_Ar[10,1]:=246.426;    arr_COEF_Table_Ar[10,2]:=50385;
+    arr_COEF_Table_Ar[11,1]:=247.0527;    arr_COEF_Table_Ar[11,2]:=50090;
+    arr_COEF_Table_Ar[12,1]:=248.5365;    arr_COEF_Table_Ar[12,2]:=71652;
+    arr_COEF_Table_Ar[13,1]:=250.104;    arr_COEF_Table_Ar[13,2]:=70616;
+    arr_COEF_Table_Ar[14,1]:=252.246;    arr_COEF_Table_Ar[14,2]:=69234;
+    arr_COEF_Table_Ar[15,1]:=262.9708;    arr_COEF_Table_Ar[15,2]:=62861;
+    arr_COEF_Table_Ar[16,1]:=281.1158;    arr_COEF_Table_Ar[16,2]:=53865;
+    arr_COEF_Table_Ar[17,1]:=300.5128;    arr_COEF_Table_Ar[17,2]:=46248;
+    arr_COEF_Table_Ar[18,1]:=313.6;    arr_COEF_Table_Ar[18,2]:=41979;
+    arr_COEF_Table_Ar[19,1]:=318.4;    arr_COEF_Table_Ar[19,2]:=40556;
+    arr_COEF_Table_Ar[20,1]:=319.68;    arr_COEF_Table_Ar[20,2]:=40189;
+    arr_COEF_Table_Ar[21,1]:=321.2482;    arr_COEF_Table_Ar[21,2]:=44258;
+    arr_COEF_Table_Ar[22,1]:=321.6;    arr_COEF_Table_Ar[22,2]:=44155;
+    arr_COEF_Table_Ar[23,1]:=326.4;    arr_COEF_Table_Ar[23,2]:=42786;
+    arr_COEF_Table_Ar[24,1]:=343.4143;    arr_COEF_Table_Ar[24,2]:=38407;
+    arr_COEF_Table_Ar[25,1]:=367.1099;    arr_COEF_Table_Ar[25,2]:=33319;
+    arr_COEF_Table_Ar[26,1]:=392.4405;    arr_COEF_Table_Ar[26,2]:=28856;
+    arr_COEF_Table_Ar[27,1]:=419.5189;    arr_COEF_Table_Ar[27,2]:=24938;
+    arr_COEF_Table_Ar[28,1]:=448.4657;    arr_COEF_Table_Ar[28,2]:=21501;
+    arr_COEF_Table_Ar[29,1]:=479.4098;    arr_COEF_Table_Ar[29,2]:=18493;
+    arr_COEF_Table_Ar[30,1]:=512.4891;    arr_COEF_Table_Ar[30,2]:=15863;
+    arr_COEF_Table_Ar[31,1]:=547.8508;    arr_COEF_Table_Ar[31,2]:=13574;
+    arr_COEF_Table_Ar[32,1]:=585.6525;    arr_COEF_Table_Ar[32,2]:=11589;
+    arr_COEF_Table_Ar[33,1]:=626.0625;    arr_COEF_Table_Ar[33,2]:=9873.1;
+    arr_COEF_Table_Ar[34,1]:=669.2609;    arr_COEF_Table_Ar[34,2]:=8394.2;
+    arr_COEF_Table_Ar[35,1]:=715.4399;    arr_COEF_Table_Ar[35,2]:=7123.6;
+    arr_COEF_Table_Ar[36,1]:=764.8052;    arr_COEF_Table_Ar[36,2]:=6035.4;
+    arr_COEF_Table_Ar[37,1]:=817.5768;    arr_COEF_Table_Ar[37,2]:=5105.8;
+    arr_COEF_Table_Ar[38,1]:=873.9896;    arr_COEF_Table_Ar[38,2]:=4313.6;
+    arr_COEF_Table_Ar[39,1]:=934.2948;    arr_COEF_Table_Ar[39,2]:=3639.9;
+    arr_COEF_Table_Ar[40,1]:=998.7612;    arr_COEF_Table_Ar[40,2]:=3068.4;
+    arr_COEF_Table_Ar[41,1]:=1067.676;    arr_COEF_Table_Ar[41,2]:=2558;
+    arr_COEF_Table_Ar[42,1]:=1141.345;    arr_COEF_Table_Ar[42,2]:=2133.7;
+    arr_COEF_Table_Ar[43,1]:=1220.098;    arr_COEF_Table_Ar[43,2]:=1781.3;
+    arr_COEF_Table_Ar[44,1]:=1304.285;    arr_COEF_Table_Ar[44,2]:=1486.6;
+    arr_COEF_Table_Ar[45,1]:=1394.281;    arr_COEF_Table_Ar[45,2]:=1238;
+    arr_COEF_Table_Ar[46,1]:=1490.486;    arr_COEF_Table_Ar[46,2]:=1031.9;
+    arr_COEF_Table_Ar[47,1]:=1593.329;    arr_COEF_Table_Ar[47,2]:=861.03;
+    arr_COEF_Table_Ar[48,1]:=1703.269;    arr_COEF_Table_Ar[48,2]:=719.19;
+    arr_COEF_Table_Ar[49,1]:=1820.795;    arr_COEF_Table_Ar[49,2]:=601.34;
+    arr_COEF_Table_Ar[50,1]:=1946.43;    arr_COEF_Table_Ar[50,2]:=503.35;
+
+    (* init parameter struct *)
+    stCTRL_LIN_INTERPOLATION_PARAMS_Ar.tCtrlCycleTime					:= T#10ms;
+    stCTRL_LIN_INTERPOLATION_PARAMS_Ar.tTaskCycleTime					:= T#10ms;
+    stCTRL_LIN_INTERPOLATION_PARAMS_Ar.nDataTable_NumberOfRows		:= INT_TO_UINT(50);
+
+    (* set the addresses *)
+    stCTRL_LIN_INTERPOLATION_PARAMS_Ar.pDataTable_ADR			:= ADR(arr_COEF_Table_Ar);
+    stCTRL_LIN_INTERPOLATION_PARAMS_Ar.nDataTable_SIZEOF		:= SIZEOF(arr_COEF_Table_Ar);
+
+    (* set the mode to ACTIVE --> normal operation *)
+    eMode							:= eCTRL_MODE_ACTIVE;
+
+    (* reset the init flag *)
+    bInit							:= FALSE;
 END_IF
 
 
 
 
 fbCTRL_LIN_INTERPOLATION_Ar(
-	fIn:= rPhotonEnergy , 
-	fManValue:= 1 , 
-	bExtrapolate:= TRUE, 
-	eMode:= eMode, 
-	stParams:= stCTRL_LIN_INTERPOLATION_PARAMS_Ar,
-	fOut=> , 
-	bInIsGreaterThanMaxElement=> , 
-	bInIsLessThanMinElement=> , 
-	eState=> , 
-	eErrorId=> , 
-	bError=> );
+    fIn:= rPhotonEnergy ,
+    fManValue:= 1 ,
+    bExtrapolate:= TRUE,
+    eMode:= eMode,
+    stParams:= stCTRL_LIN_INTERPOLATION_PARAMS_Ar,
+    fOut=> ,
+    bInIsGreaterThanMaxElement=> ,
+    bInIsLessThanMinElement=> ,
+    eState=> ,
+    eErrorId=> ,
+    bError=> );
 
 fbCTRL_LIN_INTERPOLATION_N2(
-	fIn:= rPhotonEnergy , 
-	fManValue:= 1 , 
-	bExtrapolate:= TRUE, 
-	eMode:= eMode, 
-	stParams:= stCTRL_LIN_INTERPOLATION_PARAMS_N2,
-	fOut=> , 
-	bInIsGreaterThanMaxElement=> , 
-	bInIsLessThanMinElement=> , 
-	eState=> , 
-	eErrorId=> , 
-	bError=> );]]></ST>
+    fIn:= rPhotonEnergy ,
+    fManValue:= 1 ,
+    bExtrapolate:= TRUE,
+    eMode:= eMode,
+    stParams:= stCTRL_LIN_INTERPOLATION_PARAMS_N2,
+    fOut=> ,
+    bInIsGreaterThanMaxElement=> ,
+    bInIsLessThanMinElement=> ,
+    eState=> ,
+    eErrorId=> ,
+    bError=> );]]></ST>
       </Implementation>
     </Action>
   </POU>

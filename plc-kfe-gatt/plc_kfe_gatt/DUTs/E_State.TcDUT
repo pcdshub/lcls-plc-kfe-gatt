@@ -5,10 +5,10 @@
 {attribute 'strict'}
 TYPE E_State :
 (
-	unknown,
-	error,
-	warning,
-	ok
+    unknown,
+    error,
+    warning,
+    ok
 );
 END_TYPE
 ]]></Declaration>

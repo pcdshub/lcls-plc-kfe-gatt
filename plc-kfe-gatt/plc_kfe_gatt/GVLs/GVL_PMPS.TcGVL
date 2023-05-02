@@ -2,58 +2,58 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <GVL Name="GVL_PMPS" Id="{21709cf7-f577-4665-94fd-fe0531e0ad62}">
     <Declaration><![CDATA[VAR_GLOBAL
-	
+
 //MPS
-	{attribute 'pytmc' := '
+    {attribute 'pytmc' := '
     pv: PLC:KFE:GATT:FFO:01
     '}
     {attribute 'TcLinkTo' := '.q_xFastFaultOut:=TIIB[=+-ES2202_00_07]^Channel 1^Output'}
     g_FastFaultOutput1  :   FB_HardwareFFOutput :=(i_sNetID:='172.21.92.73.1.1');
-	
-	{attribute 'pytmc' := '
+
+    {attribute 'pytmc' := '
     pv: PLC:KFE:GATT:FFO:02
     '}
     {attribute 'TcLinkTo' := '.q_xFastFaultOut:=TIIB[=+-ES2202_00_07]^Channel 2^Output'}
     g_FastFaultOutput2  :   FB_HardwareFFOutput :=(i_sNetID:='172.21.92.73.1.1');
-	
-	{attribute 'pytmc' := ' 
+
+    {attribute 'pytmc' := '
      pv: PLC:KFE:GATT:FF_RESET;
-	 field: ZNAM FALSE; 
-	 field: ONAM TRUE; 
-	 io: io;
+     field: ZNAM FALSE;
+     field: ONAM TRUE;
+     io: io;
     '}
     xFastFaultReset :   BOOL;
-	{attribute 'pytmc' := '
+    {attribute 'pytmc' := '
     pv: PLC:KFE:GATT:ARB:01
     '}
-	fbArbiter1   :   FB_Arbiter(1);
-	{attribute 'pytmc' := '
+    fbArbiter1   :   FB_Arbiter(1);
+    {attribute 'pytmc' := '
     pv: PLC:KFE:GATT:ARB:02
     '}
-	fbArbiter2   :   FB_Arbiter(2);
-	
-	{attribute 'pytmc' := '
-	pv: AT1K0:GAS:MODE ;
- 	field: ZNAM Local; 
-	field: ONAM PMPS; 
-	 io: io;
-	'}
-	xPMPSMode	:BOOL; 
+    fbArbiter2   :   FB_Arbiter(2);
+
+    {attribute 'pytmc' := '
+    pv: AT1K0:GAS:MODE ;
+     field: ZNAM Local;
+    field: ONAM PMPS;
+     io: io;
+    '}
+    xPMPSMode	:BOOL;
 
     {attribute 'TcLinkTo' := ':=TIIB[PMPS_PRE]^IO Inputs^Requested Transmission'}
-	Req_Trans AT%I*: ST_PMPS_Attenuator_IO;
+    Req_Trans AT%I*: ST_PMPS_Attenuator_IO;
 
-	 {attribute 'TcLinkTo' := ':=TIIB[PMPS_PRE]^IO Outputs^Current Transmission'}
-	Cur_Trans AT%Q*: ST_PMPS_Attenuator_IO;
-	{attribute 'pytmc' := '
+     {attribute 'TcLinkTo' := ':=TIIB[PMPS_PRE]^IO Outputs^Current Transmission'}
+    Cur_Trans AT%Q*: ST_PMPS_Attenuator_IO;
+    {attribute 'pytmc' := '
     pv: AT1K0:GAS:PhotonEnergy
     '}
 
-	rPhotonEnergy : REAL;
-	
-	stStatus: ST_AttenuatorStatus;
-	{attribute 'TcLinkTo' := ':=TIIB[PMPS_PRE]^IO Outputs^bGattStatus'}
-	bStatus  AT%Q*:Byte;
+    rPhotonEnergy : REAL;
+
+    stStatus: ST_AttenuatorStatus;
+    {attribute 'TcLinkTo' := ':=TIIB[PMPS_PRE]^IO Outputs^bGattStatus'}
+    bStatus  AT%Q*:Byte;
 
 
 END_VAR]]></Declaration>

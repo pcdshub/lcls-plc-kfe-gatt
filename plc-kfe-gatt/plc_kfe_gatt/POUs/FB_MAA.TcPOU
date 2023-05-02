@@ -3,67 +3,67 @@
   <POU Name="FB_MAA" Id="{8c4640db-3bb7-4671-b4ea-e9d46c4b8221}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_MAA
 VAR_IN_OUT
-	fbArbiter: FB_Arbiter;
+    fbArbiter: FB_Arbiter;
     fbFFHWO: FB_HardwareFFOutput;
-	stYStage: DUT_MotionStage;
-	stXStage: DUT_MotionStage;
-	
+    stYStage: DUT_MotionStage;
+    stXStage: DUT_MotionStage;
+
 END_VAR
 VAR_INPUT
-	 {attribute 'pytmc' := '
+     {attribute 'pytmc' := '
         pv: :PMPS:AribterEnabled
         io: io
     '}
-	bArbiterEnabled: BOOL:=TRUE;;
-	 nTransitionAssertionID: UDINT;
-	stAprt1: DUT_PositionState;
-	stAprt2: DUT_PositionState;
-	stAprt3: DUT_PositionState;
-	stAprt4: DUT_PositionState;
-	stXCen: DUT_PositionState;
-	i_DevName: STRING:= 'AT1K0-MAA';
-	 {attribute 'pytmc' := '
+    bArbiterEnabled: BOOL:=TRUE;;
+     nTransitionAssertionID: UDINT;
+    stAprt1: DUT_PositionState;
+    stAprt2: DUT_PositionState;
+    stAprt3: DUT_PositionState;
+    stAprt4: DUT_PositionState;
+    stXCen: DUT_PositionState;
+    i_DevName: STRING:= 'AT1K0-MAA';
+     {attribute 'pytmc' := '
         pv: Y:STATE:SET;
         io: io;
-		field: ZRST Unknown;
-	    field: ONST 5.5mm;
-	    field: TWST 8mm;
-	    field: THST 10mm;
-	    field: FRST 13mm;
+        field: ZRST Unknown;
+        field: ONST 5.5mm;
+        field: TWST 8mm;
+        field: THST 10mm;
+        field: FRST 13mm;
     '}
-	 enumSet: E_MAA_states;
-	sPmpsDeviceName: STRING;
+     enumSet: E_MAA_states;
+    sPmpsDeviceName: STRING;
     sTransitionKey: STRING;
 END_VAR
-VAR_OUTPUT	
-	{attribute 'pytmc' := '
+VAR_OUTPUT
+    {attribute 'pytmc' := '
         pv: Y:STATE
         io: io
     '}
     fbStates: FB_MAA_States;
-	
-	{attribute 'pytmc' := '
-        pv: X:STATE 
+
+    {attribute 'pytmc' := '
+        pv: X:STATE
         io: io
     '}
     fbStates_X: FB_MAA_States_X;
 END_VAR
 VAR
 
-	fbYStage: FB_MotionStage;
-	fbXStage: FB_MotionStage;
-	
-	
+    fbYStage: FB_MotionStage;
+    fbXStage: FB_MotionStage;
+
+
 //	fSize1: REAL:=3.0; //mm
 //	fSize2: REAL:=7.0; //mm
 //	fSize3: REAL:=8.5; //mm
 //	fSize4: REAL:=9.0; //mm
-	
 
-	
-	bInit:BOOL := TRUE;
-	tArbiterTimeout: TIME:= T#10S;
-	FFO    :    FB_FastFault :=(
+
+
+    bInit:BOOL := TRUE;
+    tArbiterTimeout: TIME:= T#10S;
+    FFO    :    FB_FastFault :=(
         i_DevName := 'AT1K0-MAA',
         i_Desc := 'Fault occurs when the PMPS Aribter is switched off for the aperture plate states BPTM',
         i_TypeCode := 16#AAFF);
@@ -72,54 +72,54 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[if(bInit) THEN
-	stYStage.bHardwareEnable := TRUE;
-	stYStage.bPowerSelf := FALSE;
-	stYStage.nBrakeMode := ENUM_StageBrakeMode.IF_MOVING;
-	stXStage.bHardwareEnable := TRUE;
-	stXStage.bPowerSelf := FALSE;
-	stXStage.nBrakeMode := ENUM_StageBrakeMode.NO_BRAKE;
-	bInit:=FALSE;
-	
-	// States settings
-	//stAprt1.nRequestAssertionID := nTransitionAssertionID+1;
-	//stAprt1.stBeamParams := PMPS_GVL.cstFullBeam;
-	//stAprt1.stBeamParams.astApertures[1].Height := fSize1;
-	//stAprt1.stBeamParams.astApertures[1].Width := fSize1;
-	stAprt1.bUseRawCounts := FALSE;	
-	stAprt1.bValid := TRUE;
-	stAprt1.stPMPS.sPmpsState := CONCAT(sPmpsDeviceName,'-APERTURE1');
-	
-	//stAprt2.nRequestAssertionID := nTransitionAssertionID+2;
-	//stAprt2.stBeamParams := PMPS_GVL.cstFullBeam;
-	//stAprt2.stBeamParams.astApertures[1].Height := fSize2;
-	//stAprt2.stBeamParams.astApertures[1].Width :=fSize2;
-	stAprt2.bUseRawCounts := FALSE;
-	stAprt2.bValid := TRUE;
-	stAprt2.stPMPS.sPmpsState := CONCAT(sPmpsDeviceName,'-APERTURE2');
-	
-	//stAprt3.nRequestAssertionID := nTransitionAssertionID+3;
-	//stAprt3.stBeamParams := PMPS_GVL.cstFullBeam;
-	//stAprt3.stBeamParams.astApertures[1].Height := fSize3;
-	//stAprt3.stBeamParams.astApertures[1].Width := fSize3;
-	stAprt3.bUseRawCounts := FALSE;
-	stAprt3.bValid := TRUE;
-	stAprt3.stPMPS.sPmpsState := CONCAT(sPmpsDeviceName,'-APERTURE3');
-	
-	//stAprt4.nRequestAssertionID := nTransitionAssertionID+4;
-	//stAprt4.stBeamParams := PMPS_GVL.cstFullBeam;
-	//stAprt4.stBeamParams.astApertures[1].Height := fSize4;
-	//stAprt4.stBeamParams.astApertures[1].Width := fSize4;
-	stAprt4.bUseRawCounts := FALSE;
-	stAprt4.bValid := TRUE;
-	stAprt4.stPMPS.sPmpsState := CONCAT(sPmpsDeviceName,'-APERTURE4');
-	
-	//stXCen.nRequestAssertionID := nTransitionAssertionID+6;
-	//stXCen.stBeamParams := PMPS_GVL.cstFullBeam;
-	stXCen.bUseRawCounts := FALSE;
-	stXCen.bValid := TRUE;
-	stXCen.stPMPS.sPmpsState := CONCAT(sPmpsDeviceName,'-XCENTER');
-	
-	FFO.i_DevName := i_DevName;
+    stYStage.bHardwareEnable := TRUE;
+    stYStage.bPowerSelf := FALSE;
+    stYStage.nBrakeMode := ENUM_StageBrakeMode.IF_MOVING;
+    stXStage.bHardwareEnable := TRUE;
+    stXStage.bPowerSelf := FALSE;
+    stXStage.nBrakeMode := ENUM_StageBrakeMode.NO_BRAKE;
+    bInit:=FALSE;
+
+    // States settings
+    //stAprt1.nRequestAssertionID := nTransitionAssertionID+1;
+    //stAprt1.stBeamParams := PMPS_GVL.cstFullBeam;
+    //stAprt1.stBeamParams.astApertures[1].Height := fSize1;
+    //stAprt1.stBeamParams.astApertures[1].Width := fSize1;
+    stAprt1.bUseRawCounts := FALSE;
+    stAprt1.bValid := TRUE;
+    stAprt1.stPMPS.sPmpsState := CONCAT(sPmpsDeviceName,'-APERTURE1');
+
+    //stAprt2.nRequestAssertionID := nTransitionAssertionID+2;
+    //stAprt2.stBeamParams := PMPS_GVL.cstFullBeam;
+    //stAprt2.stBeamParams.astApertures[1].Height := fSize2;
+    //stAprt2.stBeamParams.astApertures[1].Width :=fSize2;
+    stAprt2.bUseRawCounts := FALSE;
+    stAprt2.bValid := TRUE;
+    stAprt2.stPMPS.sPmpsState := CONCAT(sPmpsDeviceName,'-APERTURE2');
+
+    //stAprt3.nRequestAssertionID := nTransitionAssertionID+3;
+    //stAprt3.stBeamParams := PMPS_GVL.cstFullBeam;
+    //stAprt3.stBeamParams.astApertures[1].Height := fSize3;
+    //stAprt3.stBeamParams.astApertures[1].Width := fSize3;
+    stAprt3.bUseRawCounts := FALSE;
+    stAprt3.bValid := TRUE;
+    stAprt3.stPMPS.sPmpsState := CONCAT(sPmpsDeviceName,'-APERTURE3');
+
+    //stAprt4.nRequestAssertionID := nTransitionAssertionID+4;
+    //stAprt4.stBeamParams := PMPS_GVL.cstFullBeam;
+    //stAprt4.stBeamParams.astApertures[1].Height := fSize4;
+    //stAprt4.stBeamParams.astApertures[1].Width := fSize4;
+    stAprt4.bUseRawCounts := FALSE;
+    stAprt4.bValid := TRUE;
+    stAprt4.stPMPS.sPmpsState := CONCAT(sPmpsDeviceName,'-APERTURE4');
+
+    //stXCen.nRequestAssertionID := nTransitionAssertionID+6;
+    //stXCen.stBeamParams := PMPS_GVL.cstFullBeam;
+    stXCen.bUseRawCounts := FALSE;
+    stXCen.bValid := TRUE;
+    stXCen.stPMPS.sPmpsState := CONCAT(sPmpsDeviceName,'-XCENTER');
+
+    FFO.i_DevName := i_DevName;
 
 END_IF
 
@@ -128,39 +128,39 @@ fbYStage(stMotionStage:=stYStage);
 fbXStage(stMotionStage:=stXStage);
 
 fbStates(
-	fbArbiter:=fbArbiter,
+    fbArbiter:=fbArbiter,
     fbFFHWO:=fbFFHWO,
     //nTransitionAssertionID:=nTransitionAssertionID,
-	//stTransitionBeam:= PMPS_GVL.cst0RateBeam,
-	bArbiterEnabled := bArbiterEnabled,
-	tArbiterTimeout :=tArbiterTimeout,
+    //stTransitionBeam:= PMPS_GVL.cst0RateBeam,
+    bArbiterEnabled := bArbiterEnabled,
+    tArbiterTimeout :=tArbiterTimeout,
     stMotionStage:=stYStage,
-	bEnable:=TRUE,
+    bEnable:=TRUE,
     stAprt1:=stAprt1,
     stAprt2:=stAprt2,
     stAprt3:=stAprt3,
     stAprt4:=stAprt4,
-	enumSet:= enumSet,
-	sPmpsDeviceName:=sPmpsDeviceName,
+    enumSet:= enumSet,
+    sPmpsDeviceName:=sPmpsDeviceName,
     sTransitionKey:=CONCAT(sTransitionKey,'_Y'),
     bBPOKAutoReset := TRUE);
 
 fbStates_X(
-	fbArbiter:=fbArbiter,
+    fbArbiter:=fbArbiter,
     fbFFHWO:=fbFFHWO,
-	tArbiterTimeout := tArbiterTimeout,
+    tArbiterTimeout := tArbiterTimeout,
     stMotionStage:=stXStage,
-	bEnable:=TRUE,
+    bEnable:=TRUE,
     stXCen:=stXCen,
-	sPmpsDeviceName:=sPmpsDeviceName,
+    sPmpsDeviceName:=sPmpsDeviceName,
     sTransitionKey:=CONCAT(sTransitionKey,'_X'),
-	bBPOKAutoReset := TRUE);
+    bBPOKAutoReset := TRUE);
 
 
 (*FAST FAULT*)
 FFO(i_xOK := bArbiterEnabled,
     i_xReset := ,
-	i_xAutoReset := TRUE,
+    i_xAutoReset := TRUE,
     io_fbFFHWO := fbFFHWO);]]></ST>
     </Implementation>
   </POU>

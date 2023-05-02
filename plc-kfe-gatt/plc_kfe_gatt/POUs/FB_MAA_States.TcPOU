@@ -7,29 +7,29 @@ VAR_IN_OUT
 END_VAR
 VAR_INPUT
     bStatesLock: BOOL;
-	stAprt1: DUT_PositionState;
-	stAprt2: DUT_PositionState;
-	stAprt3: DUT_PositionState;
-	stAprt4: DUT_PositionState;
+    stAprt1: DUT_PositionState;
+    stAprt2: DUT_PositionState;
+    stAprt3: DUT_PositionState;
+    stAprt4: DUT_PositionState;
 END_VAR
 VAR_OUTPUT
     {attribute 'pytmc' := '
         pv: GET
         io: i
-		field: ZRST Unknown;
-	    field: ONST 5.5mm;
-	    field: TWST 8mm;
-	    field: THST 10mm;
-	    field: FRST 13mm;
+        field: ZRST Unknown;
+        field: ONST 5.5mm;
+        field: TWST 8mm;
+        field: THST 10mm;
+        field: FRST 13mm;
     '}
-    enumGet: E_MAA_States;	
+    enumGet: E_MAA_States;
 END_VAR
 VAR
     bStatesInit: BOOL := TRUE;
-	fDelta1: LREAL := 0.5; //only for commissioning should change to more conservative values
-	fDelta2: LREAL := 0.5;
-	fDelta3: LREAL := 0.5;
-	fDelta4: LREAL := 3;
+    fDelta1: LREAL := 0.5; //only for commissioning should change to more conservative values
+    fDelta2: LREAL := 0.5;
+    fDelta3: LREAL := 0.5;
+    fDelta4: LREAL := 3;
 
 END_VAR
 VAR CONSTANT
@@ -42,38 +42,38 @@ END_VAR
     <Implementation>
       <ST><![CDATA[IF bStatesInit THEN
     bStatesInit := FALSE;
-	
-	stAprt1.sName := '5.5mm';
+
+    stAprt1.sName := '5.5mm';
     stAprt1.fVelocity := fVelocity;
     stAprt1.fDelta := fDelta1;
     stAprt1.fAccel := fAccel;
     stAprt1.fDecel := fAccel;
     stAprt1.bMoveOk := TRUE;
-	
-	stAprt2.sName := '8mm';
+
+    stAprt2.sName := '8mm';
     stAprt2.fVelocity := fVelocity;
     stAprt2.fDelta := fDelta2;
     stAprt2.fAccel := fAccel;
     stAprt2.fDecel := fAccel;
     stAprt2.bMoveOk := TRUE;
-	
-	stAprt3.sName := '10mm';
+
+    stAprt3.sName := '10mm';
     stAprt3.fVelocity := fVelocity;
     stAprt3.fDelta := fDelta3;
     stAprt3.fAccel := fAccel;
     stAprt3.fDecel := fAccel;
     stAprt3.bMoveOk := TRUE;
-	
-	stAprt4.sName := '13mm';
+
+    stAprt4.sName := '13mm';
     stAprt4.fVelocity := fVelocity;
     stAprt4.fDelta := fDelta4;
     stAprt4.fAccel := fAccel;
     stAprt4.fDecel := fAccel;
     stAprt4.bMoveOk := TRUE;
-	
-	
-	
-	arrStates[1] := stAprt1;
+
+
+
+    arrStates[1] := stAprt1;
     arrStates[2] := stAprt2;
     arrStates[3] := stAprt3;
     arrStates[4] := stAprt4;

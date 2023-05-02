@@ -3,143 +3,143 @@
   <POU Name="PRG_Motion" Id="{f9debf16-4e65-45a3-bfcf-8f37dd9c23d6}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_Motion
 VAR
-	bInit: BOOL := TRUE;
-	nTransitionAssertionRootID: UDINT :=1000;
-	nUnknownAssertionRootID: UDINT :=9000;
-	bAllGo : Bool := false;
-	
-	
-	
-	/////
-	{attribute 'pytmc' := '
-		pv: AT1K0:GAS_MAA:01
-		io: io
-	'}
-	fbMAA_1_States: FB_MAA;
-	{attribute 'pytmc' := '
-		pv: AT1K0:GAS_MAA:02
-		io: io
-	'}
-	fbMAA_2_States: FB_MAA;
-	{attribute 'pytmc' := '
-		pv:  AT1K0:GAS_MAA:03
-		io: io
-	'}
-	fbMAA_3_States: FB_MAA;
-	{attribute 'pytmc' := '
-		pv: AT1K0:GAS_MAA:04
-		io: io
-	'}
-	fbMAA_4_States: FB_MAA;
+    bInit: BOOL := TRUE;
+    nTransitionAssertionRootID: UDINT :=1000;
+    nUnknownAssertionRootID: UDINT :=9000;
+    bAllGo : Bool := false;
 
-	
+
+
+    /////
+    {attribute 'pytmc' := '
+        pv: AT1K0:GAS_MAA:01
+        io: io
+    '}
+    fbMAA_1_States: FB_MAA;
+    {attribute 'pytmc' := '
+        pv: AT1K0:GAS_MAA:02
+        io: io
+    '}
+    fbMAA_2_States: FB_MAA;
+    {attribute 'pytmc' := '
+        pv:  AT1K0:GAS_MAA:03
+        io: io
+    '}
+    fbMAA_3_States: FB_MAA;
+    {attribute 'pytmc' := '
+        pv: AT1K0:GAS_MAA:04
+        io: io
+    '}
+    fbMAA_4_States: FB_MAA;
+
+
 
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
 IF (bInit) THEN
-	bInit := False;
+    bInit := False;
 
-	/// PMPS 
-	//MAA 1 Y
-	//fbMAA_1_States.nTransitionAssertionID := 43536;// nTransitionAssertionRootID+10;
-	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
-	// Aperture 1
-	fbMAA_1_States.stAprt1.fPosition :=  -0.78;//-1.4;
-	// Aperture 2
-	fbMAA_1_States.stAprt2.fPosition := -16.1;
-	// Aperture 3
-	fbMAA_1_States.stAprt3.fPosition := -30.93;
-	// Aperture 4
-	fbMAA_1_States.stAprt4.fPosition := -48.7;
-	// X Cen
-	fbMAA_1_States.stXCen.fPosition := 1;//1.5;// 0;// -2.083;
-	 
-		
-	//MAA 2 Y
-	//fbMAA_2_States.nTransitionAssertionID := 43552;//nTransitionAssertionRootID+20;
-	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
-	// Aperture 1
-	fbMAA_2_States.stAprt1.fPosition :=  -1;//-1.4;
-	// Aperture 2
-	fbMAA_2_States.stAprt2.fPosition := -16.5;
-	// Aperture 3
-	fbMAA_2_States.stAprt3.fPosition := -30.9;
-	// Aperture 4
-	fbMAA_2_States.stAprt4.fPosition := -48.96;
-	// X Cen
-	fbMAA_2_States.stXCen.fPosition :=1.5;//0.475;//0;//-0.77;
-	
-		
-	//MAA 3 Y
-	//fbMAA_3_States.nTransitionAssertionID := 43568;//nTransitionAssertionRootID+30;
-	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
-	// Aperture 1
-	fbMAA_3_States.stAprt1.fPosition :=  -0.35;//-1.15;
-	// Aperture 2
-	fbMAA_3_States.stAprt2.fPosition := -16.2;
-	// Aperture 3
-	fbMAA_3_States.stAprt3.fPosition := -30.8;
-	// Aperture 4
-	fbMAA_3_States.stAprt4.fPosition := -48.95;
-	// X Cen
-	fbMAA_3_States.stXCen.fPosition :=1;//-0.4064;//0;//2.031;
-		
-		
-	//MAA 4 Y
-	//fbMAA_4_States.nTransitionAssertionID := 43584;//nTransitionAssertionRootID+40;
-	//fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
-	// Aperture 1
-	fbMAA_4_States.stAprt1.fPosition :=  0;//-1;
-	// Aperture 2
-	fbMAA_4_States.stAprt2.fPosition := -16.6;
-	// Aperture 3
-	fbMAA_4_States.stAprt3.fPosition := -30.9;
-	// Aperture 4
-	fbMAA_4_States.stAprt4.fPosition := -49.06;
-	// X Cen
-	fbMAA_4_States.stXCen.fPosition :=1.25;//0;//-0.9861;//0;//2.0345;		
+    /// PMPS
+    //MAA 1 Y
+    //fbMAA_1_States.nTransitionAssertionID := 43536;// nTransitionAssertionRootID+10;
+    //fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
+    // Aperture 1
+    fbMAA_1_States.stAprt1.fPosition :=  -0.78;//-1.4;
+    // Aperture 2
+    fbMAA_1_States.stAprt2.fPosition := -16.1;
+    // Aperture 3
+    fbMAA_1_States.stAprt3.fPosition := -30.93;
+    // Aperture 4
+    fbMAA_1_States.stAprt4.fPosition := -48.7;
+    // X Cen
+    fbMAA_1_States.stXCen.fPosition := 1;//1.5;// 0;// -2.083;
+
+
+    //MAA 2 Y
+    //fbMAA_2_States.nTransitionAssertionID := 43552;//nTransitionAssertionRootID+20;
+    //fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
+    // Aperture 1
+    fbMAA_2_States.stAprt1.fPosition :=  -1;//-1.4;
+    // Aperture 2
+    fbMAA_2_States.stAprt2.fPosition := -16.5;
+    // Aperture 3
+    fbMAA_2_States.stAprt3.fPosition := -30.9;
+    // Aperture 4
+    fbMAA_2_States.stAprt4.fPosition := -48.96;
+    // X Cen
+    fbMAA_2_States.stXCen.fPosition :=1.5;//0.475;//0;//-0.77;
+
+
+    //MAA 3 Y
+    //fbMAA_3_States.nTransitionAssertionID := 43568;//nTransitionAssertionRootID+30;
+    //fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
+    // Aperture 1
+    fbMAA_3_States.stAprt1.fPosition :=  -0.35;//-1.15;
+    // Aperture 2
+    fbMAA_3_States.stAprt2.fPosition := -16.2;
+    // Aperture 3
+    fbMAA_3_States.stAprt3.fPosition := -30.8;
+    // Aperture 4
+    fbMAA_3_States.stAprt4.fPosition := -48.95;
+    // X Cen
+    fbMAA_3_States.stXCen.fPosition :=1;//-0.4064;//0;//2.031;
+
+
+    //MAA 4 Y
+    //fbMAA_4_States.nTransitionAssertionID := 43584;//nTransitionAssertionRootID+40;
+    //fbMAA_1_States.nUnknownAssertionID := nUnknownAssertionRootID;
+    // Aperture 1
+    fbMAA_4_States.stAprt1.fPosition :=  0;//-1;
+    // Aperture 2
+    fbMAA_4_States.stAprt2.fPosition := -16.6;
+    // Aperture 3
+    fbMAA_4_States.stAprt3.fPosition := -30.9;
+    // Aperture 4
+    fbMAA_4_States.stAprt4.fPosition := -49.06;
+    // X Cen
+    fbMAA_4_States.stXCen.fPosition :=1.0;//0;//-0.9861;//0;//2.0345;
 
 END_IF
 
 //EBD
 fbMAA_1_States(
-	 fbArbiter := GVL_PMPS.fbArbiter1,
-	 i_DevName:= 'AT1K0:GAS_MAA:01',
+     fbArbiter := GVL_PMPS.fbArbiter1,
+     i_DevName:= 'AT1K0:GAS_MAA:01',
     fbFFHWO :=  GVL_PMPS.g_FastFaultOutput1,
-	sPmpsDeviceName:='AT1K0:GAS_MAA:01',
+    sPmpsDeviceName:='AT1K0:GAS_MAA:01',
     sTransitionKey:='AT1K0:GAS_MAA:01-TRANSITION',
     stYStage := Main.M2,
     stXStage := Main.M1);
 
 fbMAA_2_States(
-	fbArbiter := GVL_PMPS.fbArbiter1,
-	i_DevName:= 'AT1K0:GAS_MAA:02',
-	sPmpsDeviceName:='AT1K0:GAS_MAA:02',
+    fbArbiter := GVL_PMPS.fbArbiter1,
+    i_DevName:= 'AT1K0:GAS_MAA:02',
+    sPmpsDeviceName:='AT1K0:GAS_MAA:02',
     sTransitionKey:='AT1K0:GAS_MAA:02-TRANSITION',
     fbFFHWO := GVL_PMPS.g_FastFaultOutput1,
     stYStage := Main.M4,
-    stXStage := Main.M3); 
+    stXStage := Main.M3);
 //FEE
 fbMAA_3_States(
-	fbArbiter := GVL_PMPS.fbArbiter1,
-	i_DevName:= 'AT1K0:GAS_MAA:03',
-	sPmpsDeviceName:='AT1K0:GAS_MAA:03',
+    fbArbiter := GVL_PMPS.fbArbiter1,
+    i_DevName:= 'AT1K0:GAS_MAA:03',
+    sPmpsDeviceName:='AT1K0:GAS_MAA:03',
     sTransitionKey:='AT1K0:GAS_MAA:03-TRANSITION',
     fbFFHWO := GVL_PMPS.g_FastFaultOutput1,
     stYStage := Main.M6,
-    stXStage := Main.M5); 
+    stXStage := Main.M5);
 
 fbMAA_4_States(
-	fbArbiter := GVL_PMPS.fbArbiter1,
-	i_DevName:= 'AT1K0:GAS_MAA:04',
-	sPmpsDeviceName:='AT1K0:GAS_MAA:04',
+    fbArbiter := GVL_PMPS.fbArbiter1,
+    i_DevName:= 'AT1K0:GAS_MAA:04',
+    sPmpsDeviceName:='AT1K0:GAS_MAA:04',
     sTransitionKey:='AT1K0:GAS_MAA:04-TRANSITION',
     fbFFHWO := GVL_PMPS.g_FastFaultOutput1,
     stYStage := Main.M8,
     stXStage := Main.M7);
-	
+
 
 (*Set global OK bit*)
 US_MAA_OK := (fbMAA_1_States.fbStates.enumGet = fbMAA_2_States.fbStates.enumGet) AND (fbMAA_2_States.fbStates.enumGet = fbMAA_3_States.fbStates.enumGet)AND( fbMAA_3_States.fbStates.enumGet = fbMAA_4_States.fbStates.enumGet) AND NOT (fbMAA_1_States.fbStates.bError) AND NOT (fbMAA_2_States.fbStates.bError);
@@ -151,32 +151,32 @@ ELSE  eSelectedAprt:= E_MAA_States.Unknown; END_IF;
 ////////////////////
 //Set the right state i.e. apperture based on the current beam size/
 /////
-	IF( rPhotonEnergy >=0.9E3) THEN
-		eSetAprt := E_MAA_States.Aprt1;
-		ELSIF ( rPhotonEnergy >=0.6E3) THEN
-			eSetAprt := E_MAA_States.Aprt2;
-			ELSIF ( rPhotonEnergy >=0.5E3) THEN
-				eSetAprt := E_MAA_States.Aprt3;
-				ELSE 
-					eSetAprt := E_MAA_States.Aprt4;
-	END_IF
+    IF( rPhotonEnergy >=0.9E3) THEN
+        eSetAprt := E_MAA_States.Aprt1;
+        ELSIF ( rPhotonEnergy >=0.6E3) THEN
+            eSetAprt := E_MAA_States.Aprt2;
+            ELSIF ( rPhotonEnergy >=0.5E3) THEN
+                eSetAprt := E_MAA_States.Aprt3;
+                ELSE
+                    eSetAprt := E_MAA_States.Aprt4;
+    END_IF
 (*Aperture state selection*)
 IF (xPMPSMode) AND (bChangeAperture)  AND (eSelectedAprt <> eSetAprt) THEN
-	fbMAA_1_States.enumSet := eSetAprt; 
-	fbMAA_2_States.enumSet := eSetAprt;
-	fbMAA_3_States.enumSet := eSetAprt;
-	fbMAA_4_States.enumSet := eSetAprt;
-	bChangeAperture:=False;
-	fbLogger(sMsg:='AT1K0-MAA moving to correct apperture size', eSevr:=TcEventSeverity.Verbose);
-	ELSE
-	bChangeAperture:=False;
+    fbMAA_1_States.enumSet := eSetAprt;
+    fbMAA_2_States.enumSet := eSetAprt;
+    fbMAA_3_States.enumSet := eSetAprt;
+    fbMAA_4_States.enumSet := eSetAprt;
+    bChangeAperture:=False;
+    fbLogger(sMsg:='AT1K0-MAA moving to correct apperture size', eSevr:=TcEventSeverity.Verbose);
+    ELSE
+    bChangeAperture:=False;
 END_IF
-	
+
 IF NOT (xPMPSMode) AND bChangeAperture AND (eSelectedAprt <> eSetAprt)  THEN
-	fbLogger(sMsg:='AT1K0-MAA is not set to correct apperture size', eSevr:=TcEventSeverity.Critical);
-	bChangeAperture:=False;
+    fbLogger(sMsg:='AT1K0-MAA is not set to correct apperture size', eSevr:=TcEventSeverity.Critical);
+    bChangeAperture:=False;
 END_IF
-	
+
 
 
 ]]></ST>
