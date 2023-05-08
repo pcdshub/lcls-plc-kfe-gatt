@@ -137,10 +137,12 @@ fb_AT1K0_GAS_PMF_120(i_xExtIlkOK:= TRUE(*Interlock Timer on the Rough Valve*), s
 fb_AT1K0_GAS_PMF_140(i_xExtIlkOK:= TRUE(*Interlock Timer on the Rough Valve*), stPump=> );
 if( fb_AT1K0_GAS_PMF_110.stPump.eState = pumpSTARTING ) OR ( fb_AT1K0_GAS_PMF_110.stPump.eState = pumpRUNNING ) THEN fb_AT1K0_GAS_VVC_110.M_Open(TRUE); END_IF
 if( fb_AT1K0_GAS_PMF_120.stPump.eState = pumpSTARTING ) OR ( fb_AT1K0_GAS_PMF_120.stPump.eState = pumpRUNNING ) THEN fb_AT1K0_GAS_VVC_120.M_Open(TRUE); END_IF
-if( fb_AT1K0_GAS_PMF_140.stPump.eState = pumpSTARTING ) OR ( fb_AT1K0_GAS_PMF_140.stPump.eState = pumpRUNNING ) THEN fb_AT1K0_GAS_VVC_140.M_Open(TRUE); END_IF
+//change logic to open vvc_140 based on state of PMF 120 instead of the temporarily removed 140.
+if( fb_AT1K0_GAS_PMF_120.stPump.eState = pumpSTARTING ) OR ( fb_AT1K0_GAS_PMF_120.stPump.eState = pumpRUNNING ) THEN fb_AT1K0_GAS_VVC_140.M_Open(TRUE); END_IF
 fb_AT1K0_GAS_VVC_110(i_xExtILK_OK:= (fb_AT1K0_GAS_PMF_110.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_110.stPump.eState = pumpSTARTING ), i_xOverrideMode:= , iq_stValve=> );
 fb_AT1K0_GAS_VVC_120(i_xExtILK_OK:= (fb_AT1K0_GAS_PMF_120.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_120.stPump.eState = pumpSTARTING ), i_xOverrideMode:= , iq_stValve=> );
-fb_AT1K0_GAS_VVC_140(i_xExtILK_OK:= (fb_AT1K0_GAS_PMF_140.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_140.stPump.eState = pumpSTARTING ), i_xOverrideMode:= , iq_stValve=> );
+//change logic to open vvc_140 based on state of PMF 120 instead of the temporarily removed 140.
+fb_AT1K0_GAS_VVC_140(i_xExtILK_OK:= (fb_AT1K0_GAS_PMF_120.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_120.stPump.eState = pumpSTARTING ), i_xOverrideMode:= , iq_stValve=> );
 
 
 ]]></ST>
