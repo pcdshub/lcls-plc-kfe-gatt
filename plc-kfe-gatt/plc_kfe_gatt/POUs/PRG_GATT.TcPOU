@@ -86,6 +86,7 @@ fb_AT1K0_GAS_VRC_100(i_xExtILK_OK := fb_AT1K0_GAS_PMF_100.stPump.i_xMPStatus AND
 fb_AT1K0_GAS_VRC_110(i_xExtILK_OK := F_TurboGateValve_ILK(fb_AT1K0_GAS_PTM_110.iq_stPtm,fb_AT1K0_GAS_GPI_110.PG) AND fb_AT1K0_GAS_PTM_110.iq_stPtm.eState = pumpRUNNING  , i_xOverrideMode := xSystemOverrideMode);
 fb_AT1K0_GAS_VRC_120(i_xExtILK_OK := F_TurboGateValve_ILK(fb_AT1K0_GAS_PTM_120.iq_stPtm,fb_AT1K0_GAS_GPI_120.PG) AND fb_AT1K0_GAS_PTM_120.iq_stPtm.eState = pumpRUNNING, i_xOverrideMode := xSystemOverrideMode);
 fb_AT1K0_GAS_VRC_130(i_xExtILK_OK := F_TurboGateValve_ILK(fb_AT1K0_GAS_PTM_130.iq_stPtm,fb_AT1K0_GAS_GPI_130.PG) AND fb_AT1K0_GAS_PTM_130.iq_stPtm.eState = pumpRUNNING, i_xOverrideMode := xSystemOverrideMode);
+//changing interlock logic to interlock VRC-140 to PTM-120
 fb_AT1K0_GAS_VRC_140(i_xExtILK_OK := F_TurboGateValve_ILK(fb_AT1K0_GAS_PTM_140.iq_stPtm,fb_AT1K0_GAS_GPI_140.PG) AND fb_AT1K0_GAS_PTM_140.iq_stPtm.eState = pumpRUNNING, i_xOverrideMode := xSystemOverrideMode);
 //N2 valve
 //INL VCN, VGP and VRC_70 are closed.
@@ -104,7 +105,9 @@ fb_AT1K0_GAS_PTM_40(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_40.iq_s
 fb_AT1K0_GAS_PTM_110(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_110.iq_stPtm, fb_AT1K0_GAS_GPI_111.PG,fb_AT1K0_GAS_GPI_110.PG,fb_AT1K0_GAS_PMF_110.stPump));
 fb_AT1K0_GAS_PTM_120(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_120.iq_stPtm, fb_AT1K0_GAS_GPI_121.PG, fb_AT1K0_GAS_GPI_120.PG,fb_AT1K0_GAS_PMF_120.stPump));
 fb_AT1K0_GAS_PTM_130(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_130.iq_stPtm, fb_AT1K0_GAS_GPI_121.PG,fb_AT1K0_GAS_GPI_130.PG,fb_AT1K0_GAS_PMF_120.stPump));
-fb_AT1K0_GAS_PTM_140(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_140.iq_stPtm, fb_AT1K0_GAS_GPI_141.PG,fb_AT1K0_GAS_GPI_140.PG,fb_AT1K0_GAS_PMF_140.stPump));
+//change logic to interlock PTM 140 to PMF-120 instead of temporarily removed PMF-140
+//fb_AT1K0_GAS_PTM_140(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_140.iq_stPtm, fb_AT1K0_GAS_GPI_141.PG,fb_AT1K0_GAS_GPI_140.PG,fb_AT1K0_GAS_PMF_140.stPump));
+fb_AT1K0_GAS_PTM_140(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_140.iq_stPtm, fb_AT1K0_GAS_GPI_141.PG,fb_AT1K0_GAS_GPI_140.PG,fb_AT1K0_GAS_PMF_120.stPump));
 
 // Injector side
 fb_AT1K0_GAS_VVC_80.i_xExtILK_OK:= (fb_AT1K0_GAS_GPI_111.PG.rPRESS <= fb_AT1K0_GAS_PTM_80.iq_stPtm.rBackingPressureSP) AND NOT (fb_AT1K0_GAS_PTM_80.iq_stPtm.eState = pumpFAULT)  AND  (fb_AT1K0_GAS_PTM_80.iq_stPtm.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PTM_80.iq_stPtm.eState = pumpSTARTING )AND  (fb_AT1K0_GAS_PMF_110.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_110.stPump.eState = pumpSTARTING );
@@ -134,10 +137,13 @@ fb_AT1K0_GAS_PMF_120(i_xExtIlkOK:= TRUE(*Interlock Timer on the Rough Valve*), s
 fb_AT1K0_GAS_PMF_140(i_xExtIlkOK:= TRUE(*Interlock Timer on the Rough Valve*), stPump=> );
 if( fb_AT1K0_GAS_PMF_110.stPump.eState = pumpSTARTING ) OR ( fb_AT1K0_GAS_PMF_110.stPump.eState = pumpRUNNING ) THEN fb_AT1K0_GAS_VVC_110.M_Open(TRUE); END_IF
 if( fb_AT1K0_GAS_PMF_120.stPump.eState = pumpSTARTING ) OR ( fb_AT1K0_GAS_PMF_120.stPump.eState = pumpRUNNING ) THEN fb_AT1K0_GAS_VVC_120.M_Open(TRUE); END_IF
-if( fb_AT1K0_GAS_PMF_140.stPump.eState = pumpSTARTING ) OR ( fb_AT1K0_GAS_PMF_140.stPump.eState = pumpRUNNING ) THEN fb_AT1K0_GAS_VVC_140.M_Open(TRUE); END_IF
+//change logic to open vvc_140 based on state of PMF 120 instead of the temporarily removed 140.
+if( fb_AT1K0_GAS_PMF_120.stPump.eState = pumpSTARTING ) OR ( fb_AT1K0_GAS_PMF_120.stPump.eState = pumpRUNNING ) THEN fb_AT1K0_GAS_VVC_140.M_Open(TRUE); END_IF
 fb_AT1K0_GAS_VVC_110(i_xExtILK_OK:= (fb_AT1K0_GAS_PMF_110.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_110.stPump.eState = pumpSTARTING ), i_xOverrideMode:= , iq_stValve=> );
 fb_AT1K0_GAS_VVC_120(i_xExtILK_OK:= (fb_AT1K0_GAS_PMF_120.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_120.stPump.eState = pumpSTARTING ), i_xOverrideMode:= , iq_stValve=> );
-fb_AT1K0_GAS_VVC_140(i_xExtILK_OK:= (fb_AT1K0_GAS_PMF_140.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_140.stPump.eState = pumpSTARTING ), i_xOverrideMode:= , iq_stValve=> );
+//change logic to open vvc_140 based on state of PMF 120 instead of the temporarily removed 140.
+fb_AT1K0_GAS_VVC_140(i_xExtILK_OK:= (fb_AT1K0_GAS_PMF_120.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_120.stPump.eState = pumpSTARTING ), i_xOverrideMode:= , iq_stValve=> );
+
 
 ]]></ST>
     </Implementation>
