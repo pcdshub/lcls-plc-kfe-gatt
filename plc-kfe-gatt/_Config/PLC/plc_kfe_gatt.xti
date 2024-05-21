@@ -1336,6 +1336,48 @@ External Setpoint Generation:
 					<Type>INT</Type>
 				</Var>
 				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_110.i_xAlarmOK</Name>
+					<Comment>
+						<![CDATA[ Normally closed Alarm bit]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_110.i_xIsRun</Name>
+					<Comment>
+						<![CDATA[ Input status]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_120.i_xAlarmOK</Name>
+					<Comment>
+						<![CDATA[ Normally closed Alarm bit]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_120.i_xIsRun</Name>
+					<Comment>
+						<![CDATA[ Input status]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_140.i_xAlarmOK</Name>
+					<Comment>
+						<![CDATA[ Normally closed Alarm bit]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_140.i_xIsRun</Name>
+					<Comment>
+						<![CDATA[ Input status]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
 					<Name>PRG_PMPS.fbArbiterIO.i_stCurrentBP</Name>
 					<Type GUID="{292CD354-C7C0-4A61-AAD0-1C85DD69646B}">ST_BeamParams_IO</Type>
 					<SubVar>
@@ -2308,48 +2350,6 @@ External Setpoint Generation:
 					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_100.i_xRemote</Name>
 					<Comment>
 						<![CDATA[Remote control status]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_110.i_xAlarmOK</Name>
-					<Comment>
-						<![CDATA[ Normally closed Alarm bit]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_110.i_xIsRun</Name>
-					<Comment>
-						<![CDATA[ Input status]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_120.i_xAlarmOK</Name>
-					<Comment>
-						<![CDATA[ Normally closed Alarm bit]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_120.i_xIsRun</Name>
-					<Comment>
-						<![CDATA[ Input status]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_140.i_xAlarmOK</Name>
-					<Comment>
-						<![CDATA[ Normally closed Alarm bit]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_140.i_xIsRun</Name>
-					<Comment>
-						<![CDATA[ Input status]]>
 					</Comment>
 					<Type>BOOL</Type>
 				</Var>
@@ -3650,6 +3650,111 @@ External Setpoint Generation:
 			<Vars VarGrpType="2">
 				<Name>PlcTask Outputs</Name>
 				<Var>
+					<Name>GVL_Devices.VVC_71.q_xOPN_DO</Name>
+					<Comment>
+						<![CDATA[IO]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.VVC_72.q_xOPN_DO</Name>
+					<Comment>
+						<![CDATA[IO]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_VVC_110.q_xOPN_DO</Name>
+					<Comment>
+						<![CDATA[IO]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_VVC_120.q_xOPN_DO</Name>
+					<Comment>
+						<![CDATA[IO]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_VVC_140.q_xOPN_DO</Name>
+					<Comment>
+						<![CDATA[IO]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_VVC_80.q_xOPN_DO</Name>
+					<Comment>
+						<![CDATA[IO]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_110.q_xRunDo</Name>
+					<Comment>
+						<![CDATA[ Output signal]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_110.q_xRemote</Name>
+					<Comment>
+						<![CDATA[ Remote/Local Control]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_110.q_xResetAlarm</Name>
+					<Comment>
+						<![CDATA[ Remote/Local Control]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_120.q_xRunDo</Name>
+					<Comment>
+						<![CDATA[ Output signal]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_120.q_xRemote</Name>
+					<Comment>
+						<![CDATA[ Remote/Local Control]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_120.q_xResetAlarm</Name>
+					<Comment>
+						<![CDATA[ Remote/Local Control]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_140.q_xRunDo</Name>
+					<Comment>
+						<![CDATA[ Output signal]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_140.q_xRemote</Name>
+					<Comment>
+						<![CDATA[ Remote/Local Control]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_140.q_xResetAlarm</Name>
+					<Comment>
+						<![CDATA[ Remote/Local Control]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
 					<Name>PRG_PMPS.fbArbiterIO.q_stRequestedBP</Name>
 					<Type GUID="{292CD354-C7C0-4A61-AAD0-1C85DD69646B}">ST_BeamParams_IO</Type>
 					<SubVar>
@@ -3787,20 +3892,6 @@ External Setpoint Generation:
 IO]]>
 					</Comment>
 					<Type>INT</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.VVC_71.q_xOPN_DO</Name>
-					<Comment>
-						<![CDATA[IO]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.VVC_72.q_xOPN_DO</Name>
-					<Comment>
-						<![CDATA[IO]]>
-					</Comment>
-					<Type>BOOL</Type>
 				</Var>
 				<Var>
 					<Name>GVL_Devices.fb_AT1K0_GAS_GCC_10.q_xHV_DIS</Name>
@@ -4277,97 +4368,6 @@ IO]]>
 					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_100.q_xBPStart</Name>
 					<Comment>
 						<![CDATA[ Booster Pump start (this can be started by the pump automatically)]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_110.q_xRunDo</Name>
-					<Comment>
-						<![CDATA[ Output signal]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_110.q_xRemote</Name>
-					<Comment>
-						<![CDATA[ Remote/Local Control]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_110.q_xResetAlarm</Name>
-					<Comment>
-						<![CDATA[ Remote/Local Control]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_120.q_xRunDo</Name>
-					<Comment>
-						<![CDATA[ Output signal]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_120.q_xRemote</Name>
-					<Comment>
-						<![CDATA[ Remote/Local Control]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_120.q_xResetAlarm</Name>
-					<Comment>
-						<![CDATA[ Remote/Local Control]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_140.q_xRunDo</Name>
-					<Comment>
-						<![CDATA[ Output signal]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_140.q_xRemote</Name>
-					<Comment>
-						<![CDATA[ Remote/Local Control]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_PMF_140.q_xResetAlarm</Name>
-					<Comment>
-						<![CDATA[ Remote/Local Control]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_VVC_110.q_xOPN_DO</Name>
-					<Comment>
-						<![CDATA[IO]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_VVC_120.q_xOPN_DO</Name>
-					<Comment>
-						<![CDATA[IO]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_VVC_140.q_xOPN_DO</Name>
-					<Comment>
-						<![CDATA[IO]]>
-					</Comment>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL_Devices.fb_AT1K0_GAS_VVC_80.q_xOPN_DO</Name>
-					<Comment>
-						<![CDATA[IO]]>
 					</Comment>
 					<Type>BOOL</Type>
 				</Var>
