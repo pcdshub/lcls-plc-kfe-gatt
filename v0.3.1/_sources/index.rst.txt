@@ -1,0 +1,30 @@
+lcls-plc-kfe-gatt
+-----------------
+
+.. toctree::
+    :maxdepth: 2
+    :caption: plc-kfe-gatt
+
+    plc-kfe-gatt_pragmas
+    plc-kfe-gatt_nc
+    plc-kfe-gatt_ethercat
+    plc-kfe-gatt_boxes
+    plc-kfe-gatt_links
+
+
+.. toctree::
+    :maxdepth: 2
+    :caption: plc_kfe_gatt
+
+    plc-kfe-gatt_plc_kfe_gatt_summary
+    plc-kfe-gatt_plc_kfe_gatt_epics
+    plc-kfe-gatt_plc_kfe_gatt_source
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

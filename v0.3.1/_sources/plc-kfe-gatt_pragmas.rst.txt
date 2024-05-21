@@ -1,0 +1,21 @@
+
+Pragmas
+-------
+
+.. csv-table::
+    :header: PLC Name, Total Pragmas, Errors
+    :align: center
+
+    :ref:`plc_kfe_gatt <plc_kfe_gatt_overview_pragmas>`, 186, 0
+
+
+.. _plc_kfe_gatt_overview_pragmas:
+
+
+plc_kfe_gatt
+^^^^^^^^^^^^
+
+Total pragmas found: 186
+Total linter errors: 0
+
+
