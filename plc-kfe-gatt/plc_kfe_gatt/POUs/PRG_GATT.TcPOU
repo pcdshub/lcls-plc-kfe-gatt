@@ -102,8 +102,10 @@ fb_AT1K0_GAS_PTM_30(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_30.iq_s
 fb_AT1K0_GAS_PTM_40(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_40.iq_stPtm, fb_AT1K0_GAS_GPI_12.PG, fb_AT1K0_GAS_GPI_40.PG,fb_AT1K0_GAS_PMF_10.iq_stPFO));// AND fb_AT1K0_GAS_VRC_11.M_IsOpen() );
 //FEE Side
 fb_AT1K0_GAS_PTM_110(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_110.iq_stPtm, fb_AT1K0_GAS_GPI_111.PG,fb_AT1K0_GAS_GPI_110.PG,fb_AT1K0_GAS_PMF_110.stPump));
-fb_AT1K0_GAS_PTM_120(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_120.iq_stPtm, fb_AT1K0_GAS_GPI_121.PG, fb_AT1K0_GAS_GPI_120.PG,fb_AT1K0_GAS_PMF_120.stPump));
-fb_AT1K0_GAS_PTM_130(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_130.iq_stPtm, fb_AT1K0_GAS_GPI_121.PG,fb_AT1K0_GAS_GPI_130.PG,fb_AT1K0_GAS_PMF_120.stPump));
+// temporarily removing interlock logic as PTM 120 has failed and needs to be removed
+//fb_AT1K0_GAS_PTM_120(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_120.iq_stPtm, fb_AT1K0_GAS_GPI_121.PG, fb_AT1K0_GAS_GPI_120.PG,fb_AT1K0_GAS_PMF_120.stPump));
+fb_AT1K0_GAS_PTM_120(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_120.iq_stPtm, fb_AT1K0_GAS_GPI_121.PG, fb_AT1K0_GAS_GPI_120.PG,fb_AT1K0_GAS_PMF_140.stPump)); // changed to interlock to 140
+fb_AT1K0_GAS_PTM_130(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_130.iq_stPtm, fb_AT1K0_GAS_GPI_121.PG,fb_AT1K0_GAS_GPI_130.PG,fb_AT1K0_GAS_PMF_140.stPump)); // changed to interlock to 140
 fb_AT1K0_GAS_PTM_140(i_xExtILKOk := F_TurboExtILKLogic_2(fb_AT1K0_GAS_PTM_140.iq_stPtm, fb_AT1K0_GAS_GPI_141.PG,fb_AT1K0_GAS_GPI_140.PG,fb_AT1K0_GAS_PMF_140.stPump));
 
 
@@ -133,10 +135,10 @@ fb_AT1K0_GAS_PMF_110(i_xExtIlkOK:= TRUE (*Interlock Timer on the Rough Valve*) ,
 fb_AT1K0_GAS_PMF_120(i_xExtIlkOK:= TRUE(*Interlock Timer on the Rough Valve*), stPump=> );
 fb_AT1K0_GAS_PMF_140(i_xExtIlkOK:= TRUE(*Interlock Timer on the Rough Valve*), stPump=> );
 if( fb_AT1K0_GAS_PMF_110.stPump.eState = pumpSTARTING ) OR ( fb_AT1K0_GAS_PMF_110.stPump.eState = pumpRUNNING ) THEN fb_AT1K0_GAS_VVC_110.M_Open(TRUE); END_IF
-if( fb_AT1K0_GAS_PMF_120.stPump.eState = pumpSTARTING ) OR ( fb_AT1K0_GAS_PMF_120.stPump.eState = pumpRUNNING ) THEN fb_AT1K0_GAS_VVC_120.M_Open(TRUE); END_IF
+if( fb_AT1K0_GAS_PMF_140.stPump.eState = pumpSTARTING ) OR ( fb_AT1K0_GAS_PMF_120.stPump.eState = pumpRUNNING ) THEN fb_AT1K0_GAS_VVC_120.M_Open(TRUE); END_IF // changed to reflect temporary interlock configuration with 140
 if( fb_AT1K0_GAS_PMF_140.stPump.eState = pumpSTARTING ) OR ( fb_AT1K0_GAS_PMF_140.stPump.eState = pumpRUNNING ) THEN fb_AT1K0_GAS_VVC_140.M_Open(TRUE); END_IF
 fb_AT1K0_GAS_VVC_110(i_xExtILK_OK:= (fb_AT1K0_GAS_PMF_110.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_110.stPump.eState = pumpSTARTING ), i_xOverrideMode:= , iq_stValve=> );
-fb_AT1K0_GAS_VVC_120(i_xExtILK_OK:= (fb_AT1K0_GAS_PMF_120.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_120.stPump.eState = pumpSTARTING ), i_xOverrideMode:= , iq_stValve=> );
+fb_AT1K0_GAS_VVC_120(i_xExtILK_OK:= (fb_AT1K0_GAS_PMF_140.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_140.stPump.eState = pumpSTARTING ), i_xOverrideMode:= , iq_stValve=> );
 fb_AT1K0_GAS_VVC_140(i_xExtILK_OK:= (fb_AT1K0_GAS_PMF_140.stPump.eState = pumpRUNNING  OR  fb_AT1K0_GAS_PMF_140.stPump.eState = pumpSTARTING ), i_xOverrideMode:= , iq_stValve=> );
 
 
